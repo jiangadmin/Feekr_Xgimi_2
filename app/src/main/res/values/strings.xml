@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Feekr</string>
+
+    <string name="setting_1">网络设置</string>
+    <string name="setting_2">蓝牙外设</string>
+    <string name="setting_3">梯形校正</string>
+    <string name="setting_4">文件管理</string>
+    <string name="setting_5">检查更新</string>
+    <string name="setting_6">系统设置</string>
+</resources>
