@@ -338,7 +338,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        Toast.makeText(this, "" + keyCode, Toast.LENGTH_SHORT).show();
         if (WifiApUtils.getInstance(this).checkWifiApStatus())
             wifiap.setVisibility(View.VISIBLE);
         else

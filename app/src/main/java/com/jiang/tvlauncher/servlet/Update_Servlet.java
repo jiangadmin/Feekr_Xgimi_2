@@ -34,6 +34,7 @@ public class Update_Servlet extends AsyncTask<String, Integer, UpdateEntity> {
     @Override
     protected UpdateEntity doInBackground(String... strings) {
         Map map = new HashMap();
+        map.put("serialNum", MyAppliaction.SN);
         map.put("versionNum", Tools.getVersionName(MyAppliaction.context));
         map.put("buildNum", String.valueOf(Tools.getVersionCode(MyAppliaction.context)));
 

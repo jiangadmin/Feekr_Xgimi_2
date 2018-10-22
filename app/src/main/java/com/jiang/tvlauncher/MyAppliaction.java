@@ -3,14 +3,17 @@ package com.jiang.tvlauncher;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.os.AsyncTask;
 
 import com.jiang.tvlauncher.entity.Point;
 import com.jiang.tvlauncher.entity.Save_Key;
+import com.jiang.tvlauncher.servlet.TurnOn_servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.xgimi.business.api.clients.XgimiDeviceClient;
+import com.xgimi.business.api.hardwares.DlpKeystoneManager;
 import com.xgimi.business.api.projectors.IXgimiProjector;
 import com.xgimi.business.api.projectors.XgimiProjectorFactory;
 
@@ -29,7 +32,7 @@ public class MyAppliaction extends Application {
     public static Context context;
 
     public static boolean IsLineNet = true;//是否是有线网络
-    public static String modelNum = "Z5极光";
+    public static String modelNum = "Z6X";
     public static String ID = "";
     public static String SN = XgimiDeviceClient.getMachineId();
     public static String Temp = "FFFFFF";
@@ -65,6 +68,23 @@ public class MyAppliaction extends Application {
 
         //信号源名称
         String inputScourceName = xgimiProjector.getCurrentInputSource();
+
+        LogUtil.e(TAG, "PID：" + XgimiDeviceClient.getMachineId());
+
+        //开机请求
+        new TurnOn_servlet(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+//        LogUtil.e(TAG, "左上角X：" + DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_LEFT_TOP).getHorizontalValue());
+//        LogUtil.e(TAG, "左上角Y：" + DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_LEFT_TOP).getVerticalValue());
+//
+//        LogUtil.e(TAG, "左下角X：" + DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_LEFT_BOTTOM).getHorizontalValue());
+//        LogUtil.e(TAG, "左下角Y：" + DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_LEFT_BOTTOM).getVerticalValue());
+//
+//        LogUtil.e(TAG, "右上角X：" + DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_RIGHT_TOP).getHorizontalValue());
+//        LogUtil.e(TAG, "右上角Y：" + DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_RIGHT_TOP).getVerticalValue());
+//
+//        LogUtil.e(TAG, "右上角X：" + DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_RIGHT_BOTTOM).getHorizontalValue());
+//        LogUtil.e(TAG, "右上角Y：" + DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_RIGHT_BOTTOM).getVerticalValue());
 
     }
 

@@ -79,18 +79,10 @@ public class Timing_Servlet extends AsyncTask<String, Integer, MonitorResEntity>
 
                     Const.BussFlag = 0;
 
-                    Intent backHome = new Intent(Intent.ACTION_MAIN);
-
-                    backHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                    backHome.addCategory(Intent.CATEGORY_HOME);
-
-                    MyAppliaction.context.startActivity(backHome);
-//                    try {
-//                        ShellUtils.execCommand("input keyevent 3", false);
-//                    } catch (Exception ex) {
-//                        Log.e(TAG, "onPostExecute: " + ex.getMessage());
-//                    }
+//                    Intent backHome = new Intent(Intent.ACTION_MAIN);
+//                    backHome.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    backHome.addCategory(Intent.CATEGORY_HOME);
+//                    MyAppliaction.context.startActivity(backHome);
 
                 } else if (entity.getResult().getBussFlag() == 1) {
                     Const.BussFlag = 1;
