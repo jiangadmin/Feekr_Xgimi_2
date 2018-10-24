@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 
 import com.jiang.tvlauncher.entity.Point;
 import com.jiang.tvlauncher.entity.Save_Key;
@@ -13,7 +14,6 @@ import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.xgimi.business.api.clients.XgimiDeviceClient;
-import com.xgimi.business.api.hardwares.DlpKeystoneManager;
 import com.xgimi.business.api.projectors.IXgimiProjector;
 import com.xgimi.business.api.projectors.XgimiProjectorFactory;
 
@@ -74,18 +74,8 @@ public class MyAppliaction extends Application {
         //开机请求
         new TurnOn_servlet(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-//        LogUtil.e(TAG, "左上角X：" + DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_LEFT_TOP).getHorizontalValue());
-//        LogUtil.e(TAG, "左上角Y：" + DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_LEFT_TOP).getVerticalValue());
-//
-//        LogUtil.e(TAG, "左下角X：" + DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_LEFT_BOTTOM).getHorizontalValue());
-//        LogUtil.e(TAG, "左下角Y：" + DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_LEFT_BOTTOM).getVerticalValue());
-//
-//        LogUtil.e(TAG, "右上角X：" + DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_RIGHT_TOP).getHorizontalValue());
-//        LogUtil.e(TAG, "右上角Y：" + DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_RIGHT_TOP).getVerticalValue());
-//
-//        LogUtil.e(TAG, "右上角X：" + DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_RIGHT_BOTTOM).getHorizontalValue());
-//        LogUtil.e(TAG, "右上角Y：" + DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_RIGHT_BOTTOM).getVerticalValue());
-
+        if (!TextUtils.isEmpty(SN)) {
+            isxgimi = true;
+        }
     }
-
 }

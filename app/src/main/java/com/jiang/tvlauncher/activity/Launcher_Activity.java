@@ -217,7 +217,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
             case "update":
                 //检查更新
-                new Update_Servlet(this).execute();
+//                new Update_Servlet(this).execute();
                 new FindChannelList_Servlet(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 //获取主题
                 new Get_Theme_Servlet(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

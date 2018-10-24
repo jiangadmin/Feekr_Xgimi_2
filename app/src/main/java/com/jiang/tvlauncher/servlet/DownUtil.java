@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
-import android.os.IBinder;
 import android.os.RemoteException;
 import android.view.KeyEvent;
 import android.widget.Toast;
@@ -15,8 +14,6 @@ import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.xgimi.business.api.clients.ApiProxyServiceClient;
-import com.xgimi.customservice.IXgimiApiProxyCallback;
-import com.xgimi.customservice.model.AidlCallbackBean;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -77,7 +74,7 @@ public class DownUtil {
                 public void run() {
                     try {
                         // 在子线程中下载APK文件
-                        File file = getFileFromServer(path, fileName, pd);
+                        final File file = getFileFromServer(path, fileName, pd);
                         sleep(1000);
                         // 安装APK文件
                         LogUtil.e(TAG, "文件下载完成" + fileName);
@@ -90,18 +87,20 @@ public class DownUtil {
                             //是极米设备
                             if (MyAppliaction.isxgimi) {
                                 //调用极米静默安装
-                                ApiProxyServiceClient.INSTANCE.silentInstallPackage(file.getPath(), new IXgimiApiProxyCallback() {
+                                ApiProxyServiceClient.INSTANCE.binderAidlService(MyAppliaction.context, new ApiProxyServiceClient.IAidlConnectListener() {
                                     @Override
-                                    public void callback(AidlCallbackBean aidlCallbackBean) {
-
+                                    public void onSuccess() {
+                                        LogUtil.e(TAG, "连接成功");
+                                        ApiProxyServiceClient.INSTANCE.silentInstallPackage(file.getPath(), null);
+                                        //释放资源
+                                        ApiProxyServiceClient.INSTANCE.release();
                                     }
 
                                     @Override
-                                    public IBinder asBinder() {
-                                        return null;
+                                    public void onFailure(RemoteException e) {
+
                                     }
                                 });
-
 
                             } else {
                                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -113,8 +112,7 @@ public class DownUtil {
                         //如果是资源文件
                         if (fileName.contains(".zip")) {
                             LogUtil.e(TAG, "资源文件");
-
-//                            MyAppliaction.apiManager.set("setBootStartPlayer", file.getPath(), null, null, null);
+                            ApiProxyServiceClient.INSTANCE.changeBootAnimation(file.getPath());
                         }
                     } catch (Exception e) {
                         LogUtil.e(TAG, "文件下载失败了" + e.getMessage());
