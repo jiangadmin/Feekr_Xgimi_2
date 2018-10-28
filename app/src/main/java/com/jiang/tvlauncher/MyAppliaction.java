@@ -17,6 +17,9 @@ import com.xgimi.business.api.clients.XgimiDeviceClient;
 import com.xgimi.business.api.projectors.IXgimiProjector;
 import com.xgimi.business.api.projectors.XgimiProjectorFactory;
 
+import java.security.KeyFactory;
+import java.security.KeyStore;
+
 /**
  * Created by  jiang
  * on 2017/7/3.
@@ -77,5 +80,7 @@ public class MyAppliaction extends Application {
         if (!TextUtils.isEmpty(SN)) {
             isxgimi = true;
         }
+
+        LogUtil.e(TAG,""+KeyStore.getDefaultType());
     }
 }

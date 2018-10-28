@@ -19,6 +19,7 @@ import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.servlet.SyncDevZoom_Servlet;
 import com.jiang.tvlauncher.servlet.Update_Servlet;
 import com.jiang.tvlauncher.utils.Tools;
+import com.xgimi.business.api.clients.XgimiDeviceClient;
 import com.xgimi.business.api.enums.EnumSettingsActivity;
 
 /**
@@ -117,12 +118,11 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
                 break;
             //梯形校正
             case R.id.setting_3:
-//                Intent intent = new Intent(Intent.ACTION_MAIN);
-//                intent.addCategory(Intent.CATEGORY_LAUNCHER);
-//                ComponentName cn = new ComponentName("com.android.newsettings", "com.android.newsettings.framesettings.kstActivity");
-//                intent.setComponent(cn);
-                startActivityForResult(new Intent().setAction(EnumSettingsActivity.KeyStoneCorrectionActivity.getActionName()), 7);
-//                startActivity(new Intent(getPackageManager().getLaunchIntentForPackage("com.android.newsettings.framesettings.kstActivity")));
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                ComponentName cn = new ComponentName("com.android.newsettings", "com.android.newsettings.framesettings.kstActivity");
+                intent.setComponent(cn);
+                startActivity(new Intent(intent));
                 break;
             //文件管理
             case R.id.setting_4:

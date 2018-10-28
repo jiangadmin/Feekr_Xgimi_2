@@ -5,12 +5,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.CountDownTimer;
-import android.os.RemoteException;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
-import com.jiang.tvlauncher.activity.Home_Activity;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Point;
@@ -21,10 +19,12 @@ import com.jiang.tvlauncher.utils.HttpUtil;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
+import com.xgimi.business.api.clients.XgimiDeviceClient;
+import com.xgimi.business.api.enums.EnumProjectionMode;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.DoubleSummaryStatistics;
+import java.security.KeyStore;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -99,104 +99,108 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         if (entity.getErrorcode() == 1000) {
             MyAppliaction.TurnOnS = true;
 
+            TurnOnEntity.ResultBean.DevInfoBean devInfoBean = entity.getResult().getDevInfo();
+            TurnOnEntity.ResultBean.LaunchBean launchBean = entity.getResult().getLaunch();
+            TurnOnEntity.ResultBean.ShadowcnfBean shadowcnfBean = entity.getResult().getShadowcnf();
+
             //归零
             num = 0;
 
-            Const.ID = entity.getResult().getDevInfo().getId();
+            Const.ID = devInfoBean.getId();
 
             //存储ID
-            SaveUtils.setString(Save_Key.ID, String.valueOf(entity.getResult().getDevInfo().getId()));
+            SaveUtils.setString(Save_Key.ID, String.valueOf(devInfoBean.getId()));
 
             //存储密码
-            if (entity.getResult().getShadowcnf() != null && entity.getResult().getShadowcnf().getShadowPwd() != null) {
-                SaveUtils.setString(Save_Key.Password, entity.getResult().getShadowcnf().getShadowPwd());
+            if (shadowcnfBean != null && shadowcnfBean.getShadowPwd() != null) {
+                SaveUtils.setString(Save_Key.Password, shadowcnfBean.getShadowPwd());
             } else {
-                SaveUtils.setString(Save_Key.Password, "");
+                SaveUtils.setString(Save_Key.Password, null);
             }
-            //更改开机动画
-            if (entity.getResult().getLaunch() != null)
-                if (!TextUtils.isEmpty(entity.getResult().getLaunch().getMediaUrl())) {
-                    LogUtil.e(TAG, entity.getResult().getLaunch().getMediaUrl());
-                    SaveUtils.setString(Save_Key.BootAn, entity.getResult().getLaunch().getMediaUrl());
+            if (launchBean != null) {
+                //更改开机动画
+                if (!TextUtils.isEmpty(launchBean.getMediaUrl())) {
+                    LogUtil.e(TAG, launchBean.getMediaUrl());
+                    SaveUtils.setString(Save_Key.BootAn, launchBean.getMediaUrl());
                 }
 
-            //方案类型（1=开机，2=屏保，3=互动）
-            if (entity.getResult().getLaunch() != null)
-                if (entity.getResult().getLaunch().getLaunchType() == 1) {
+                //方案类型（1=开机，2=屏保，3=互动）
+                if (launchBean.getLaunchType() == 1) {
                     //非空判断
-                    if (!TextUtils.isEmpty(entity.getResult().getLaunch().getMediaUrl())) {
-                        //图片
-                        if (entity.getResult().getLaunch().getMediaType() == 1) {
-                            SaveUtils.setBoolean(Save_Key.NewImage, true);
-                            SaveUtils.setBoolean(Save_Key.NewVideo, false);
-                            SaveUtils.setString(Save_Key.NewImageUrl, entity.getResult().getLaunch().getMediaUrl());
-                        }
-                        //视频
-                        if (entity.getResult().getLaunch().getMediaType() == 2) {
-                            SaveUtils.setBoolean(Save_Key.NewVideo, true);
-                            SaveUtils.setBoolean(Save_Key.NewImage, false);
-                            SaveUtils.setString(Save_Key.NewVideoUrl, entity.getResult().getLaunch().getMediaUrl());
+                    if (!TextUtils.isEmpty(launchBean.getMediaUrl())) {
+                        switch (launchBean.getMediaType()) {
+                            //图片
+                            case 1:
+                                SaveUtils.setBoolean(Save_Key.NewImage, true);
+                                SaveUtils.setBoolean(Save_Key.NewVideo, false);
+                                SaveUtils.setString(Save_Key.NewImageUrl, launchBean.getMediaUrl());
+                                break;
+                            //视频
+                            case 2:
+                                SaveUtils.setBoolean(Save_Key.NewVideo, true);
+                                SaveUtils.setBoolean(Save_Key.NewImage, false);
+                                SaveUtils.setString(Save_Key.NewVideoUrl, launchBean.getMediaUrl());
+                                break;
                         }
                     }
                 }
+            }
 
-            String s = entity.getResult().getDevInfo().getZoomVal();
+            String s = devInfoBean.getZoomVal();
             LogUtil.e(TAG, "梯形数据:" + s);
 
-            try {
+            if (shadowcnfBean != null) {
+                //心跳时间
+                SaveUtils.setInt(Save_Key.Timming, shadowcnfBean.getMonitRate());
 
-                //初始化设备名称
-//                MyAppliaction.apiManager.set("setDeviceName", entity.getResult().getDevInfo().getModelNum(), null, null, null);
+                //上电开机开关
+                if (shadowcnfBean.getPowerFlag() == 1) {
+                    //上电开机
+                    XgimiDeviceClient.setDirectBoot(shadowcnfBean.getPowerTurn() == 1);
+                }
 
-                //初始化上电开机
-                if (entity.getResult().getShadowcnf() != null) {
-
-                    //投影方式开关
-                    if (entity.getResult().getShadowcnf().getProjectModeFlag() == 1) {
-//                        MyAppliaction.apiManager.set("setProjectionMode", String.valueOf(entity.getResult().getShadowcnf().getProjectMode()), null, null, null);
-                    }
-
-                    //上电开机开关
-                    if (entity.getResult().getShadowcnf().getPowerFlag() == 1) {
-                        //上电开机
-                        if (entity.getResult().getShadowcnf().getPowerTurn() == 1) {
-//                            MyAppliaction.apiManager.set("setPowerOnStart", "true", null, null, null);
-
-                        } else {
-//                            MyAppliaction.apiManager.set("setPowerOnStart", "false", null, null, null);
-                        }
-                    }
-
-                    //梯形校正开关
-                    if (entity.getResult().getShadowcnf().getZoomFlag() == 1) {
-                        //初始化梯形数据
-                        Point point = new Gson().fromJson(s, Point.class);
-                        for (int i = 0; i < point.getPoint().size(); i++) {
-//                            MyAppliaction.apiManager.set("setKeyStoneByPoint", point.getPoint().get(i).getIdx(), point.getPoint().get(i).getCurrent_x(), point.getPoint().get(i).getCurrent_y(), null);
-                        }
+                //投影方式开关
+                if (shadowcnfBean.getProjectModeFlag() == 1) {
+                    switch (shadowcnfBean.getProjectMode()){
+                        case 0:
+                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Mirror);   //吊装正投
+                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Normal);   //正装正投
+                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Mirror); //吊装背投
+                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Normal); //正装背投
+                            break;
+                        case 1:
+                            break;
                     }
                 }
-            } catch (Exception e) {
-                LogUtil.e(TAG, e.getMessage());
+
+                //梯形校正开关
+                if (shadowcnfBean.getZoomFlag() == 1) {
+                    //初始化梯形数据
+                    Point point = new Gson().fromJson(s, Point.class);
+                    for (int i = 0; i < point.getPoint().size(); i++) {
+//                            MyAppliaction.apiManager.set("setKeyStoneByPoint", point.getPoint().get(i).getIdx(), point.getPoint().get(i).getCurrent_x(), point.getPoint().get(i).getCurrent_y(), null);
+
+                    }
+                }
+
+
             }
 
-            //存储间隔时间
-            if (entity.getResult().getShadowcnf() != null)
-                SaveUtils.setInt(Save_Key.Timming, entity.getResult().getShadowcnf().getMonitRate());
+
 
             //启动定时服务
             context.startService(new Intent(context, TimingService.class));
 
             //判断是否是有线连接 & 服务启用同步数据
-            if (Tools.isLineConnected() && entity.getResult().getShadowcnf() != null
-                    && entity.getResult().getShadowcnf().getHotPointFlag() == 1) {
-                if (entity.getResult().getShadowcnf().getHotPoint() == 1
-                        && entity.getResult().getShadowcnf().getWifi() != null
-                        && entity.getResult().getShadowcnf().getWifiPassword() != null) {                //开启热点
+            if (Tools.isLineConnected() && shadowcnfBean != null
+                    && shadowcnfBean.getHotPointFlag() == 1) {
+                if (shadowcnfBean.getHotPoint() == 1
+                        && shadowcnfBean.getWifi() != null
+                        && shadowcnfBean.getWifiPassword() != null) {                //开启热点
 
                     //获取热点名称&热点密码
-                    String SSID = entity.getResult().getShadowcnf().getWifi();
-                    String APPWD = entity.getResult().getShadowcnf().getWifiPassword();
+                    String SSID = shadowcnfBean.getWifi();
+                    String APPWD = shadowcnfBean.getWifiPassword();
 
                     //存储热点名称&密码
                     SaveUtils.setString(Save_Key.WiFiName, SSID);
@@ -206,6 +210,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
                     //打开并设置热点信息.注意热点密码8-32位，只限制了英文密码位数。
                     //使用极米开启/关闭热点接口
+
 //                    try {
 //                        String s1 = MyAppliaction.apiManager.set("setOpenWifiAp", SSID, APPWD, null, null);
 //                        if (!TextUtils.isEmpty(s1) && Boolean.valueOf(s1.toLowerCase())) {
@@ -214,7 +219,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 //                    } catch (RemoteException e) {
 //                        e.printStackTrace();
 //                    }
-                } else if (entity.getResult().getShadowcnf().getHotPoint() == 0) {            //关闭热点
+                } else if (shadowcnfBean.getHotPoint() == 0) {            //关闭热点
 //                    try {
 //                        MyAppliaction.apiManager.set("setCloseWifiAp", null, null, null, null);
 //                    } catch (RemoteException e) {
@@ -243,9 +248,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
         switch (entity.getErrorcode()) {
             case 1000:
-
                 EventBus.getDefault().post("update");
-
                 break;
         }
 
