@@ -29,7 +29,7 @@ public class VIPCallBack_Servlet extends AsyncTask<VIPCallBack_Servlet.TencentVi
         Map map = new HashMap();
         map.put("vuid", Const.ktcp_vuid);
         map.put("vtoken", Const.ktcp_vtoken);
-        map.put("serialNum", MyAppliaction.ID);
+        map.put("serialNum", MyAppliaction.SN);
         map.put("code", vip.getCode());
         map.put("msg", vip.getMsg());
         map.put("eventId", vip.getEventId());

@@ -10,6 +10,9 @@ public class Save_Key {
     public static final String TipContents = "TipContents";
     public static final String TipShowFlag = "TipShowFlag";
     public static final String TipSwitchRate = "TipSwitchRate";
+    public static final String ConsoleShowFlag = "ConsoleShowFlag" ;
+    public static final String CnameShowFlag = "CnameShowFlag";
+    public static final String StartLgeekFlag = "StartLgeekFlag";
     public static String ID = "ID";
     public static String turnType = "turnType";
     public static String modelNum = "modelNum";

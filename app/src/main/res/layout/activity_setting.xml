@@ -55,18 +55,17 @@
             android:orientation="vertical">
 
             <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_marginBottom="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_setting_bluetooth" />
+                android:src="@drawable/lgeek" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/setting_2"
+                android:text="逻辑科技"
                 android:textColor="@color/white"
                 android:textSize="26sp" />
-
         </LinearLayout>
 
         <ImageView

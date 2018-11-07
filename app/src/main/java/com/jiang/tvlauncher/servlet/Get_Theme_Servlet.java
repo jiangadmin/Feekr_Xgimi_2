@@ -1,20 +1,17 @@
 package com.jiang.tvlauncher.servlet;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
-import com.jiang.tvlauncher.activity.Launcher_Activity;
 import com.jiang.tvlauncher.dialog.Loading;
-import com.jiang.tvlauncher.entity.BaseEntity;
 import com.jiang.tvlauncher.entity.Const;
-import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.entity.Theme_Entity;
 import com.jiang.tvlauncher.utils.HttpUtil;
 import com.jiang.tvlauncher.utils.LogUtil;
-import com.jiang.tvlauncher.utils.SaveUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,11 +26,6 @@ import java.util.Map;
 public class Get_Theme_Servlet extends AsyncTask<String, Integer, Theme_Entity> {
     private static final String TAG = "Get_Theme_Servlet";
 
-    Activity activity;
-
-    public Get_Theme_Servlet(Activity activity) {
-        this.activity = activity;
-    }
 
     @Override
     protected Theme_Entity doInBackground(String... strings) {
@@ -71,9 +63,8 @@ public class Get_Theme_Servlet extends AsyncTask<String, Integer, Theme_Entity> 
 
         switch (entity.getErrorcode()) {
             case 1000:
-                if (activity instanceof Launcher_Activity){
-                    ((Launcher_Activity)activity).Callback(entity.getResult());
-                }
+                EventBus.getDefault().post(entity.getResult());
+
                 break;
             default:
                 break;

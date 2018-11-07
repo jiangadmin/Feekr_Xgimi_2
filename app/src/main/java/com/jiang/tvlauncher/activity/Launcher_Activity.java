@@ -41,6 +41,7 @@ import com.jiang.tvlauncher.servlet.DownUtil;
 import com.jiang.tvlauncher.servlet.FindChannelList_Servlet;
 import com.jiang.tvlauncher.servlet.GetVIP_Servlet;
 import com.jiang.tvlauncher.servlet.Get_Theme_Servlet;
+import com.jiang.tvlauncher.servlet.Update_Servlet;
 import com.jiang.tvlauncher.utils.AnimUtils;
 import com.jiang.tvlauncher.utils.FileUtils;
 import com.jiang.tvlauncher.utils.ImageUtils;
@@ -48,13 +49,12 @@ import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.ShellUtils;
 import com.jiang.tvlauncher.utils.Tools;
-import com.jiang.tvlauncher.utils.WifiApUtils;
 import com.jiang.tvlauncher.view.TitleView;
+import com.lgeek.tv.jimi.LgeekTVSdkMrg;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -87,10 +87,12 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     TitleView titleview;
 
     ImageView home1, home2, home3, home4;
+    TextView name1, name2, name3, name4;
 
     TextView ver;
 
     List<ImageView> homelist = new ArrayList<>();
+    List<TextView> namelist = new ArrayList<>();
     List<Integer> hometype = new ArrayList<>();
 
     boolean toolbar_show = false;
@@ -134,7 +136,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
         //首先显示本地资源
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.Channe))) {
-            updateshow(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
+            onMessage(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
         }
 
         //加载本地上一次主题方案
@@ -166,6 +168,25 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         if (SaveUtils.getInt(Save_Key.TipShowFlag) != -1) {
             title_view.setVisibility(SaveUtils.getInt(Save_Key.TipShowFlag) == 1 ? View.VISIBLE : View.GONE);
         }
+
+        //读取本地控制台是否显示
+        if (SaveUtils.getInt(Save_Key.ConsoleShowFlag) != -1) {
+            setting.setVisibility(SaveUtils.getInt(Save_Key.ConsoleShowFlag) == 1 ? View.VISIBLE : View.GONE);
+        }
+
+        //读取本地栏目名是否显示
+        if (SaveUtils.getInt(Save_Key.CnameShowFlag) != -1) {
+            name1.setVisibility(SaveUtils.getInt(Save_Key.CnameShowFlag) == 1 ? View.VISIBLE : View.GONE);
+            name2.setVisibility(SaveUtils.getInt(Save_Key.CnameShowFlag) == 1 ? View.VISIBLE : View.GONE);
+            name3.setVisibility(SaveUtils.getInt(Save_Key.CnameShowFlag) == 1 ? View.VISIBLE : View.GONE);
+            name4.setVisibility(SaveUtils.getInt(Save_Key.CnameShowFlag) == 1 ? View.VISIBLE : View.GONE);
+        }
+
+        //读取本地 是否初始化逻辑科技
+        if (SaveUtils.getInt(Save_Key.StartLgeekFlag) == 1) {
+            LgeekTVSdkMrg.getInstance().init(MyAppliaction.context);
+        }
+
         //读取本地标题
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.TipContents))) {
             title_list = null;
@@ -179,7 +200,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         }
 
     }
-
 
     @Override
     protected void onDestroy() {
@@ -201,9 +221,14 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         title_2.setBackground(new BitmapDrawable(getResources(), ImageUtils.tintBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.kuang_2), Color.parseColor(color))));
         title_icon.setBackground(new BitmapDrawable(getResources(), ImageUtils.tintBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.round), Color.parseColor(color))));
 
+        name1.setTextColor(Color.parseColor(color));
+        name2.setTextColor(Color.parseColor(color));
+        name3.setTextColor(Color.parseColor(color));
+        name4.setTextColor(Color.parseColor(color));
+
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN_ORDERED)
+    @Subscribe
     public void onMessage(String showwarn) {
         switch (showwarn) {
             case "0":
@@ -220,10 +245,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
             case "update":
                 //检查更新
-//                new Update_Servlet(this).execute();
-                new FindChannelList_Servlet(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                new Update_Servlet(this).execute();
+
+                new FindChannelList_Servlet().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 //获取主题
-                new Get_Theme_Servlet(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                new Get_Theme_Servlet().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 break;
             default:
                 break;
@@ -245,6 +271,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         home3 = findViewById(R.id.home_3);
         home4 = findViewById(R.id.home_4);
 
+        name1 = findViewById(R.id.home_1_name);
+        name2 = findViewById(R.id.home_2_name);
+        name3 = findViewById(R.id.home_3_name);
+        name4 = findViewById(R.id.home_4_name);
+
         toolbar_view = findViewById(R.id.toolbar_view);
         back = findViewById(R.id.back);
         wifiap = findViewById(R.id.wifiap);
@@ -265,6 +296,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         homelist.add(home2);
         homelist.add(home3);
         homelist.add(home4);
+
+        namelist.add(name1);
+        namelist.add(name2);
+        namelist.add(name3);
+        namelist.add(name4);
 
         imageView = findViewById(R.id.image);
         videoView = findViewById(R.id.video);
@@ -338,18 +374,10 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     boolean showToast = true;
     long[] mHits = new long[7];
 
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        if (WifiApUtils.getInstance(this).checkWifiApStatus())
-            wifiap.setVisibility(View.VISIBLE);
-        else
-            wifiap.setVisibility(View.GONE);
-
         switch (keyCode) {
-            case KeyEvent.ACTION_DOWN:
-
-                return true;
             case KeyEvent.KEYCODE_MENU:
                 System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);// 数组向左移位操作
                 mHits[mHits.length - 1] = SystemClock.uptimeMillis();
@@ -395,7 +423,8 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      *
      * @param bean
      */
-    public void Callback(Theme_Entity.ResultBean bean) {
+    @Subscribe
+    public void onMessage(Theme_Entity.ResultBean bean) {
         if (bean != null) {
             //赋值背景 前景显示
             Glide.with(this).load(bean.getBgImg()).into(main_bg);
@@ -430,15 +459,34 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             title_view.setVisibility(bean.getTipShowFlag() == 1 ? View.VISIBLE : View.GONE);
             SaveUtils.setInt(Save_Key.TipShowFlag, bean.getTipShowFlag());
 
+            //是否显示控制台
+            setting.setVisibility(bean.getConsoleShowFlag() == 1 ? View.VISIBLE : View.GONE);
+            SaveUtils.setInt(Save_Key.ConsoleShowFlag, bean.getConsoleShowFlag());
+
+            //是否初始化逻辑科技
+            if (bean.getStartLgeekFlag() == 1) {
+                LgeekTVSdkMrg.getInstance().init(MyAppliaction.context);
+            }
+            SaveUtils.setInt(Save_Key.StartLgeekFlag, bean.getStartLgeekFlag());
+
+            //是否显示栏目名
+            name1.setVisibility(bean.getCnameShowFlag() == 1 ? View.VISIBLE : View.GONE);
+            name2.setVisibility(bean.getCnameShowFlag() == 1 ? View.VISIBLE : View.GONE);
+            name3.setVisibility(bean.getCnameShowFlag() == 1 ? View.VISIBLE : View.GONE);
+            name4.setVisibility(bean.getCnameShowFlag() == 1 ? View.VISIBLE : View.GONE);
+            SaveUtils.setInt(Save_Key.CnameShowFlag, bean.getCnameShowFlag());
+
             //是否启动逻辑科技服务
 
             //标题轮询时间
             int title_time = bean.getTipSwitchRate();
             SaveUtils.setInt(Save_Key.TipSwitchRate, bean.getTipSwitchRate());
-            title.setText(title_list[0]);
+            if (title_list != null && title_list.length > 0) {
+                title.setText(title_list[0]);
+            }
 
             //倒计时
-            if (title_list.length > 1) {
+            if (title_list != null && title_list.length > 1) {
                 if (titleTime != null)
                     titleTime.cancel();
                 titleTime = null;
@@ -455,9 +503,9 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      *
      * @param channelList
      */
-    public void updateshow(FindChannelList channelList) {
+    @Subscribe
+    public void onMessage(FindChannelList channelList) {
         this.channelList = channelList;
-
 
         //更改开机动画
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.BootAn))) {
@@ -481,7 +529,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 //图片文件名
                 String filename = Tools.getFileNameWithSuffix(channelList.getResult().get(i).getBgUrl());
                 //设置栏目名称
-//                namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
+                namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
                 //加载图片 优先本地
                 Picasso.with(this).load(url).placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i))))).into(homelist.get(i));
 

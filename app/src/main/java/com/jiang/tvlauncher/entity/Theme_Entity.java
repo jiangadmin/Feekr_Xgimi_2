@@ -9,9 +9,10 @@ package com.jiang.tvlauncher.entity;
  */
 public class Theme_Entity extends BaseEntity {
 
+
     /**
      * errorcode : 1000
-     * result : {"bgImg":"http://pa5am0bdt.bkt.clouddn.com/086E87BFB8780B07B24C1E1E6E131A0C.png","createAuthor":"系统管理员","createTime":"2018-10-13 20:20:56","id":2,"isDefault":1,"isDelete":0,"micLogoColor":"#091df0","remark":"","startLgeekFlag":1,"status":1,"themeName":"默认","tipContents":"尝试说：哪里有好玩的#试试说出你想看的电影吧#想去哪里玩，尝试说哪里好玩","tipFontColor":"#0317f5","tipShowFlag":1,"tipSwitchRate":7,"updateAuthor":"系统管理员","updateTime":"2018-10-13 20:20:56"}
+     * result : {"bgImg":"http://pa5am0bdt.bkt.clouddn.com/4CE070D95CE7FA92EC150A3976DAF59D.jpg","cnameShowFlag":0,"consoleShowFlag":0,"createAuthor":"系统管理员","createTime":"2018-10-13 19:34:07","id":1,"isDefault":1,"isDelete":0,"lgeekActName":"","lgeekPagName":"","micLogoColor":"#13278a","remark":"","startLgeekFlag":0,"status":1,"themeName":"默认","tipContents":"测试#测试2#测试3","tipFontColor":"#12e619","tipShowFlag":0,"tipSwitchRate":7,"updateAuthor":"系统管理员","updateTime":"2018-11-03 22:45:38"}
      */
 
     private ResultBean result;
@@ -26,31 +27,39 @@ public class Theme_Entity extends BaseEntity {
 
     public static class ResultBean {
         /**
-         * bgImg : http://pa5am0bdt.bkt.clouddn.com/086E87BFB8780B07B24C1E1E6E131A0C.png
+         * bgImg : http://pa5am0bdt.bkt.clouddn.com/4CE070D95CE7FA92EC150A3976DAF59D.jpg
+         * cnameShowFlag : 0
+         * consoleShowFlag : 0
          * createAuthor : 系统管理员
-         * createTime : 2018-10-13 20:20:56
-         * id : 2
+         * createTime : 2018-10-13 19:34:07
+         * id : 1
          * isDefault : 1
          * isDelete : 0
-         * micLogoColor : #091df0
+         * lgeekActName :
+         * lgeekPagName :
+         * micLogoColor : #13278a
          * remark :
-         * startLgeekFlag : 1
+         * startLgeekFlag : 0
          * status : 1
          * themeName : 默认
-         * tipContents : 尝试说：哪里有好玩的#试试说出你想看的电影吧#想去哪里玩，尝试说哪里好玩
-         * tipFontColor : #0317f5
-         * tipShowFlag : 1
+         * tipContents : 测试#测试2#测试3
+         * tipFontColor : #12e619
+         * tipShowFlag : 0
          * tipSwitchRate : 7
          * updateAuthor : 系统管理员
-         * updateTime : 2018-10-13 20:20:56
+         * updateTime : 2018-11-03 22:45:38
          */
 
         private String bgImg;
+        private int cnameShowFlag;
+        private int consoleShowFlag;
         private String createAuthor;
         private String createTime;
         private int id;
         private int isDefault;
         private int isDelete;
+        private String lgeekActName;
+        private String lgeekPagName;
         private String micLogoColor;
         private String remark;
         private int startLgeekFlag;
@@ -69,6 +78,22 @@ public class Theme_Entity extends BaseEntity {
 
         public void setBgImg(String bgImg) {
             this.bgImg = bgImg;
+        }
+
+        public int getCnameShowFlag() {
+            return cnameShowFlag;
+        }
+
+        public void setCnameShowFlag(int cnameShowFlag) {
+            this.cnameShowFlag = cnameShowFlag;
+        }
+
+        public int getConsoleShowFlag() {
+            return consoleShowFlag;
+        }
+
+        public void setConsoleShowFlag(int consoleShowFlag) {
+            this.consoleShowFlag = consoleShowFlag;
         }
 
         public String getCreateAuthor() {
@@ -109,6 +134,22 @@ public class Theme_Entity extends BaseEntity {
 
         public void setIsDelete(int isDelete) {
             this.isDelete = isDelete;
+        }
+
+        public String getLgeekActName() {
+            return lgeekActName;
+        }
+
+        public void setLgeekActName(String lgeekActName) {
+            this.lgeekActName = lgeekActName;
+        }
+
+        public String getLgeekPagName() {
+            return lgeekPagName;
+        }
+
+        public void setLgeekPagName(String lgeekPagName) {
+            this.lgeekPagName = lgeekPagName;
         }
 
         public String getMicLogoColor() {

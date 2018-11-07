@@ -13,7 +13,6 @@
         tools:ignore="MissingConstraints" />
 
     <ImageView
-
         android:id="@+id/main_bg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,13 +24,13 @@
         android:layout_height="42dp" />
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/title_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="72dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -148,6 +147,62 @@
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="ContentDescription,MissingConstraints" />
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/home_1_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="home1"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/home_1"
+        app:layout_constraintStart_toStartOf="@+id/home_1"
+        app:layout_constraintTop_toBottomOf="@+id/home_1" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/home_2_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="home2"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/home_2"
+        app:layout_constraintStart_toStartOf="@+id/home_2"
+        app:layout_constraintTop_toBottomOf="@+id/home_2" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/home_3_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="home3"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/home_3"
+        app:layout_constraintStart_toStartOf="@+id/home_3"
+        app:layout_constraintTop_toBottomOf="@+id/home_3" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/home_4_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="home4"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/home_4"
+        app:layout_constraintStart_toStartOf="@+id/home_4"
+        app:layout_constraintTop_toBottomOf="@+id/home_4" />
+
     <!--顶部控制-->
     <RelativeLayout
         android:id="@+id/toolbar_view"
@@ -199,6 +254,7 @@
                 android:text="WIFI"
                 android:textColor="@color/gray"
                 android:textSize="18sp" />
+
         </LinearLayout>
 
         <!--控制台-->

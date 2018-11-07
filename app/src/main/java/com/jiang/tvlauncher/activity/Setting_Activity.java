@@ -19,6 +19,7 @@ import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.servlet.SyncDevZoom_Servlet;
 import com.jiang.tvlauncher.servlet.Update_Servlet;
 import com.jiang.tvlauncher.utils.Tools;
+import com.lgeek.tv.jimi.LgeekTVSdkMrg;
 import com.xgimi.business.api.clients.XgimiDeviceClient;
 import com.xgimi.business.api.enums.EnumSettingsActivity;
 
@@ -114,7 +115,8 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
                 break;
             //蓝牙设置
             case R.id.setting_2:
-                startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS  ));
+                LgeekTVSdkMrg.getInstance().init(this);
+                LgeekTVSdkMrg.getInstance().openSettings();
                 break;
             //梯形校正
             case R.id.setting_3:

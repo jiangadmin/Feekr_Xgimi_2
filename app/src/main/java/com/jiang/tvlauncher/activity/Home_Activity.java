@@ -150,7 +150,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
             case "update":
                 //检查更新
                 new Update_Servlet(this).execute();
-                new FindChannelList_Servlet(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                new FindChannelList_Servlet().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
                 break;
             default:

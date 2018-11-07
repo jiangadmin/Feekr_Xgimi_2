@@ -183,10 +183,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                     }
                 }
 
-
             }
-
-
 
             //启动定时服务
             context.startService(new Intent(context, TimingService.class));

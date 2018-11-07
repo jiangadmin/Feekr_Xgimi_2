@@ -22,8 +22,8 @@ android {
         applicationId "com.jiang.tvlauncher"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 202
-        versionName "2.0.2"
+        versionCode 201
+        versionName "2.0.1"
         signingConfig signingConfigs.jiang
 
         ndk {
@@ -39,6 +39,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.jiang
         }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
     }
 }
 
@@ -66,4 +73,5 @@ dependencies {
     implementation 'jp.wasabeef:glide-transformations:2.0.2'
     //极米
     implementation(name: 'com.xgimi.business.api_v2.0.4_15', ext: 'aar')
+    implementation files('libs/lgeek_jimi_sdk_V1.0.0.jar')
 }
