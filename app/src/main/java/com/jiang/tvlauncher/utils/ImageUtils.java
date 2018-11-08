@@ -260,7 +260,16 @@ public class ImageUtils {
     public static Bitmap getBitmap(File file) {
         Bitmap resizeBmp = null;
         try {
-            resizeBmp = BitmapFactory.decodeFile(file.getPath());
+//            resizeBmp = BitmapFactory.decodeFile(file.getPath());
+
+            BitmapFactory.Options opt = new BitmapFactory.Options();
+            opt.inPreferredConfig = Bitmap.Config.RGB_565;
+            opt.inPurgeable = true;
+            opt.inInputShareable = true;
+            //获取资源图片
+            InputStream is = new FileInputStream(file);
+            resizeBmp = BitmapFactory.decodeStream(is, null, opt);
+
         } catch (Exception e) {
             e.printStackTrace();
             LogUtil.e(TAG, e.getMessage());
@@ -1377,6 +1386,7 @@ public class ImageUtils {
 
     /**
      * 动态修改图片颜色 纯色
+     *
      * @param inBitmap
      * @param tintColor
      * @return

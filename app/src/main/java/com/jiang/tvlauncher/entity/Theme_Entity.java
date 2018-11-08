@@ -9,7 +9,6 @@ package com.jiang.tvlauncher.entity;
  */
 public class Theme_Entity extends BaseEntity {
 
-
     /**
      * errorcode : 1000
      * result : {"bgImg":"http://pa5am0bdt.bkt.clouddn.com/4CE070D95CE7FA92EC150A3976DAF59D.jpg","cnameShowFlag":0,"consoleShowFlag":0,"createAuthor":"系统管理员","createTime":"2018-10-13 19:34:07","id":1,"isDefault":1,"isDelete":0,"lgeekActName":"","lgeekPagName":"","micLogoColor":"#13278a","remark":"","startLgeekFlag":0,"status":1,"themeName":"默认","tipContents":"测试#测试2#测试3","tipFontColor":"#12e619","tipShowFlag":0,"tipSwitchRate":7,"updateAuthor":"系统管理员","updateTime":"2018-11-03 22:45:38"}

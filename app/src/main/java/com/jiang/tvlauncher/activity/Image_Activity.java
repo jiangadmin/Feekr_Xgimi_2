@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.entity.Save_Key;
@@ -18,7 +19,6 @@ import com.jiang.tvlauncher.utils.ImageUtils;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
@@ -59,12 +59,12 @@ public class Image_Activity extends Base_Activity {
         if (Tools.isNetworkConnected()) {
             imageurl = getIntent().getStringExtra(URL);
             imagename = Tools.getFileNameWithSuffix(getIntent().getStringExtra(URL));
-            if (TextUtils.isEmpty(imageurl)){
+            if (TextUtils.isEmpty(imageurl)) {
                 finish();
                 return;
             }
             //加载网络图片
-            Picasso.with(this).load(imageurl).into(imageView);
+            Glide.with(this).load(imageurl).into(imageView);
             SaveUtils.setString(Save_Key.NewImageName, imagename);
 
             //检查本地图片是否存在

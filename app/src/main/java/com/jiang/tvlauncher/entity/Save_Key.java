@@ -13,6 +13,7 @@ public class Save_Key {
     public static final String ConsoleShowFlag = "ConsoleShowFlag" ;
     public static final String CnameShowFlag = "CnameShowFlag";
     public static final String StartLgeekFlag = "StartLgeekFlag";
+    public static final String Theme = "Theme";
     public static String ID = "ID";
     public static String turnType = "turnType";
     public static String modelNum = "modelNum";

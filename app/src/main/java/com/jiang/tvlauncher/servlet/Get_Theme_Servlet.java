@@ -7,9 +7,11 @@ import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
+import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.entity.Theme_Entity;
 import com.jiang.tvlauncher.utils.HttpUtil;
 import com.jiang.tvlauncher.utils.LogUtil;
+import com.jiang.tvlauncher.utils.SaveUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -26,6 +28,7 @@ import java.util.Map;
 public class Get_Theme_Servlet extends AsyncTask<String, Integer, Theme_Entity> {
     private static final String TAG = "Get_Theme_Servlet";
 
+    String res;
 
     @Override
     protected Theme_Entity doInBackground(String... strings) {
@@ -34,7 +37,7 @@ public class Get_Theme_Servlet extends AsyncTask<String, Integer, Theme_Entity> 
         map.put("serialNum", MyAppliaction.SN);
         map.put("devType", "1");
 
-        String res = HttpUtil.doPost(Const.URL + "cms/themeController/findLauncherTheme.do", map);
+        res = HttpUtil.doPost(Const.URL + "cms/themeController/findLauncherTheme.do", map);
 
         Theme_Entity entity;
 
@@ -63,8 +66,8 @@ public class Get_Theme_Servlet extends AsyncTask<String, Integer, Theme_Entity> 
 
         switch (entity.getErrorcode()) {
             case 1000:
-                EventBus.getDefault().post(entity.getResult());
-
+                SaveUtils.setString(Save_Key.Theme, res);
+                EventBus.getDefault().post(entity);
                 break;
             default:
                 break;

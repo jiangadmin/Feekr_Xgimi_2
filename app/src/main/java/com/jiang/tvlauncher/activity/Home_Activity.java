@@ -1,5 +1,6 @@
 package com.jiang.tvlauncher.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +24,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.R;
@@ -46,7 +50,6 @@ import com.jiang.tvlauncher.utils.ShellUtils;
 import com.jiang.tvlauncher.utils.Tools;
 import com.jiang.tvlauncher.utils.WifiApUtils;
 import com.jiang.tvlauncher.view.TitleView;
-import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -228,7 +231,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         if (SaveUtils.getBoolean(Save_Key.NewImage)) {
             LogUtil.e(TAG, "有图片");
             imageView.setVisibility(View.VISIBLE);
-            Picasso.with(this).load(SaveUtils.getString(Save_Key.NewImageUrl)).into(imageView);
+            Glide.with(this).load(SaveUtils.getString(Save_Key.NewImageUrl)).into(imageView);
             timeCount = new TimeCount(5000, 1000);
             timeCount.start();
         }
@@ -314,8 +317,8 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         super.onResume();
 
         if (toolbar_show) {
-            AnimUtils.Y( toolbar_view, 0, -42);
-            AnimUtils.Y( titleview, -42, 0);
+            AnimUtils.Y(toolbar_view, 0, -42);
+            AnimUtils.Y(titleview, -42, 0);
             toolbar_view.setVisibility(View.GONE);
             toolbar_show = false;
         }
@@ -324,8 +327,10 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     /**
      * 更新页面
+     *
      * @param channelList
      */
+    @SuppressLint("CheckResult")
     public void updateshow(FindChannelList channelList) {
         this.channelList = channelList;
         String file = Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/";
@@ -354,7 +359,14 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 //设置栏目名称
                 namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
                 //加载图片 优先本地
-                Picasso.with(this).load(url).placeholder(new BitmapDrawable(ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i))))).into(homebglist.get(i));
+                //加载图片 优先本地
+                RequestOptions options = new RequestOptions();
+                options.placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i)))));
+                options.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i)))));
+                options.skipMemoryCache(false);
+                options.diskCacheStrategy(DiskCacheStrategy.ALL);
+                Glide.with(this).load(url).apply(options).into(homebglist.get(i));
+
 
                 hometype.add(channelList.getResult().get(i).getContentType());
 
@@ -414,6 +426,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     /**
      * 启动栏目
+     *
      * @param i
      */
     public void open(int i) {

@@ -1,5 +1,6 @@
 package com.jiang.tvlauncher.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +27,8 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
 import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.R;
@@ -51,7 +54,6 @@ import com.jiang.tvlauncher.utils.ShellUtils;
 import com.jiang.tvlauncher.utils.Tools;
 import com.jiang.tvlauncher.view.TitleView;
 import com.lgeek.tv.jimi.LgeekTVSdkMrg;
-import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -138,65 +140,9 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.Channe))) {
             onMessage(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
         }
-
-        //加载本地上一次主题方案
-        local_theme();
-
-    }
-
-    /**
-     * 本地资源主题
-     */
-    private void local_theme() {
-
-        //判断图片文件是否存在
-        if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.BackGround)) && !FileUtils.checkFileExists(SaveUtils.getString(Save_Key.BackGround))) {
-            //赋值背景 前景显示
-            Glide.with(this).load(new File(file + SaveUtils.getString(Save_Key.BackGround))).into(main_bg);
-            //赋值背景 背景高斯模糊
-            Glide.with(this).load(new File(file + SaveUtils.getString(Save_Key.BackGround))).into(main_bg_0);
-        }
-        //读取本地标题颜色
-        if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.TipFontColor))) {
-            title.setTextColor(Color.parseColor(SaveUtils.getString(Save_Key.TipFontColor)));
-        }
-        //读取本地标题框颜色
-        if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.MicLogoColor))) {
-            title_color(SaveUtils.getString(Save_Key.MicLogoColor));
-        }
-        //读取本地标题是否显示
-        if (SaveUtils.getInt(Save_Key.TipShowFlag) != -1) {
-            title_view.setVisibility(SaveUtils.getInt(Save_Key.TipShowFlag) == 1 ? View.VISIBLE : View.GONE);
-        }
-
-        //读取本地控制台是否显示
-        if (SaveUtils.getInt(Save_Key.ConsoleShowFlag) != -1) {
-            setting.setVisibility(SaveUtils.getInt(Save_Key.ConsoleShowFlag) == 1 ? View.VISIBLE : View.GONE);
-        }
-
-        //读取本地栏目名是否显示
-        if (SaveUtils.getInt(Save_Key.CnameShowFlag) != -1) {
-            name1.setVisibility(SaveUtils.getInt(Save_Key.CnameShowFlag) == 1 ? View.VISIBLE : View.GONE);
-            name2.setVisibility(SaveUtils.getInt(Save_Key.CnameShowFlag) == 1 ? View.VISIBLE : View.GONE);
-            name3.setVisibility(SaveUtils.getInt(Save_Key.CnameShowFlag) == 1 ? View.VISIBLE : View.GONE);
-            name4.setVisibility(SaveUtils.getInt(Save_Key.CnameShowFlag) == 1 ? View.VISIBLE : View.GONE);
-        }
-
-        //读取本地 是否初始化逻辑科技
-        if (SaveUtils.getInt(Save_Key.StartLgeekFlag) == 1) {
-            LgeekTVSdkMrg.getInstance().init(MyAppliaction.context);
-        }
-
-        //读取本地标题
-        if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.TipContents))) {
-            title_list = null;
-            title_list = SaveUtils.getString(Save_Key.TipContents).split("#");
-            title.setText(title_list[0]);
-        }
-        //读取本地轮询时间
-        if (SaveUtils.getInt(Save_Key.TipSwitchRate) != -1) {
-            titleTime = new TitleTime(SaveUtils.getInt(Save_Key.TipSwitchRate), SaveUtils.getInt(Save_Key.TipSwitchRate));
-            titleTime.start();
+        //首先显示本地资源
+        if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.Theme))) {
+            onMessage(new Gson().fromJson(SaveUtils.getString(Save_Key.Theme), Theme_Entity.class));
         }
 
     }
@@ -309,7 +255,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         if (SaveUtils.getBoolean(Save_Key.NewImage)) {
             LogUtil.e(TAG, "有图片");
             imageView.setVisibility(View.VISIBLE);
-            Picasso.with(this).load(SaveUtils.getString(Save_Key.NewImageUrl)).into(imageView);
+            Glide.with(this).load(SaveUtils.getString(Save_Key.NewImageUrl)).into(imageView);
             timeCount = new TimeCount(5000, 1000);
             timeCount.start();
         }
@@ -370,10 +316,8 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         return;
     }
 
-
     boolean showToast = true;
     long[] mHits = new long[7];
-
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -417,19 +361,25 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
     }
 
-
     /**
      * 主题返回 网络正常情况下
      *
-     * @param bean
+     * @param entity
      */
+    @SuppressLint("CheckResult")
     @Subscribe
-    public void onMessage(Theme_Entity.ResultBean bean) {
+    public void onMessage(Theme_Entity entity) {
+
+        Theme_Entity.ResultBean bean = entity.getResult();
         if (bean != null) {
             //赋值背景 前景显示
             Glide.with(this).load(bean.getBgImg()).into(main_bg);
             //赋值背景 背景高斯模糊
-            Glide.with(this).load(bean.getBgImg()).bitmapTransform(new BlurTransformation(this, 20, 1)).into(main_bg_0);
+            RequestOptions options = new RequestOptions();
+            options.bitmapTransform(new BlurTransformation(this, 20, 1));
+            options.skipMemoryCache(false);
+            options.diskCacheStrategy(DiskCacheStrategy.ALL);
+            Glide.with(this).load(bean.getBgImg()).apply(options).into(main_bg_0);
 
             //图片名
             String imgname = Tools.getFileNameWithSuffix(bean.getBgImg());
@@ -437,50 +387,38 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             if (!FileUtils.checkFileExists(imgname)) {
                 //下载图片
                 new DownUtil(this).downLoad(bean.getBgImg(), imgname, false);
-
-                //记录图片名
-                SaveUtils.setString(Save_Key.BackGround, imgname);
             }
 
             //设置图标背景色 对话框颜色
             title_color(bean.getMicLogoColor());
-            SaveUtils.setString(Save_Key.MicLogoColor, bean.getMicLogoColor());
 
             //设置对话框内容颜色
             title.setTextColor(Color.parseColor(bean.getTipFontColor()));
-            SaveUtils.setString(Save_Key.TipFontColor, bean.getTipFontColor());
 
             //标题集合
             title_list = null;
             title_list = bean.getTipContents().split("#");
-            SaveUtils.setString(Save_Key.TipContents, bean.getTipContents());
 
             //是否显示标题
             title_view.setVisibility(bean.getTipShowFlag() == 1 ? View.VISIBLE : View.GONE);
-            SaveUtils.setInt(Save_Key.TipShowFlag, bean.getTipShowFlag());
 
             //是否显示控制台
             setting.setVisibility(bean.getConsoleShowFlag() == 1 ? View.VISIBLE : View.GONE);
-            SaveUtils.setInt(Save_Key.ConsoleShowFlag, bean.getConsoleShowFlag());
 
             //是否初始化逻辑科技
             if (bean.getStartLgeekFlag() == 1) {
                 LgeekTVSdkMrg.getInstance().init(MyAppliaction.context);
             }
-            SaveUtils.setInt(Save_Key.StartLgeekFlag, bean.getStartLgeekFlag());
 
             //是否显示栏目名
             name1.setVisibility(bean.getCnameShowFlag() == 1 ? View.VISIBLE : View.GONE);
             name2.setVisibility(bean.getCnameShowFlag() == 1 ? View.VISIBLE : View.GONE);
             name3.setVisibility(bean.getCnameShowFlag() == 1 ? View.VISIBLE : View.GONE);
             name4.setVisibility(bean.getCnameShowFlag() == 1 ? View.VISIBLE : View.GONE);
-            SaveUtils.setInt(Save_Key.CnameShowFlag, bean.getCnameShowFlag());
-
-            //是否启动逻辑科技服务
 
             //标题轮询时间
             int title_time = bean.getTipSwitchRate();
-            SaveUtils.setInt(Save_Key.TipSwitchRate, bean.getTipSwitchRate());
+
             if (title_list != null && title_list.length > 0) {
                 title.setText(title_list[0]);
             }
@@ -493,7 +431,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
                 titleTime = new TitleTime(title_time, title_time);
                 titleTime.start();
-
             }
         }
     }
@@ -503,6 +440,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      *
      * @param channelList
      */
+    @SuppressLint("CheckResult")
     @Subscribe
     public void onMessage(FindChannelList channelList) {
         this.channelList = channelList;
@@ -531,7 +469,12 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 //设置栏目名称
                 namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
                 //加载图片 优先本地
-                Picasso.with(this).load(url).placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i))))).into(homelist.get(i));
+                RequestOptions options = new RequestOptions();
+                options.placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i)))));
+                options.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i)))));
+                options.skipMemoryCache(false);
+                options.diskCacheStrategy(DiskCacheStrategy.ALL);
+                Glide.with(this).load(url).apply(options).into(homelist.get(i));
 
                 hometype.add(channelList.getResult().get(i).getContentType());
 
