@@ -114,6 +114,9 @@ public class HttpUtil {
     public static String doPost(String url, Map<String, String> param) {
         StringBuilder paramStr = new StringBuilder();
         for (Map.Entry<String, String> para : param.entrySet()) {
+            if (TextUtils.isEmpty(para.getValue())){
+                continue;
+            }
             try {
                 paramStr.append(para.getKey()).append("=").append(URLEncoder.encode(para.getValue(), "UTF-8")).append("&");
             } catch (UnsupportedEncodingException e) {

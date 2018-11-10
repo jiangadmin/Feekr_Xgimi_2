@@ -54,7 +54,6 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
         if (TextUtils.isEmpty(MyAppliaction.SN)) {
             if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.SerialNum))) {
-                MyAppliaction.SN = SaveUtils.getString(Save_Key.SerialNum);
                 MyAppliaction.turnType = SaveUtils.getString(Save_Key.turnType);
                 MyAppliaction.modelNum = SaveUtils.getString(Save_Key.modelNum);
             } else {

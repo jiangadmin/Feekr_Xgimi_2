@@ -41,7 +41,6 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
         Map map = new HashMap();
         VIP_Entity entity;
         if (!TextUtils.isEmpty(MyAppliaction.SN)) {
-
             map.put("serialNum", MyAppliaction.SN);
             map.put("mac", Tools.getMacAddress());
         } else {
@@ -108,7 +107,7 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
 
             } else {
 
-                if (TextUtils.isEmpty(Const.云视听Url)){
+                if (TextUtils.isEmpty(Const.云视听Url)) {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(MyAppliaction.activity);
                     builder.setTitle("抱歉");
@@ -121,7 +120,7 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
                     });
                     builder.show();
 
-                }else {
+                } else {
                     Loading.show(MyAppliaction.activity, "请稍后");
                     new DownUtil(MyAppliaction.activity).downLoad(Const.云视听Url, "云视听.apk", true);
                 }
