@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.text.TextUtils;
 
 import com.jiang.tvlauncher.entity.Point;
@@ -17,7 +18,6 @@ import com.xgimi.business.api.clients.XgimiDeviceClient;
 import com.xgimi.business.api.projectors.IXgimiProjector;
 import com.xgimi.business.api.projectors.XgimiProjectorFactory;
 
-import java.security.KeyFactory;
 import java.security.KeyStore;
 
 /**
@@ -54,8 +54,9 @@ public class MyAppliaction extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        startService(new Intent(this, TimingService.class));
         context = this;
+
+        LogUtil.e(TAG, Build.MODEL);
 
         //崩溃检测
         CrashReport.initCrashReport(getApplicationContext(), "15b18d3a4c", false);
@@ -80,7 +81,5 @@ public class MyAppliaction extends Application {
         if (!TextUtils.isEmpty(SN)) {
             isxgimi = true;
         }
-
-        LogUtil.e(TAG,""+KeyStore.getDefaultType());
     }
 }

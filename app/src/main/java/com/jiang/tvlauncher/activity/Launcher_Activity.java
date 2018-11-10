@@ -470,8 +470,12 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
                 //加载图片 优先本地
                 RequestOptions options = new RequestOptions();
-                options.placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i)))));
-                options.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(file + SaveUtils.getString(Save_Key.ItemImage + i)))));
+                String s = file + SaveUtils.getString(Save_Key.ItemImage + i);
+                //判断文件是否存在
+                if (FileUtils.checkFileExists(Tools.getFileNameWithSuffix(s))) {
+                    options.placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(s))));
+                    options.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(s))));
+                }
                 options.skipMemoryCache(false);
                 options.diskCacheStrategy(DiskCacheStrategy.ALL);
                 Glide.with(this).load(url).apply(options).into(homelist.get(i));
