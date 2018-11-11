@@ -10,8 +10,8 @@ package com.jiang.tvlauncher.entity;
  */
 public class Const {
 
-        public static String URL = "http://api.feekrs.com/";
-//    public static String URL = "http://testapi.feekrs.com/";
+//        public static String URL = "http://api.feekrs.com/";
+    public static String URL = "http://testapi.feekrs.com/";
 
     public static int Timing = 30;
     public static int ID;

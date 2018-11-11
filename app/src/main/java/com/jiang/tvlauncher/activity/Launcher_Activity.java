@@ -631,10 +631,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 wifiap_txt.setTextColor(getResources().getColor(b ? R.color.white : R.color.gray));
                 break;
             default:
-                if (b)
+                if (b) {
                     enlargeAnim(view);
-                else
+                } else {
                     reduceAnim(view);
+                }
                 break;
         }
     }

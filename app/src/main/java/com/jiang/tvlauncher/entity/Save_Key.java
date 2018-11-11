@@ -5,14 +5,7 @@ package com.jiang.tvlauncher.entity;
  */
 
 public class Save_Key {
-    public static final String TipFontColor = "TipFontColor";
-    public static final String MicLogoColor = "MicLogoColor";
-    public static final String TipContents = "TipContents";
-    public static final String TipShowFlag = "TipShowFlag";
-    public static final String TipSwitchRate = "TipSwitchRate";
-    public static final String ConsoleShowFlag = "ConsoleShowFlag" ;
-    public static final String CnameShowFlag = "CnameShowFlag";
-    public static final String StartLgeekFlag = "StartLgeekFlag";
+
     public static final String Theme = "Theme";
     public static String ID = "ID";
     public static String turnType = "turnType";
