@@ -376,7 +376,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             Glide.with(this).load(bean.getBgImg()).into(main_bg);
             //赋值背景 背景高斯模糊
             RequestOptions options = new RequestOptions();
-            options.bitmapTransform(new BlurTransformation(this, 20, 1));
+            options.bitmapTransform(new BlurTransformation( this,20, 1));
             options.skipMemoryCache(false);
             options.diskCacheStrategy(DiskCacheStrategy.ALL);
             Glide.with(this).load(bean.getBgImg()).apply(options).into(main_bg_0);

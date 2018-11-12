@@ -6,7 +6,7 @@ android {
         jiang {
             keyAlias 'jiang'
             keyPassword 'jiangadmin'
-            storeFile file('D:/AndroidProject/Jiang.jks')
+            storeFile file('/Users/jiangyao/Desktop/Android Project/Jiang.jks')
             storePassword 'jiangadmin'
         }
     }
