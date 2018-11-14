@@ -24,7 +24,6 @@ import com.xgimi.business.api.enums.EnumProjectionMode;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.security.KeyStore;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -159,14 +158,19 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
                 //投影方式开关
                 if (shadowcnfBean.getProjectModeFlag() == 1) {
-                    switch (shadowcnfBean.getProjectMode()){
+
+                    switch (shadowcnfBean.getProjectMode()) {
                         case 0:
-                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Mirror);   //吊装正投
                             XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Normal);   //正装正投
-                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Mirror); //吊装背投
-                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Normal); //正装背投
                             break;
                         case 1:
+                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Mirror);   //吊装正投
+                            break;
+                        case 2:
+                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Normal); //正装背投
+                            break;
+                        case 3:
+                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Mirror); //吊装背投
                             break;
                     }
                 }
@@ -180,7 +184,6 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
                     }
                 }
-
             }
 
             //启动定时服务

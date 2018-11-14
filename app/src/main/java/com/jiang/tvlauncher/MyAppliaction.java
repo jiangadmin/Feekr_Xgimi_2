@@ -53,14 +53,10 @@ public class MyAppliaction extends Application {
      */
     public static boolean isxgimi = false;
 
-
-
     @Override
     public void onCreate() {
         super.onCreate();
         context = this;
-
-
 
         //崩溃检测
         CrashReport.initCrashReport(getApplicationContext(), "15b18d3a4c", false);
@@ -72,10 +68,10 @@ public class MyAppliaction extends Application {
         SaveUtils.setBoolean(Save_Key.FristTurnOn, true);
 
         //初始化
-        IXgimiProjector xgimiProjector = XgimiProjectorFactory.create();
+//        IXgimiProjector xgimiProjector = XgimiProjectorFactory.create();
 
         //信号源名称
-        String inputScourceName = xgimiProjector.getCurrentInputSource();
+//        String inputScourceName = xgimiProjector.getCurrentInputSource();
 
         LogUtil.e(TAG, "PID：" + XgimiDeviceClient.getMachineId());
 
