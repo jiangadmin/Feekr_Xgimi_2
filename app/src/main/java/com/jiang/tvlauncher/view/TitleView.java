@@ -62,7 +62,7 @@ public class TitleView extends RelativeLayout {
         tvTime.setTypeface(typeface);
         tvDate.setTypeface(typeface);
         timeHandle.post(timeRun);
-        imgNetWorkState = (ImageView) this.findViewById(R.id.title_bar_network_state);
+        imgNetWorkState =  this.findViewById(R.id.title_bar_network_state);
 
         update();
 

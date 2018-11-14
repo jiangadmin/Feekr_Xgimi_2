@@ -3,12 +3,14 @@ package com.jiang.tvlauncher;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.text.TextUtils;
 
 import com.jiang.tvlauncher.entity.Point;
 import com.jiang.tvlauncher.entity.Save_Key;
+import com.jiang.tvlauncher.receiver.NetReceiver;
 import com.jiang.tvlauncher.servlet.TurnOn_servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
@@ -51,12 +53,14 @@ public class MyAppliaction extends Application {
      */
     public static boolean isxgimi = false;
 
+
+
     @Override
     public void onCreate() {
         super.onCreate();
         context = this;
 
-        LogUtil.e(TAG, Build.MODEL);
+
 
         //崩溃检测
         CrashReport.initCrashReport(getApplicationContext(), "15b18d3a4c", false);

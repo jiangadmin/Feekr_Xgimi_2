@@ -116,12 +116,12 @@
             </intent-filter>
         </receiver>
 
-        <!--网络广播接收-->
-        <receiver android:name=".receiver.NetReceiver">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
+        <!--&lt;!&ndash;网络广播接收&ndash;&gt;-->
+        <!--<receiver android:name=".receiver.NetReceiver">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
 
         <receiver
             android:name=".receiver.AppInstallReceiver"

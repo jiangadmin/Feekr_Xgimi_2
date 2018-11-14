@@ -2,8 +2,11 @@ package com.jiang.tvlauncher.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
@@ -13,6 +16,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
+import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -40,6 +44,7 @@ import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.FindChannelList;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.entity.Theme_Entity;
+import com.jiang.tvlauncher.receiver.NetReceiver;
 import com.jiang.tvlauncher.servlet.DownUtil;
 import com.jiang.tvlauncher.servlet.FindChannelList_Servlet;
 import com.jiang.tvlauncher.servlet.GetVIP_Servlet;
@@ -54,6 +59,8 @@ import com.jiang.tvlauncher.utils.ShellUtils;
 import com.jiang.tvlauncher.utils.Tools;
 import com.jiang.tvlauncher.view.TitleView;
 import com.lgeek.tv.jimi.LgeekTVSdkMrg;
+import com.snm.upgrade.aidl.ApproveDeviceManager;
+import com.snm.upgrade.aidl.ITaskCallback;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -118,6 +125,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      */
     String file = Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/";
 
+    private static ApproveDeviceManager approveDeviceManager;
+
+    NetReceiver netReceiver;
+    private boolean NanChuan_Ok = true;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,13 +139,20 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         setContentView(R.layout.activty_launcher);
         MyAppliaction.activity = this;
 
+        netReceiver = new NetReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        intentFilter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+        intentFilter.addAction("android.net.wifi.STATE_CHANGE");
+        registerReceiver(netReceiver, intentFilter);
+
         initview();
         initeven();
 
         //判断网络
-        if (!Tools.isNetworkConnected())
+        if (!Tools.isNetworkConnected()) {
             NetDialog.showL();
-
+        }
         onMessage("update");
 
         //首先显示本地资源
@@ -144,7 +163,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.Theme))) {
             onMessage(new Gson().fromJson(SaveUtils.getString(Save_Key.Theme), Theme_Entity.class));
         }
-
     }
 
     @Override
@@ -196,6 +214,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 new FindChannelList_Servlet().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 //获取主题
                 new Get_Theme_Servlet().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                break;
+
+            case "nanchuan":
+                LogUtil.e(TAG, "准备认证");
+                nanchuan();
                 break;
             default:
                 break;
@@ -284,7 +307,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     }
 
     private void initeven() {
-
         home1.setOnClickListener(this);
         home2.setOnClickListener(this);
         home3.setOnClickListener(this);
@@ -316,11 +338,55 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         return;
     }
 
+    /**
+     * 南方传媒认证
+     */
+    public void nanchuan() {
+        Intent intent = new Intent("com.snm.upgrade.approve.ApproveManagerServer");
+        intent.setPackage("com.snm.upgrade");
+        bindService(intent, new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+                approveDeviceManager = ApproveDeviceManager.Stub.asInterface(iBinder);
+                try {
+                    //registerCallback（）这个注册接口是返回结果回调，先注册
+                    approveDeviceManager.registerCallback(new ITaskCallback.Stub() {
+                        @Override
+                        public void returnResult(String Result) {
+                            if (Result.equals("998")) {
+                                NanChuan_Ok = false;
+                                Toast.makeText(getApplicationContext(), "南方传媒认证失败", Toast.LENGTH_SHORT).show();
+                            } else {
+                                NanChuan_Ok = true;
+                                Toast.makeText(getApplicationContext(), "南方传媒认证成功", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    //requestApprove()这个是调起我们的认证接口
+                    int flag = approveDeviceManager.requestApprove();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName componentName) {
+                approveDeviceManager = null;
+            }
+        }, BIND_AUTO_CREATE);
+    }
+
     boolean showToast = true;
     long[] mHits = new long[7];
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (!NanChuan_Ok) {
+            Toast.makeText(this, "南方传媒认证失败", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
         switch (keyCode) {
             case KeyEvent.KEYCODE_MENU:
                 System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);// 数组向左移位操作
@@ -496,7 +562,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-
         //账户（信号源）判断
         if (Const.BussFlag == 0) {
             if (warningDialog == null) {
@@ -619,7 +684,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      */
     @Override
     public void onFocusChange(View view, boolean b) {
-
         switch (view.getId()) {
             case R.id.setting:
                 setting_txt.setTextColor(getResources().getColor(b ? R.color.white : R.color.gray));

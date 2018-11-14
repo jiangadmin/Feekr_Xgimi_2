@@ -11,6 +11,8 @@ import com.jiang.tvlauncher.dialog.NetDialog;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.Tools;
 
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * @author: jiangadmin
  * @date: 2017/7/15.
@@ -33,7 +35,6 @@ public class NetReceiver extends BroadcastReceiver {
                     MyAppliaction.IsLineNet = true;
                     if (Tools.isNetworkConnected())
                         NetDialog.dismiss();
-
                 }
                 if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
                     LogUtil.e(TAG, "无线网络");
@@ -41,6 +42,8 @@ public class NetReceiver extends BroadcastReceiver {
                     if (Tools.isNetworkConnected())
                         NetDialog.dismiss();
                 }
+                LogUtil.e(TAG,"发消息");
+                EventBus.getDefault().post("nanchuan");
             } else {
                 LogUtil.e(TAG, "网络断开");
                 NetDialog.showW();
