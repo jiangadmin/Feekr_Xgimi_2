@@ -6,11 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.R;
@@ -18,10 +19,12 @@ import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.servlet.SyncDevZoom_Servlet;
 import com.jiang.tvlauncher.servlet.Update_Servlet;
+import com.jiang.tvlauncher.utils.FileUtils;
 import com.jiang.tvlauncher.utils.Tools;
 import com.lgeek.tv.jimi.LgeekTVSdkMrg;
-import com.xgimi.business.api.clients.XgimiDeviceClient;
 import com.xgimi.business.api.enums.EnumSettingsActivity;
+
+import java.io.File;
 
 /**
  * @author: jiangadmin
@@ -51,44 +54,22 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
         initview();
         initeven();
 
-//        try {
-//            MyAppliaction.apiManager.set("setFocusOnOff", "true", null, null, null);
-//        } catch (RemoteException e) {
-//            e.printStackTrace();
-//        }
+
     }
 
-    @Override
-    protected void onStop() {
-
-//        try {
-//            MyAppliaction.apiManager.set("setFocusOnOff", "false", null, null, null);
-//        } catch (RemoteException e) {
-//            e.printStackTrace();
-//        }
-
-        super.onStop();
-    }
 
     @Override
     protected void onDestroy() {
-//
-//        try {
-//            MyAppliaction.apiManager.set("setFocusOnOff", "false", null, null, null);
-//        } catch (RemoteException e) {
-//            e.printStackTrace();
-//        }
-
         super.onDestroy();
     }
 
     private void initview() {
-        setting1 =  findViewById(R.id.setting_1);
-        setting2 =  findViewById(R.id.setting_2);
-        setting3 =  findViewById(R.id.setting_3);
-        setting4 =  findViewById(R.id.setting_4);
-        setting5 =  findViewById(R.id.setting_5);
-        setting6 =  findViewById(R.id.setting_6);
+        setting1 = findViewById(R.id.setting_1);
+        setting2 = findViewById(R.id.setting_2);
+        setting3 = findViewById(R.id.setting_3);
+        setting4 = findViewById(R.id.setting_4);
+        setting5 = findViewById(R.id.setting_5);
+        setting6 = findViewById(R.id.setting_6);
     }
 
     private void initeven() {
@@ -98,6 +79,27 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
         setting4.setOnClickListener(this);
         setting5.setOnClickListener(this);
         setting6.setOnClickListener(this);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode==KeyEvent.KEYCODE_MENU){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("存储信息");
+            String message = "";
+            message += "共存储文件：" + FileUtils.getFileList(new File(Const.FilePath));
+            message += "\n总体积：" + FileUtils.formatFileSize(FileUtils.getDirSize(new File(Const.FilePath)));
+            builder.setMessage(message);
+            builder.setPositiveButton("清除", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    FileUtils.deleteFile(new File(Const.FilePath));
+                    Toast.makeText(getApplicationContext(),"清除成功",Toast.LENGTH_SHORT).show();
+                }
+            });
+            builder.show();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -160,4 +162,6 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
             builder.show();
         }
     }
+
+
 }

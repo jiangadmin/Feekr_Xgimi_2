@@ -293,7 +293,7 @@ public class FileUtils {
      * @param
      * @return
      */
-    public long getFileList(File dir) {
+    public static long getFileList(File dir) {
         long count = 0;
         File[] files = dir.listFiles();
         count = files.length;
@@ -489,6 +489,27 @@ public class FileUtils {
             status = false;
         return status;
     }
+
+
+//flie：要删除的文件夹的所在位置
+
+    /**
+     *  删除文件
+     * @param file
+     */
+    public static void deleteFile(File file) {
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                File f = files[i];
+                deleteFile(f);
+            }
+//            file.delete();//如要保留文件夹，只删除文件，请注释这行
+        } else if (file.exists()) {
+            file.delete();
+        }
+    }
+
 
     /**
      * 删除文件

@@ -61,6 +61,7 @@ import com.jiang.tvlauncher.view.TitleView;
 import com.lgeek.tv.jimi.LgeekTVSdkMrg;
 import com.snm.upgrade.aidl.ApproveDeviceManager;
 import com.snm.upgrade.aidl.ITaskCallback;
+import com.tencent.bugly.Bugly;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -120,10 +121,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     int i = 1;
     String[] title_list;
 
-    /**
-     * 存储位置
-     */
-    String file = Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/";
 
     private static ApproveDeviceManager approveDeviceManager;
 
@@ -382,10 +379,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (!NanChuan_Ok) {
-            Toast.makeText(this, "南方传媒认证失败", Toast.LENGTH_SHORT).show();
-            return true;
-        }
 
         switch (keyCode) {
             case KeyEvent.KEYCODE_MENU:
@@ -408,7 +401,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             case KeyEvent.KEYCODE_DPAD_DOWN:
             case KeyEvent.KEYCODE_DPAD_LEFT:
             case KeyEvent.KEYCODE_DPAD_RIGHT:
-
+            case KeyEvent.KEYCODE_ENTER:
+                if (!NanChuan_Ok) {
+                    Toast.makeText(this, "南方传媒认证失败", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
                 return false;
         }
         return true;
@@ -442,7 +439,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             Glide.with(this).load(bean.getBgImg()).into(main_bg);
             //赋值背景 背景高斯模糊
             RequestOptions options = new RequestOptions();
-            options.bitmapTransform(new BlurTransformation( this,20, 1));
+            options.bitmapTransform(new BlurTransformation(this, 20, 1));
             options.skipMemoryCache(false);
             options.diskCacheStrategy(DiskCacheStrategy.ALL);
             Glide.with(this).load(bean.getBgImg()).apply(options).into(main_bg_0);
@@ -515,11 +512,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.BootAn))) {
 
             //判断文件是否存在
-            if (!FileUtils.checkFileExists(Tools.getFileNameWithSuffix(SaveUtils.getString(Save_Key.BootAn)))) {
+//            if (!FileUtils.checkFileExists(Tools.getFileNameWithSuffix(SaveUtils.getString(Save_Key.BootAn)))) {
                 LogUtil.e(TAG, "开始下载");
                 new DownUtil(this).downLoad(SaveUtils.getString(Save_Key.BootAn),
-                        Tools.getFileNameWithSuffix(SaveUtils.getString(Save_Key.BootAn)), false);
-            }
+                        "bootanimation.zip", false);
+//            }
         }
 
         if (channelList != null) {
@@ -536,7 +533,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 namelist.get(i).setText(channelList.getResult().get(i).getChannelName());
                 //加载图片 优先本地
                 RequestOptions options = new RequestOptions();
-                String s = file + SaveUtils.getString(Save_Key.ItemImage + i);
+                String s = Const.FilePath + SaveUtils.getString(Save_Key.ItemImage + i);
                 //判断文件是否存在
                 if (FileUtils.checkFileExists(Tools.getFileNameWithSuffix(s))) {
                     options.placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(s))));
@@ -569,6 +566,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             }
             warningDialog.show();
             return;
+        }
+
+        if (!NanChuan_Ok) {
+            Toast.makeText(this, "南方传媒认证失败", Toast.LENGTH_SHORT).show();
+            return ;
         }
 
         switch (view.getId()) {
@@ -742,13 +744,18 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
         @Override
         public void onFinish() {
-            title.setText(title_list[i]);
+            try {
+                title.setText(title_list[i]);
 
-            if (i == title_list.length - 1) {
-                i = 0;
-            } else {
-                i++;
+                if (i == title_list.length - 1) {
+                    i = 0;
+                } else {
+                    i++;
+                }
+            }catch (Exception e){
+                LogUtil.e(TAG,e.getMessage());
             }
+
             start();
         }
     }
@@ -767,7 +774,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             setContentView(R.layout.dialog_warning);
             setCanceledOnTouchOutside(false);
             setCancelable(false);
-
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.jiang.tvlauncher.entity;
 
+import android.os.Environment;
+
 /**
  * Created by  jiang
  * on 2017/6/19.
@@ -10,8 +12,8 @@ package com.jiang.tvlauncher.entity;
  */
 public class Const {
 
-        public static String URL = "http://api.feekrs.com/";
-//    public static String URL = "http://testapi.feekrs.com/";
+//    public static String URL = "http://api.feekrs.com/";
+    public static String URL = "http://testapi.feekrs.com/";
 
     public static int Timing = 30;
     public static int ID;
@@ -42,5 +44,11 @@ public class Const {
     public static String ktcp_vuid = "";//腾讯视频ID
     public static String ktcp_vtoken = "";//腾讯视频ID
     public static String ktcp_accessToken = "";//腾讯视频ID
+
+
+    /**
+     * 存储位置
+     */
+    public static String FilePath = Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/";
 
 }

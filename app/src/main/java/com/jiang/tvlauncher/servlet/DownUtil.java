@@ -111,8 +111,24 @@ public class DownUtil {
                         }
                         //如果是资源文件
                         if (fileName.contains(".zip")) {
-                            LogUtil.e(TAG, "资源文件");
-                            ApiProxyServiceClient.INSTANCE.changeBootAnimation(file.getPath());
+                            LogUtil.e(TAG, "资源文件"+file.getPath());
+                            ApiProxyServiceClient.INSTANCE.binderAidlService(MyAppliaction.context, new ApiProxyServiceClient.IAidlConnectListener() {
+                                @Override
+                                public void onSuccess() {
+                                    LogUtil.e(TAG,"AIDL 连接成功");
+                                    //附上开机动画
+                                    ApiProxyServiceClient.INSTANCE.changeBootAnimation(file.getPath());
+
+                                    //释放资源
+                                    ApiProxyServiceClient.INSTANCE.release();
+                                }
+
+                                @Override
+                                public void onFailure(RemoteException e) {
+
+                                }
+                            });
+
                         }
                     } catch (Exception e) {
                         LogUtil.e(TAG, "文件下载失败了" + e.getMessage());
