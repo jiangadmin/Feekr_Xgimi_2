@@ -15,7 +15,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Environment;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
@@ -61,7 +60,11 @@ import com.jiang.tvlauncher.view.TitleView;
 import com.lgeek.tv.jimi.LgeekTVSdkMrg;
 import com.snm.upgrade.aidl.ApproveDeviceManager;
 import com.snm.upgrade.aidl.ITaskCallback;
-import com.tencent.bugly.Bugly;
+import com.xgimi.api.XgimiManager;
+import com.xgimi.business.api.clients.XgimiDeviceClient;
+import com.xgimi.business.api.components.DemoActivity;
+import com.xgimi.business.api.enums.EnumProjectionMode;
+import com.xgimi.business.api.utils.XgimiDeviceUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -513,9 +516,9 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
             //判断文件是否存在
 //            if (!FileUtils.checkFileExists(Tools.getFileNameWithSuffix(SaveUtils.getString(Save_Key.BootAn)))) {
-                LogUtil.e(TAG, "开始下载");
-                new DownUtil(this).downLoad(SaveUtils.getString(Save_Key.BootAn),
-                        "bootanimation.zip", false);
+            LogUtil.e(TAG, "开始下载");
+            new DownUtil(this).downLoad(SaveUtils.getString(Save_Key.BootAn),
+                    "bootanimation.zip", false);
 //            }
         }
 
@@ -570,7 +573,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
         if (!NanChuan_Ok) {
             Toast.makeText(this, "南方传媒认证失败", Toast.LENGTH_SHORT).show();
-            return ;
+            return;
         }
 
         switch (view.getId()) {
@@ -752,8 +755,8 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 } else {
                     i++;
                 }
-            }catch (Exception e){
-                LogUtil.e(TAG,e.getMessage());
+            } catch (Exception e) {
+                LogUtil.e(TAG, e.getMessage());
             }
 
             start();

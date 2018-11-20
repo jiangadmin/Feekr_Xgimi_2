@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -117,5 +118,45 @@ public class WifiApUtils {
             Log.d("Rain.tang", "close_WifiAp_Exception : " + e.getLocalizedMessage());
             return null;
         }
+    }
+
+
+    /**
+     * 自定义wifi热点
+     *
+     * @param enabled 开启or关闭
+     * @return
+     */
+    public static boolean setWifiApEnabled(Context context,boolean enabled,String ssid,String pwd) {
+        boolean result = false;
+        WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        if (enabled) {
+            //wifi和热点不能同时打开，所以打开热点的时候需要关闭wifi
+            if (wifiManager.isWifiEnabled()) {
+                wifiManager.setWifiEnabled(false);
+            }
+        }
+        try {
+            //热点的配置类
+            WifiConfiguration apConfig = new WifiConfiguration();
+            //配置热点的名称
+            apConfig.SSID = ssid;
+            //配置热点的密码，至少八位
+            apConfig.preSharedKey = pwd;
+            //配置热点安全性选项
+            apConfig.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+            //通过反射调用设置热点
+            Method method = wifiManager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, boolean.class);
+            //返回热点打开状态
+            result = (Boolean) method.invoke(wifiManager, apConfig, enabled);
+            if (!result) {
+                Toast.makeText(context, "热点创建失败", Toast.LENGTH_SHORT).show();
+
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "热点创建失败", Toast.LENGTH_SHORT).show();
+
+        }
+        return result;
     }
 }

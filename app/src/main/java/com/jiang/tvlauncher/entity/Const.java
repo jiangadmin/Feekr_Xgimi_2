@@ -45,7 +45,6 @@ public class Const {
     public static String ktcp_vtoken = "";//腾讯视频ID
     public static String ktcp_accessToken = "";//腾讯视频ID
 
-
     /**
      * 存储位置
      */

@@ -19,6 +19,8 @@ import com.jiang.tvlauncher.utils.HttpUtil;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
+import com.jiang.tvlauncher.utils.WifiApUtils;
+import com.xgimi.api.XgimiManager;
 import com.xgimi.business.api.clients.XgimiDeviceClient;
 import com.xgimi.business.api.enums.EnumProjectionMode;
 
@@ -150,27 +152,33 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 //心跳时间
                 SaveUtils.setInt(Save_Key.Timming, shadowcnfBean.getMonitRate());
 
+                boolean directboot = shadowcnfBean.getPowerTurn() == 1;
+
+                LogUtil.e(TAG, "上电开机：" + directboot);
                 //上电开机开关
-                if (shadowcnfBean.getPowerFlag() == 1) {
-                    //上电开机
-                    XgimiDeviceClient.setDirectBoot(shadowcnfBean.getPowerTurn() == 1);
-                }
+                XgimiDeviceClient.setDirectBoot(directboot);
 
                 //投影方式开关
                 if (shadowcnfBean.getProjectModeFlag() == 1) {
+                    //TODO:投影方式 JAR有问题
+                    XgimiManager.getInstance().xgimiDlp("XgimiProjectMode", String.valueOf(shadowcnfBean.getProjectMode()), null, null);
 
                     switch (shadowcnfBean.getProjectMode()) {
+                        //正装正投
                         case 0:
-                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Normal);   //正装正投
+                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Normal);
                             break;
+                        //吊装正投
                         case 1:
-                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Mirror);   //吊装正投
+                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Mirror);
                             break;
+                        //正装背投
                         case 2:
-                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Normal); //正装背投
+                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Normal);
                             break;
+                        //吊装背投
                         case 3:
-                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Mirror); //吊装背投
+                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Mirror);
                             break;
                     }
                 }
@@ -192,40 +200,29 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             //判断是否是有线连接 & 服务启用同步数据
             if (Tools.isLineConnected() && shadowcnfBean != null
                     && shadowcnfBean.getHotPointFlag() == 1) {
+
+                //获取热点名称&热点密码
+                String SSID = shadowcnfBean.getWifi();
+                String APPWD = shadowcnfBean.getWifiPassword();
+
+                //存储热点名称&密码
+                SaveUtils.setString(Save_Key.WiFiName, SSID);
+                SaveUtils.setString(Save_Key.WiFiPwd, APPWD);
+
+                LogUtil.e(TAG, "SSID:" + SSID + "  PassWord:" + APPWD);
+
                 if (shadowcnfBean.getHotPoint() == 1
                         && shadowcnfBean.getWifi() != null
-                        && shadowcnfBean.getWifiPassword() != null) {                //开启热点
+                        && shadowcnfBean.getWifiPassword() != null) {
 
-                    //获取热点名称&热点密码
-                    String SSID = shadowcnfBean.getWifi();
-                    String APPWD = shadowcnfBean.getWifiPassword();
+                    //开启热点
+                    WifiApUtils.setWifiApEnabled(context, true, SSID, APPWD);
 
-                    //存储热点名称&密码
-                    SaveUtils.setString(Save_Key.WiFiName, SSID);
-                    SaveUtils.setString(Save_Key.WiFiPwd, APPWD);
-
-                    LogUtil.e(TAG, "SSID:" + SSID + "  PassWord:" + APPWD);
-
-                    //打开并设置热点信息.注意热点密码8-32位，只限制了英文密码位数。
-                    //使用极米开启/关闭热点接口
-
-//                    try {
-//                        String s1 = MyAppliaction.apiManager.set("setOpenWifiAp", SSID, APPWD, null, null);
-//                        if (!TextUtils.isEmpty(s1) && Boolean.valueOf(s1.toLowerCase())) {
-//                            LogUtil.e(TAG, "热点开机成功！");
-//                        }
-//                    } catch (RemoteException e) {
-//                        e.printStackTrace();
-//                    }
-                } else if (shadowcnfBean.getHotPoint() == 0) {            //关闭热点
-//                    try {
-//                        MyAppliaction.apiManager.set("setCloseWifiAp", null, null, null, null);
-//                    } catch (RemoteException e) {
-//                        e.printStackTrace();
-//                    }
+                } else {
+                    //关闭热点
+                    WifiApUtils.setWifiApEnabled(context, false, SSID, APPWD);
                 }
             }
-
 
         } else if (entity.getErrorcode() == -2) {
             LogUtil.e(TAG, entity.getErrormsg());
@@ -249,7 +246,6 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 EventBus.getDefault().post("update");
                 break;
         }
-
     }
 
     public static int num = 0;
