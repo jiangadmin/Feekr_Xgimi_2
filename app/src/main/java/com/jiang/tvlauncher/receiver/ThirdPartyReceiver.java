@@ -70,8 +70,9 @@ public class ThirdPartyReceiver extends BroadcastReceiver implements IThirdParty
                 if (eveintId == 2) {
                     timeCount = new TimeCount(100 * 60, 1);
                     timeCount.start();
-                }else {
-                    timeCount.onFinish();
+                } else {
+                    if (timeCount != null)
+                        timeCount.onFinish();
                 }
                 // 2 账户登录回调 3 退出登录 4 APP退出
                 LogUtil.e(TAG, "状态码：" + eveintId);
