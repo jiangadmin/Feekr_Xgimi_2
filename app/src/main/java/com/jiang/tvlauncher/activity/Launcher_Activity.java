@@ -458,6 +458,9 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             //设置图标背景色 对话框颜色
             title_color(bean.getMicLogoColor());
 
+            //设置时间颜色
+            titleview.setTimeColor(bean.getTimesCtrlColor());
+
             //设置对话框内容颜色
             title.setTextColor(Color.parseColor(bean.getTipFontColor()));
 

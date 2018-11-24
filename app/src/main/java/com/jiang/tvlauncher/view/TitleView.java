@@ -2,6 +2,7 @@ package com.jiang.tvlauncher.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -53,7 +54,6 @@ public class TitleView extends RelativeLayout {
     }
 
     public void initTitleView() {
-
         view = LayoutInflater.from(context).inflate(R.layout.titleview, this, true);
         tvTime =  view.findViewById(R.id.title_bar_hour);
         tvDate =  view.findViewById(R.id.title_bar_date);
@@ -66,6 +66,12 @@ public class TitleView extends RelativeLayout {
 
         update();
 
+    }
+
+    public void setTimeColor(String color){
+        if (tvTime!=null){
+            tvTime.setTextColor(Color.parseColor(color));
+        }
     }
 
     public void update() {

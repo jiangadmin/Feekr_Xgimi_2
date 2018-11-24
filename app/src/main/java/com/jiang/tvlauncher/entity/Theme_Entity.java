@@ -60,6 +60,7 @@ public class Theme_Entity extends BaseEntity {
         private String lgeekActName;
         private String lgeekPagName;
         private String micLogoColor;
+        private String timesCtrlColor;
         private String remark;
         private int startLgeekFlag;
         private int status;
@@ -70,6 +71,14 @@ public class Theme_Entity extends BaseEntity {
         private int tipSwitchRate;
         private String updateAuthor;
         private String updateTime;
+
+        public String getTimesCtrlColor() {
+            return timesCtrlColor;
+        }
+
+        public void setTimesCtrlColor(String timesCtrlColor) {
+            this.timesCtrlColor = timesCtrlColor;
+        }
 
         public String getBgImg() {
             return bgImg;
