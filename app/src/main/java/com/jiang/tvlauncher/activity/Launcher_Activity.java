@@ -60,11 +60,6 @@ import com.jiang.tvlauncher.view.TitleView;
 import com.lgeek.tv.jimi.LgeekTVSdkMrg;
 import com.snm.upgrade.aidl.ApproveDeviceManager;
 import com.snm.upgrade.aidl.ITaskCallback;
-import com.xgimi.api.XgimiManager;
-import com.xgimi.business.api.clients.XgimiDeviceClient;
-import com.xgimi.business.api.components.DemoActivity;
-import com.xgimi.business.api.enums.EnumProjectionMode;
-import com.xgimi.business.api.utils.XgimiDeviceUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -440,12 +435,13 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         if (bean != null) {
             //赋值背景 前景显示
             Glide.with(this).load(bean.getBgImg()).into(main_bg);
-            //赋值背景 背景高斯模糊
-            RequestOptions options = new RequestOptions();
-            options.bitmapTransform(new BlurTransformation(this, 20, 1));
-            options.skipMemoryCache(false);
-            options.diskCacheStrategy(DiskCacheStrategy.ALL);
-            Glide.with(this).load(bean.getBgImg()).apply(options).into(main_bg_0);
+
+//            //赋值背景 背景高斯模糊
+//            RequestOptions options = new RequestOptions();
+//            options.bitmapTransform(new BlurTransformation(this, 20, 1));
+//            options.skipMemoryCache(false);
+//            options.diskCacheStrategy(DiskCacheStrategy.ALL);
+//            Glide.with(this).load(bean.getBgImg()).apply(options).into(main_bg_0);
 
             //图片名
             String imgname = Tools.getFileNameWithSuffix(bean.getBgImg());
@@ -459,8 +455,9 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             title_color(bean.getMicLogoColor());
 
             //设置时间颜色
-            titleview.setTimeColor(bean.getTimesCtrlColor());
-
+            if (!TextUtils.isEmpty(bean.getTimesCtrlColor())) {
+                titleview.setTimeColor(bean.getTimesCtrlColor());
+            }
             //设置对话框内容颜色
             title.setTextColor(Color.parseColor(bean.getTipFontColor()));
 

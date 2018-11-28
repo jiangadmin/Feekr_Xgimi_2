@@ -73,7 +73,7 @@ public class MyAppliaction extends Application {
         //信号源名称
 //        String inputScourceName = xgimiProjector.getCurrentInputSource();
 
-        LogUtil.e(TAG, "PID：" + XgimiDeviceClient.getMachineId());
+//        LogUtil.e(TAG, "PID：" + XgimiDeviceClient.getMachineId());
 
         //开机请求
         new TurnOn_servlet(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
