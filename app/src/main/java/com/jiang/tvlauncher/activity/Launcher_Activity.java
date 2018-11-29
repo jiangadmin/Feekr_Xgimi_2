@@ -20,6 +20,7 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -123,7 +124,8 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     private static ApproveDeviceManager approveDeviceManager;
 
     NetReceiver netReceiver;
-    private boolean NanChuan_Ok = true;
+    private static boolean nanchuanAuthFlag = false;       //南传认证标识，false=未认证，true=已认证
+    private static boolean NanChuan_Ok = true;             //南传认证结果 false = 认证失败,true=认证成功
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -337,39 +339,45 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      * 南方传媒认证
      */
     public void nanchuan() {
-        Intent intent = new Intent("com.snm.upgrade.approve.ApproveManagerServer");
-        intent.setPackage("com.snm.upgrade");
-        bindService(intent, new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-                approveDeviceManager = ApproveDeviceManager.Stub.asInterface(iBinder);
-                try {
-                    //registerCallback（）这个注册接口是返回结果回调，先注册
-                    approveDeviceManager.registerCallback(new ITaskCallback.Stub() {
-                        @Override
-                        public void returnResult(String Result) {
-                            if (Result.equals("998")) {
-                                NanChuan_Ok = false;
-                                Toast.makeText(getApplicationContext(), "南方传媒认证失败", Toast.LENGTH_SHORT).show();
-                            } else {
-                                NanChuan_Ok = true;
-                                Toast.makeText(getApplicationContext(), "南方传媒认证成功", Toast.LENGTH_SHORT).show();
+        if(!nanchuanAuthFlag && Tools.isNetworkConnected()){
+            nanchuanAuthFlag = true;
+
+
+            Intent intent = new Intent("com.snm.upgrade.approve.ApproveManagerServer");
+            intent.setPackage("com.snm.upgrade");
+            bindService(intent, new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+                    approveDeviceManager = ApproveDeviceManager.Stub.asInterface(iBinder);
+                    try {
+                        //registerCallback（）这个注册接口是返回结果回调，先注册
+                        approveDeviceManager.registerCallback(new ITaskCallback.Stub() {
+                            @Override
+                            public void returnResult(String Result) {
+                                if (Result.equals("998")) {
+                                    NanChuan_Ok = false;
+                                    Toast.makeText(getApplicationContext(), "南方传媒认证失败", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    NanChuan_Ok = true;
+                                    Toast.makeText(getApplicationContext(), "南方传媒认证成功", Toast.LENGTH_SHORT).show();
+                                }
+                                return;
                             }
-                        }
-                    });
-                    //requestApprove()这个是调起我们的认证接口
-                    int flag = approveDeviceManager.requestApprove();
-
-                } catch (Exception e) {
-                    e.printStackTrace();
+                        });
+                        //requestApprove()这个是调起我们的认证接口
+                        int flag = approveDeviceManager.requestApprove();
+                        return;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
 
-            @Override
-            public void onServiceDisconnected(ComponentName componentName) {
-                approveDeviceManager = null;
-            }
-        }, BIND_AUTO_CREATE);
+                @Override
+                public void onServiceDisconnected(ComponentName componentName) {
+                    approveDeviceManager = null;
+                }
+            }, BIND_AUTO_CREATE);
+        }
     }
 
     boolean showToast = true;
@@ -401,10 +409,12 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             case KeyEvent.KEYCODE_DPAD_RIGHT:
             case KeyEvent.KEYCODE_ENTER:
                 if (!NanChuan_Ok) {
-                    Toast.makeText(this, "南方传媒认证失败", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "南方传媒认证失败", Toast.LENGTH_SHORT).show();
                     return true;
+                }else {
+                    return false;
                 }
-                return false;
+
         }
         return true;
     }
@@ -572,7 +582,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         }
 
         if (!NanChuan_Ok) {
-            Toast.makeText(this, "南方传媒认证失败", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "南方传媒认证失败", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -612,65 +622,70 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      * @param i
      */
     public void open(int i) {
-        //数据缺失的情况
-        if (hometype.size() <= i) {
-            Toast.makeText(this, "栏目未开通！", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        //数据正常的情况
-        switch (hometype.get(i)) {
-            //无操作
-            case 0:
-                Toast.makeText(this, "栏目未开通", Toast.LENGTH_SHORT).show();
-                break;
-            //启动指定APP
-            case 1:
+        try{
 
-                if (channelList.getResult().get(i).getAppList() != null && channelList.getResult().get(i).getAppList().size() > 0) {
-                    String packname = channelList.getResult().get(i).getAppList().get(0).getPackageName();
+            //数据缺失的情况
+            if (hometype.size() <= i) {
+                Toast.makeText(this, "栏目未开通！", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                    //如果要启动定制版腾讯视频
-                    if (packname.equals(Const.TvViedo)) {
-                        SaveUtils.setString(Const.TvViedoDow, channelList.getResult().get(i).getAppList().get(0).getDownloadUrl());
-                        Const.云视听Url = channelList.getResult().get(i).getAppList().get(0).getDownloadUrlBak();
-                    }
+            //数据正常的情况
+            switch (hometype.get(i)) {
+                //无操作
+                case 0:
+                    Toast.makeText(this, "栏目未开通", Toast.LENGTH_SHORT).show();
+                    break;
+                //启动指定APP
+                case 1:
 
-                    //验证是否有此应用
-                    if (Tools.isAppInstalled(packname)) {
+                    if (channelList.getResult().get(i).getAppList() != null && channelList.getResult().get(i).getAppList().size() > 0) {
+                        String packname = channelList.getResult().get(i).getAppList().get(0).getPackageName();
+
                         //如果要启动定制版腾讯视频
                         if (packname.equals(Const.TvViedo)) {
+                            SaveUtils.setString(Const.TvViedoDow, channelList.getResult().get(i).getAppList().get(0).getDownloadUrl());
+                            Const.云视听Url = channelList.getResult().get(i).getAppList().get(0).getDownloadUrlBak();
+                        }
+                        //验证是否有此应用
+                        if (Tools.isAppInstalled(packname)) {
+                            //如果要启动定制版腾讯视频
+                            if (packname.equals(Const.TvViedo)) {
 
-                            //判断时候已经运行
-                            if (!TextUtils.isEmpty(ShellUtils.execCommand("ps |grep com.ktcp.tvvideo:webview", false).successMsg)) {
-                                startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(packname)));
+                                //判断时候已经运行
+                                if (!TextUtils.isEmpty(ShellUtils.execCommand("ps |grep com.ktcp.tvvideo:webview", false).successMsg)) {
+                                    startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(packname)));
+                                } else {
+                                    Loading.show(this, "请稍后");
+                                    //获取VIP账号
+                                    new GetVIP_Servlet(true).execute();
+                                }
                             } else {
-                                Loading.show(this, "请稍后");
-                                //获取VIP账号
-                                new GetVIP_Servlet(true).execute();
+                                startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(packname)));
                             }
                         } else {
-                            startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(packname)));
-                        }
-                    } else {
 
-                        Loading.show(this, "请稍后");
-                        new DownUtil(this).downLoad(channelList.getResult().get(i).getAppList().get(0).getDownloadUrl(), channelList.getResult().get(i).getAppList().get(0).getAppName() + ".apk", true);
-                    }
-                } else
-                    Toast.makeText(this, "栏目未开通", Toast.LENGTH_SHORT).show();
-                break;
-            //启动APP列表
-            case 2:
-                NewAPPList_Activity.start(this, channelList.getResult().get(i).getAppList());
-                break;
-            //启动展示图片
-            case 3:
-                Image_Activity.start(this, channelList.getResult().get(i).getContentUrl());
-                break;
-            //启动展示视频
-            case 4:
-                Video_Activity.start(this, channelList.getResult().get(i).getContentUrl());
-                break;
+                            Loading.show(this, "请稍后");
+                            new DownUtil(this).downLoad(channelList.getResult().get(i).getAppList().get(0).getDownloadUrl(), channelList.getResult().get(i).getAppList().get(0).getAppName() + ".apk", true);
+                        }
+                    } else
+                        Toast.makeText(this, "栏目未开通", Toast.LENGTH_SHORT).show();
+                    break;
+                //启动APP列表
+                case 2:
+                    NewAPPList_Activity.start(this, channelList.getResult().get(i).getAppList());
+                    break;
+                //启动展示图片
+                case 3:
+                    Image_Activity.start(this, channelList.getResult().get(i).getContentUrl());
+                    break;
+                //启动展示视频
+                case 4:
+                    Video_Activity.start(this, channelList.getResult().get(i).getContentUrl());
+                    break;
+            }
+        }catch(Exception ex){
+            LogUtil.e(TAG, "打开栏目报错" + ex.getMessage());
         }
     }
 
