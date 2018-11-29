@@ -20,7 +20,6 @@ import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -68,8 +67,6 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import jp.wasabeef.glide.transformations.BlurTransformation;
 
 /**
  * @author: jiangadmin
@@ -119,7 +116,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
     int i = 1;
     String[] title_list;
-
 
     private static ApproveDeviceManager approveDeviceManager;
 
@@ -339,9 +335,8 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      * 南方传媒认证
      */
     public void nanchuan() {
-        if(!nanchuanAuthFlag && Tools.isNetworkConnected()){
+        if (!nanchuanAuthFlag && Tools.isNetworkConnected()) {
             nanchuanAuthFlag = true;
-
 
             Intent intent = new Intent("com.snm.upgrade.approve.ApproveManagerServer");
             intent.setPackage("com.snm.upgrade");
@@ -408,12 +403,9 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             case KeyEvent.KEYCODE_DPAD_LEFT:
             case KeyEvent.KEYCODE_DPAD_RIGHT:
             case KeyEvent.KEYCODE_ENTER:
-                if (!NanChuan_Ok) {
-                    //Toast.makeText(this, "南方传媒认证失败", Toast.LENGTH_SHORT).show();
-                    return true;
-                }else {
-                    return false;
-                }
+
+                //Toast.makeText(this, "南方传媒认证失败", Toast.LENGTH_SHORT).show();
+                return !NanChuan_Ok;
 
         }
         return true;
@@ -458,7 +450,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             //判断图片文件是否存在
             if (!FileUtils.checkFileExists(imgname)) {
                 //下载图片
-                new DownUtil(this).downLoad(bean.getBgImg(), imgname, false);
+                new DownUtil().downLoad(bean.getBgImg(), imgname, false);
             }
 
             //设置图标背景色 对话框颜色
@@ -527,7 +519,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             //判断文件是否存在
 //            if (!FileUtils.checkFileExists(Tools.getFileNameWithSuffix(SaveUtils.getString(Save_Key.BootAn)))) {
             LogUtil.e(TAG, "开始下载");
-            new DownUtil(this).downLoad(SaveUtils.getString(Save_Key.BootAn),
+            new DownUtil().downLoad(SaveUtils.getString(Save_Key.BootAn),
                     "bootanimation.zip", false);
 //            }
         }
@@ -561,7 +553,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 //判断文件是否存在
                 if (!FileUtils.checkFileExists(filename)) {
                     //下载图片
-                    new DownUtil(this).downLoad(url, filename, false);
+                    new DownUtil().downLoad(url, filename, false);
 
                     //记录文件名
                     SaveUtils.setString(Save_Key.ItemImage + i, filename);
@@ -622,7 +614,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      * @param i
      */
     public void open(int i) {
-        try{
+        try {
 
             //数据缺失的情况
             if (hometype.size() <= i) {
@@ -666,7 +658,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                         } else {
 
                             Loading.show(this, "请稍后");
-                            new DownUtil(this).downLoad(channelList.getResult().get(i).getAppList().get(0).getDownloadUrl(), channelList.getResult().get(i).getAppList().get(0).getAppName() + ".apk", true);
+                            new DownUtil().downLoad(channelList.getResult().get(i).getAppList().get(0).getDownloadUrl(), channelList.getResult().get(i).getAppList().get(0).getAppName() + ".apk", true);
                         }
                     } else
                         Toast.makeText(this, "栏目未开通", Toast.LENGTH_SHORT).show();
@@ -684,7 +676,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                     Video_Activity.start(this, channelList.getResult().get(i).getContentUrl());
                     break;
             }
-        }catch(Exception ex){
+        } catch (Exception ex) {
             LogUtil.e(TAG, "打开栏目报错" + ex.getMessage());
         }
     }

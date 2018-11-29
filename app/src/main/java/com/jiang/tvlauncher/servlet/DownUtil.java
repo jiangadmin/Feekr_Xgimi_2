@@ -1,6 +1,5 @@
 package com.jiang.tvlauncher.servlet;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,6 +7,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.RemoteException;
 import android.view.KeyEvent;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.jiang.tvlauncher.MyAppliaction;
@@ -33,17 +33,13 @@ import java.net.URL;
 
 public class DownUtil {
     private static final String TAG = "DownUtil";
-    Activity activity;
 
     ProgressDialog pd;
 
-    public DownUtil(Activity activity) {
-        this.activity = activity;
-    }
-
     public void downLoad(final String path, final String fileName, final boolean showpd) {
         // 进度条对话框
-        pd = new ProgressDialog(activity);
+        pd = new ProgressDialog(MyAppliaction.context);
+        pd.getWindow().setType(WindowManager.LayoutParams.TYPE_TOAST);
         pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         pd.setMessage("下载中，精彩马上呈现，请稍后...");
         pd.setCanceledOnTouchOutside(false);
@@ -62,63 +58,45 @@ public class DownUtil {
         });
         // Sdcard不可用
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            Toast.makeText(activity, "SD卡不可用~", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyAppliaction.context, "SD卡不可用~", Toast.LENGTH_SHORT).show();
             Loading.dismiss();
 
         } else {
             if (showpd)
-                //    pd.show();
-                //下载的子线程
-                new Thread() {
-                    @Override
-                    public void run() {
-                        try {
-                            // 在子线程中下载APK文件
-                            final File file = getFileFromServer(path, fileName, pd);
-                            sleep(1000);
-                            // 安装APK文件
-                            LogUtil.e(TAG, "文件下载完成" + fileName);
-                            if (showpd)
-                                pd.dismiss(); // 结束掉进度条对话框
-                            //如果是安装包
-                            if (fileName.contains(".apk")) {
-                                LogUtil.e(TAG, "安装包");
+                if (MyAppliaction.activity == null || MyAppliaction.activity.isDestroyed() || MyAppliaction.activity.isFinishing()) {
+                    LogUtil.e(TAG, "当前活动已经被销毁");
+                } else {
+                    try {
+                        pd.show();
+                    } catch (WindowManager.BadTokenException e) {
+                        LogUtil.e(TAG, e.getMessage());
+                    }
+                }
 
-                                //是极米设备
-                                if (MyAppliaction.isxgimi) {
-                                    //调用极米静默安装
-                                    ApiProxyServiceClient.INSTANCE.binderAidlService(MyAppliaction.context, new ApiProxyServiceClient.IAidlConnectListener() {
-                                        @Override
-                                        public void onSuccess() {
-                                            LogUtil.e(TAG, "连接成功");
-                                            ApiProxyServiceClient.INSTANCE.silentInstallPackage(file.getPath(), null);
-                                            //释放资源
-                                            ApiProxyServiceClient.INSTANCE.release();
-                                        }
+            //下载的子线程
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        // 在子线程中下载APK文件
+                        final File file = getFileFromServer(path, fileName, pd);
+                        sleep(1000);
+                        // 安装APK文件
+                        LogUtil.e(TAG, "文件下载完成" + fileName);
+                        if (showpd)
+                            pd.dismiss(); // 结束掉进度条对话框
+                        //如果是安装包
+                        if (fileName.contains(".apk")) {
+                            LogUtil.e(TAG, "安装包");
 
-                                        @Override
-                                        public void onFailure(RemoteException e) {
-
-                                        }
-                                    });
-
-                                } else {
-                                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                                    intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-                                    activity.startActivity(intent);
-                                }
-
-                            }
-                            //如果是资源文件
-                            if (fileName.contains(".zip")) {
-                                LogUtil.e(TAG, "资源文件"+file.getPath());
+                            //是极米设备
+                            if (MyAppliaction.isxgimi) {
+                                //调用极米静默安装
                                 ApiProxyServiceClient.INSTANCE.binderAidlService(MyAppliaction.context, new ApiProxyServiceClient.IAidlConnectListener() {
                                     @Override
                                     public void onSuccess() {
-                                        LogUtil.e(TAG,"AIDL 连接成功");
-                                        //附上开机动画
-                                        ApiProxyServiceClient.INSTANCE.changeBootAnimation(file.getPath());
-
+                                        LogUtil.e(TAG, "连接成功");
+                                        ApiProxyServiceClient.INSTANCE.silentInstallPackage(file.getPath(), null);
                                         //释放资源
                                         ApiProxyServiceClient.INSTANCE.release();
                                     }
@@ -129,18 +107,45 @@ public class DownUtil {
                                     }
                                 });
 
+                            } else {
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+                                MyAppliaction.activity.startActivity(intent);
                             }
-                        } catch (Exception e) {
-                            LogUtil.e(TAG, "文件下载失败了" + e.getMessage());
 
-                            Loading.dismiss();
-                            if (showpd)
-                                pd.dismiss();
-                            e.printStackTrace();
                         }
-                    }
+                        //如果是资源文件
+                        if (fileName.contains(".zip")) {
+                            LogUtil.e(TAG, "资源文件" + file.getPath());
+                            ApiProxyServiceClient.INSTANCE.binderAidlService(MyAppliaction.context, new ApiProxyServiceClient.IAidlConnectListener() {
+                                @Override
+                                public void onSuccess() {
+                                    LogUtil.e(TAG, "AIDL 连接成功");
+                                    //附上开机动画
+                                    ApiProxyServiceClient.INSTANCE.changeBootAnimation(file.getPath());
 
-                }.start();
+                                    //释放资源
+                                    ApiProxyServiceClient.INSTANCE.release();
+                                }
+
+                                @Override
+                                public void onFailure(RemoteException e) {
+
+                                }
+                            });
+
+                        }
+                    } catch (Exception e) {
+                        LogUtil.e(TAG, "文件下载失败了" + e.getMessage());
+
+                        Loading.dismiss();
+                        if (showpd)
+                            pd.dismiss();
+                        e.printStackTrace();
+                    }
+                }
+
+            }.start();
         }
     }
 

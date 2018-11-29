@@ -61,7 +61,7 @@ public class Video_Activity extends Base_Activity {
             videoname = Tools.getFileNameWithSuffix(getIntent().getStringExtra(URL));
             SaveUtils.setString(Save_Key.NewVideoName, videoname);
             //下载视频
-            new DownUtil(this).downLoad(videourl, videoname, false);
+            new DownUtil().downLoad(videourl, videoname, false);
         } else {
             //判断是否有记录
             if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.NewVideoName))) {
