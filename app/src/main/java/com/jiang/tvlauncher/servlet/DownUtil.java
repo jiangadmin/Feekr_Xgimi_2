@@ -67,7 +67,7 @@ public class DownUtil {
 
         } else {
             if (showpd)
-                pd.show();
+            //    pd.show();
             //下载的子线程
             new Thread() {
                 @Override
