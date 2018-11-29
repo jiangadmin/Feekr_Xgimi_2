@@ -122,7 +122,7 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
 
                 } else {
                     Loading.show(MyAppliaction.activity, "请稍后");
-                    new DownUtil(MyAppliaction.activity).downLoad(Const.云视听Url, "云视听.apk", true);
+                    new DownUtil().downLoad(Const.云视听Url, "云视听.apk", true);
                 }
             }
         }

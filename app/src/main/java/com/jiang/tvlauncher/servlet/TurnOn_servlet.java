@@ -163,24 +163,24 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                     //TODO:投影方式 JAR有问题
                     XgimiManager.getInstance().xgimiDlp("XgimiProjectMode", String.valueOf(shadowcnfBean.getProjectMode()), null, null);
 
-                    switch (shadowcnfBean.getProjectMode()) {
-                        //正装正投
-                        case 0:
-                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Normal);
-                            break;
-                        //吊装正投
-                        case 1:
-                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Mirror);
-                            break;
-                        //正装背投
-                        case 2:
-                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Normal);
-                            break;
-                        //吊装背投
-                        case 3:
-                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Mirror);
-                            break;
-                    }
+//                    switch (shadowcnfBean.getProjectMode()) {
+//                        //正装正投
+//                        case 0:
+//                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Normal);
+//                            break;
+//                        //吊装正投
+//                        case 1:
+//                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Mirror);
+//                            break;
+//                        //正装背投
+//                        case 2:
+//                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Normal);
+//                            break;
+//                        //吊装背投
+//                        case 3:
+//                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Mirror);
+//                            break;
+//                    }
                 }
 
                 //梯形校正开关
@@ -244,6 +244,9 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         switch (entity.getErrorcode()) {
             case 1000:
                 EventBus.getDefault().post("update");
+
+                LogUtil.e(TAG,"发消息");
+                EventBus.getDefault().post("nanchuan");
                 break;
         }
     }

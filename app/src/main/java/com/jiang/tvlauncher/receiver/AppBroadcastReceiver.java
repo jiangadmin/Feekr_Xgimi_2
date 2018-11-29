@@ -59,7 +59,7 @@ public class AppBroadcastReceiver extends BroadcastReceiver {
                 builder.show();
             } else {
                 Loading.show(MyAppliaction.activity, "请稍后");
-                new DownUtil(MyAppliaction.activity).downLoad(SaveUtils.getString(Const.TvViedoDow), packname + ".apk", true);
+                new DownUtil().downLoad(SaveUtils.getString(Const.TvViedoDow), packname + ".apk", true);
             }
         }
     }

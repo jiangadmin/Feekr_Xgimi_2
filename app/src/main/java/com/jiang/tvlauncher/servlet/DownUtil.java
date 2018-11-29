@@ -1,6 +1,5 @@
 package com.jiang.tvlauncher.servlet;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,6 +7,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.RemoteException;
 import android.view.KeyEvent;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.jiang.tvlauncher.MyAppliaction;
@@ -33,17 +33,13 @@ import java.net.URL;
 
 public class DownUtil {
     private static final String TAG = "DownUtil";
-    Activity activity;
 
     ProgressDialog pd;
 
-    public DownUtil(Activity activity) {
-        this.activity = activity;
-    }
-
     public void downLoad(final String path, final String fileName, final boolean showpd) {
         // 进度条对话框
-        pd = new ProgressDialog(activity);
+        pd = new ProgressDialog(MyAppliaction.context);
+        pd.getWindow().setType(WindowManager.LayoutParams.TYPE_TOAST);
         pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         pd.setMessage("下载中，精彩马上呈现，请稍后...");
         pd.setCanceledOnTouchOutside(false);
@@ -62,12 +58,21 @@ public class DownUtil {
         });
         // Sdcard不可用
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            Toast.makeText(activity, "SD卡不可用~", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyAppliaction.context, "SD卡不可用~", Toast.LENGTH_SHORT).show();
             Loading.dismiss();
 
         } else {
             if (showpd)
-            //    pd.show();
+                if (MyAppliaction.activity == null || MyAppliaction.activity.isDestroyed() || MyAppliaction.activity.isFinishing()) {
+                    LogUtil.e(TAG, "当前活动已经被销毁");
+                } else {
+                    try {
+                        pd.show();
+                    } catch (WindowManager.BadTokenException e) {
+                        LogUtil.e(TAG, e.getMessage());
+                    }
+                }
+
             //下载的子线程
             new Thread() {
                 @Override
@@ -105,17 +110,17 @@ public class DownUtil {
                             } else {
                                 Intent intent = new Intent(Intent.ACTION_VIEW);
                                 intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-                                activity.startActivity(intent);
+                                MyAppliaction.activity.startActivity(intent);
                             }
 
                         }
                         //如果是资源文件
                         if (fileName.contains(".zip")) {
-                            LogUtil.e(TAG, "资源文件"+file.getPath());
+                            LogUtil.e(TAG, "资源文件" + file.getPath());
                             ApiProxyServiceClient.INSTANCE.binderAidlService(MyAppliaction.context, new ApiProxyServiceClient.IAidlConnectListener() {
                                 @Override
                                 public void onSuccess() {
-                                    LogUtil.e(TAG,"AIDL 连接成功");
+                                    LogUtil.e(TAG, "AIDL 连接成功");
                                     //附上开机动画
                                     ApiProxyServiceClient.INSTANCE.changeBootAnimation(file.getPath());
 
