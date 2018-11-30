@@ -207,7 +207,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                     public void run() {
                         nanchuan();
                     }
-                }, 2000);
+                }, 1000);
                 //检查更新
                 new Update_Servlet(this).execute();
                 //查询栏目
@@ -342,7 +342,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      * 南方传媒认证
      */
     public void nanchuan() {
-        if (!nanchuanAuthFlag && Tools.isNetworkConnected()) {
+        if (!nanchuanAuthFlag && Tools.isNetworkConnected() && MyAppliaction.TurnOnS == true) {
             nanchuanAuthFlag = true;
 
             Intent intent = new Intent("com.snm.upgrade.approve.ApproveManagerServer");
@@ -358,10 +358,10 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                             public void returnResult(String Result) {
                                 if (Result.equals("998")) {
                                     NanChuan_Ok = false;
-                                    Toast.makeText(getApplicationContext(), "南方传媒认证失败"+Result, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "南方传媒认证失败", Toast.LENGTH_LONG).show();
                                 } else {
                                     NanChuan_Ok = true;
-                                    Toast.makeText(getApplicationContext(), "南方传媒认证成功"+Result, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "南方传媒认证成功", Toast.LENGTH_LONG).show();
                                 }
                                 return;
                             }
