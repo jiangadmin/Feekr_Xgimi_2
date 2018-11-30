@@ -244,9 +244,6 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         switch (entity.getErrorcode()) {
             case 1000:
                 EventBus.getDefault().post("update");
-
-                LogUtil.e(TAG,"发消息");
-                EventBus.getDefault().post("nanchuan");
                 break;
         }
     }

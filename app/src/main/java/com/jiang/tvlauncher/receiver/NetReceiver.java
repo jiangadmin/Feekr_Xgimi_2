@@ -42,6 +42,8 @@ public class NetReceiver extends BroadcastReceiver {
                     if (Tools.isNetworkConnected())
                         NetDialog.dismiss();
                 }
+                LogUtil.e(TAG,"发消息");
+                EventBus.getDefault().post("nanchuan");
             } else {
                 LogUtil.e(TAG, "网络断开");
                 NetDialog.showW();
