@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
@@ -201,9 +202,15 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 break;
 
             case "update":
+                //南传认证
+                new Handler().postDelayed(new Runnable(){
+                    public void run() {
+                        nanchuan();
+                    }
+                }, 2000);
                 //检查更新
                 new Update_Servlet(this).execute();
-
+                //查询栏目
                 new FindChannelList_Servlet().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 //获取主题
                 new Get_Theme_Servlet().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -351,10 +358,10 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                             public void returnResult(String Result) {
                                 if (Result.equals("998")) {
                                     NanChuan_Ok = false;
-                                    Toast.makeText(getApplicationContext(), "南方传媒认证失败", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "南方传媒认证失败"+Result, Toast.LENGTH_SHORT).show();
                                 } else {
                                     NanChuan_Ok = true;
-                                    Toast.makeText(getApplicationContext(), "南方传媒认证成功", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getApplicationContext(), "南方传媒认证成功"+Result, Toast.LENGTH_SHORT).show();
                                 }
                                 return;
                             }
