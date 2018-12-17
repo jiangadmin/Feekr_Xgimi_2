@@ -73,4 +73,5 @@ dependencies {
     //极米
     implementation(name: 'com.xgimi.business.api_v2.0.4_15', ext: 'aar')
     implementation files('libs/lgeek_jimi_sdk_V1.0.0.jar')
+    implementation files('libs/thirdagent-2.0.1..jar')
 }
