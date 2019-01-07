@@ -3,24 +3,18 @@ package com.jiang.tvlauncher;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.content.IntentFilter;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.text.TextUtils;
 
 import com.jiang.tvlauncher.entity.Point;
 import com.jiang.tvlauncher.entity.Save_Key;
-import com.jiang.tvlauncher.receiver.NetReceiver;
 import com.jiang.tvlauncher.servlet.TurnOn_servlet;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.xgimi.business.api.clients.XgimiDeviceClient;
-import com.xgimi.business.api.projectors.IXgimiProjector;
-import com.xgimi.business.api.projectors.XgimiProjectorFactory;
-
-import java.security.KeyStore;
+import com.xgimi.business.api.hardwares.FanAndTemperatureManager;
 
 /**
  * Created by  jiang
@@ -40,8 +34,8 @@ public class MyAppliaction extends Application {
     public static String modelNum = "Z6X";
     public static String ID = "";
     public static String SN = XgimiDeviceClient.getMachineId();
-    public static String Temp = "FFFFFF";
-    public static String WindSpeed = "FFFFFF";
+    public static int Temp = 0;
+    public static int WindSpeed = 0;
     public static String turnType = "2";//开机类型 1 通电开机 2 手动开机
     Point point;
     public static boolean TurnOnS = false;
@@ -80,6 +74,20 @@ public class MyAppliaction extends Application {
 
         if (!TextUtils.isEmpty(SN)) {
             isxgimi = true;
+
+            TempWindSpeed();
         }
+    }
+
+    public void TempWindSpeed() {
+        FanAndTemperatureManager.INSTANCE.registerTemperatureRefreshListener(new FanAndTemperatureManager.ITemperatureRefreshListener() {
+            @Override
+            public void onRefresh(int serial, int temp) {
+                Temp = temp;
+
+                //风扇转速等级
+                WindSpeed = FanAndTemperatureManager.INSTANCE.getWindSpeedLevel();
+            }
+        });
     }
 }

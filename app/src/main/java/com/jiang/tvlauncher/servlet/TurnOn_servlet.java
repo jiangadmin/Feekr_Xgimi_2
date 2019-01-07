@@ -20,6 +20,7 @@ import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
 import com.jiang.tvlauncher.utils.WifiApUtils;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.xgimi.api.XgimiManager;
 import com.xgimi.business.api.clients.XgimiDeviceClient;
 import com.xgimi.business.api.enums.EnumProjectionMode;
@@ -106,7 +107,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             num = 0;
 
             Const.ID = devInfoBean.getId();
-
+            CrashReport.setUserId(String.valueOf(devInfoBean.getId()));
             //存储ID
             SaveUtils.setString(Save_Key.ID, String.valueOf(devInfoBean.getId()));
 
@@ -160,27 +161,25 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
                 //投影方式开关
                 if (shadowcnfBean.getProjectModeFlag() == 1) {
-                    //TODO:投影方式 JAR有问题
-                    XgimiManager.getInstance().xgimiDlp("XgimiProjectMode", String.valueOf(shadowcnfBean.getProjectMode()), null, null);
 
-//                    switch (shadowcnfBean.getProjectMode()) {
-//                        //正装正投
-//                        case 0:
-//                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Normal);
-//                            break;
-//                        //吊装正投
-//                        case 1:
-//                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Mirror);
-//                            break;
-//                        //正装背投
-//                        case 2:
-//                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Normal);
-//                            break;
-//                        //吊装背投
-//                        case 3:
-//                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Mirror);
-//                            break;
-//                    }
+                    switch (shadowcnfBean.getProjectMode()) {
+                        //正装正投
+                        case 0:
+                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Normal);
+                            break;
+                        //吊装正投
+                        case 1:
+                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Mirror);
+                            break;
+                        //正装背投
+                        case 2:
+                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Normal);
+                            break;
+                        //吊装背投
+                        case 3:
+                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Mirror);
+                            break;
+                    }
                 }
 
                 //梯形校正开关

@@ -3,6 +3,7 @@ package com.jiang.tvlauncher.servlet;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
+import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.MonitorResEntity;
 import com.jiang.tvlauncher.entity.Save_Key;
@@ -31,20 +32,15 @@ public class Timing_Servlet extends AsyncTask<String, Integer, MonitorResEntity>
 
     @Override
     protected MonitorResEntity doInBackground(String... infos) {
-        Map map = new HashMap();
+        Map<String,String> map = new HashMap();
         map.put("devId", SaveUtils.getString(Save_Key.ID));
         map.put("netSpeed", "1");
         map.put("storage", FileUtils.getRomSize());
         map.put("memoryInfo", FileUtils.getAvailMemory());
         map.put("avaSpace", FileUtils.getFreeDiskSpaceS());
-        try {
-//            map.put("cpuTemp", MyAppliaction.apiManager.get("getTemp", null, null));
-//            map.put("fanSpeed", MyAppliaction.apiManager.get("getWindSpeed", null, null));
-        } catch (Exception e) {
-            e.printStackTrace();
-            map.put("cpuTemp", "0");
-            map.put("fanSpeed", "0");
-        }
+        map.put("cpuTemp", String.valueOf(MyAppliaction.Temp));
+        map.put("fanSpeed", String.valueOf(MyAppliaction.WindSpeed));
+
         String res = HttpUtil.doPost(Const.URL + "dev/devRunStateController/monitorRunState.do", map);
         MonitorResEntity entity;
         if (res != null) {
