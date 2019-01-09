@@ -61,6 +61,8 @@ import com.jiang.tvlauncher.view.TitleView;
 import com.lgeek.tv.jimi.LgeekTVSdkMrg;
 import com.snm.upgrade.aidl.ApproveDeviceManager;
 import com.snm.upgrade.aidl.ITaskCallback;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -370,6 +372,8 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                         int flag = approveDeviceManager.requestApprove();
                         return;
                     } catch (Exception e) {
+                        LogUtil.e(TAG,e.getMessage());
+                        CrashReport.postCatchedException(e);
                         e.printStackTrace();
                     }
                 }
@@ -387,7 +391,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
         switch (keyCode) {
             case KeyEvent.KEYCODE_MENU:
                 System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);// 数组向左移位操作
