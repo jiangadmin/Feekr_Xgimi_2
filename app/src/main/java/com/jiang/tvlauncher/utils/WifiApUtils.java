@@ -60,7 +60,7 @@ public class WifiApUtils {
         return false;
     }
 
-    public boolean closeWifiAp() {
+    public static boolean closeWifiAp() {
         Method method = null;
         boolean result;
         try {
