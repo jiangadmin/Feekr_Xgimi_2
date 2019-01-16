@@ -109,7 +109,9 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         setContentView(R.layout.activty_home);
         MyAppliaction.activity = this;
 
@@ -131,7 +133,9 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     @Override
     protected void onDestroy() {
-        EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
         super.onDestroy();
     }
 
