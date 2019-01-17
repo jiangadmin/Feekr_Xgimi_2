@@ -69,9 +69,12 @@ dependencies {
     //Gilde图片加载库
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     //高斯模糊
-    implementation 'jp.wasabeef:glide-transformations:2.0.2'
+//    implementation 'jp.wasabeef:glide-transformations:2.0.2'
     //极米
-    implementation(name: 'xgimiopenapi', ext: 'aar')
+//    implementation(name: 'xgimiopenapi', ext: 'aar')
+    implementation(name: 'com.xgimi.business.api_v2.0.8_19', ext: 'aar')
+    //逻辑科技
     implementation files('libs/lgeek_jimi_sdk_V1.0.0.jar')
+    //腾讯
     implementation files('libs/thirdagent-2.0.1..jar')
 }

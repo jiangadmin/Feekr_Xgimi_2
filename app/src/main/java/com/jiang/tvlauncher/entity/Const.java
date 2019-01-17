@@ -13,8 +13,8 @@ import android.os.Environment;
 public class Const {
 
 //    public static String URL = "http://api.feekrs.com/";
-//    public static String URL = "http://testapi.feekrs.com/";
-    public static String URL = "http://api.tentrip.aisee.tv/";
+    public static String URL = "http://testapi.feekrs.com/";
+//    public static String URL = "http://api.tentrip.aisee.tv/";
 
     public static int Timing = 30;
     public static int ID;
