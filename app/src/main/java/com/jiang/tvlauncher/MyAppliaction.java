@@ -37,6 +37,7 @@ public class MyAppliaction extends Application {
     public static String modelNum = "Z6X";
     public static String ID = "";
     public static String SN = XgimiDeviceClient.getMachineId();
+//    public static String SN = "EKJ9J517DXBJ";
     public static int Temp = 0;
     public static int WindSpeed = 0;
     public static String turnType = "2";//开机类型 1 通电开机 2 手动开机

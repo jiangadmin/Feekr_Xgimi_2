@@ -120,14 +120,13 @@ public class WifiApUtils {
         }
     }
 
-
     /**
      * 自定义wifi热点
      *
      * @param enabled 开启or关闭
      * @return
      */
-    public static boolean setWifiApEnabled(Context context,boolean enabled,String ssid,String pwd) {
+    public static boolean setWifiApEnabled(Context context, boolean enabled, String ssid, String pwd) {
         boolean result = false;
         WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         if (enabled) {
@@ -151,7 +150,6 @@ public class WifiApUtils {
             result = (Boolean) method.invoke(wifiManager, apConfig, enabled);
             if (!result) {
                 Toast.makeText(context, "热点创建失败", Toast.LENGTH_SHORT).show();
-
             }
         } catch (Exception e) {
             Toast.makeText(context, "热点创建失败", Toast.LENGTH_SHORT).show();

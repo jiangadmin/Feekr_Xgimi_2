@@ -360,10 +360,10 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                             public void returnResult(String Result) {
                                 if (Result.equals("998")) {
                                     NanChuan_Ok = false;
-                                    Toast.makeText(getApplicationContext(), "南方传媒认证失败", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(MyAppliaction.context, "南方传媒认证失败", Toast.LENGTH_LONG).show();
                                 } else {
                                     NanChuan_Ok = true;
-                                    Toast.makeText(getApplicationContext(), "南方传媒认证成功", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(MyAppliaction.context, "南方传媒认证成功", Toast.LENGTH_LONG).show();
                                 }
                                 return;
                             }
