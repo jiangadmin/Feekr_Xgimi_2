@@ -161,27 +161,24 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
                 //投影方式开关
                 if (shadowcnfBean.getProjectModeFlag() == 1) {
-
-                    XgimiManager.getInstance().xgimiDlp("XgimiProjectMode", String.valueOf(shadowcnfBean.getProjectMode()), null, null);
-
-//                    switch (shadowcnfBean.getProjectMode()) {
-//                        //正装正投
-//                        case 0:
-//                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Normal);
-//                            break;
-//                        //吊装正投
-//                        case 1:
-//                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Mirror);
-//                            break;
-//                        //正装背投
-//                        case 2:
-//                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Normal);
-//                            break;
-//                        //吊装背投
-//                        case 3:
-//                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Mirror);
-//                            break;
-//                    }
+                    switch (shadowcnfBean.getProjectMode()) {
+                        //正装正投
+                        case 0:
+                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Normal);
+                            break;
+                        //吊装正投
+                        case 1:
+                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Mirror);
+                            break;
+                        //正装背投
+                        case 2:
+                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Normal);
+                            break;
+                        //吊装背投
+                        case 3:
+                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Mirror);
+                            break;
+                    }
                 }
 
                 //梯形校正开关

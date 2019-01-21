@@ -33,7 +33,6 @@ import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.dialog.NetDialog;
 import com.jiang.tvlauncher.dialog.PwdDialog;
-import com.jiang.tvlauncher.dialog.WIFIAPDialog;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.FindChannelList;
 import com.jiang.tvlauncher.entity.Save_Key;
@@ -399,9 +398,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         }
 
         switch (view.getId()) {
-            case R.id.wifiap:
-                new WIFIAPDialog(this).show();
-                break;
             case R.id.back:
                 new PwdDialog(this, R.style.MyDialog).show();
                 break;

@@ -39,7 +39,6 @@ import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.dialog.NetDialog;
 import com.jiang.tvlauncher.dialog.PwdDialog;
-import com.jiang.tvlauncher.dialog.WIFIAPDialog;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.FindChannelList;
 import com.jiang.tvlauncher.entity.Save_Key;
@@ -61,7 +60,6 @@ import com.jiang.tvlauncher.view.TitleView;
 import com.lgeek.tv.jimi.LgeekTVSdkMrg;
 import com.snm.upgrade.aidl.ApproveDeviceManager;
 import com.snm.upgrade.aidl.ITaskCallback;
-import com.tencent.bugly.Bugly;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import org.greenrobot.eventbus.EventBus;
@@ -205,7 +203,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
             case "update":
                 //南传认证
-                new Handler().postDelayed(new Runnable(){
+                new Handler().postDelayed(new Runnable() {
                     public void run() {
                         nanchuan();
                     }
@@ -372,7 +370,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                         int flag = approveDeviceManager.requestApprove();
                         return;
                     } catch (Exception e) {
-                        LogUtil.e(TAG,e.getMessage());
+                        LogUtil.e(TAG, e.getMessage());
                         CrashReport.postCatchedException(e);
                         e.printStackTrace();
                     }
@@ -445,16 +443,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
         Theme_Entity.ResultBean bean = entity.getResult();
         if (bean != null) {
-            //赋值背景 前景显示
-            Glide.with(this).load(bean.getBgImg()).into(main_bg);
-//            Glide.with(this).load(R.drawable.show).into(main_bg);
-
-//            //赋值背景 背景高斯模糊
-//            RequestOptions options = new RequestOptions();
-//            options.bitmapTransform(new BlurTransformation(this, 20, 1));
-//            options.skipMemoryCache(false);
-//            options.diskCacheStrategy(DiskCacheStrategy.ALL);
-//            Glide.with(this).load(bean.getBgImg()).apply(options).into(main_bg_0);
 
             //图片名
             String imgname = Tools.getFileNameWithSuffix(bean.getBgImg());
@@ -462,6 +450,16 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             if (!FileUtils.checkFileExists(imgname)) {
                 //下载图片
                 new DownUtil().downLoad(bean.getBgImg(), imgname, false);
+            }
+
+            //赋值背景 前景显示
+            try {
+                RequestOptions builder = new RequestOptions();
+                builder.placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(Const.FilePath + SaveUtils.getString(Save_Key.BackGround)))));
+                builder.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(Const.FilePath + SaveUtils.getString(Save_Key.BackGround)))));
+                Glide.with(this).load(bean.getBgImg()).apply(builder).into(main_bg);
+            } catch (Exception e) {
+
             }
 
             //设置图标背景色 对话框颜色
@@ -590,9 +588,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         }
 
         switch (view.getId()) {
-            case R.id.wifiap:
-                new WIFIAPDialog(this).show();
-                break;
             case R.id.back:
                 new PwdDialog(this, R.style.MyDialog).show();
                 break;

@@ -1320,29 +1320,6 @@ public class ImageUtils {
         }
     }
 
-    /**
-     * 根据字符串生成二维码
-     *
-     * @param str
-     * @return
-     */
-    public static Bitmap getQRcode(String str) {
-        // 生成二维码
-        String s;
-        try {
-            s = new String(str.getBytes("utf-8"), "ISO-8859-1");
-            if (s != null && s.trim().length() > 0) {
-                return EncodingHandler.createQRCode(s, 720);
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-
     // 图片缩放比例(即模糊度)
     private static final float BITMAP_SCALE = 0.4f;
 
