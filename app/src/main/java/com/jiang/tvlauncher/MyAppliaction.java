@@ -62,9 +62,11 @@ public class MyAppliaction extends Application {
         LogUtil.e(TAG, "休眠时间：" + Tools.getScreenOffTime());
 
         SaveUtils.setBoolean(Save_Key.FristTurnOn, true);
-
-        modelNum = XgimiProjectorFactory.create().getProjectorType();
-
+        try {
+            modelNum = XgimiProjectorFactory.create().getProjectorType();
+        }catch (Exception ex){
+            LogUtil.e(TAG,"获取机型失败："+ex.getMessage());
+        }
         //初始化
 //        IXgimiProjector xgimiProjector = XgimiProjectorFactory.create();
 
