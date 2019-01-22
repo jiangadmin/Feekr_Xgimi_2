@@ -5,7 +5,6 @@ import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.jiang.tvlauncher.entity.Point;
 import com.jiang.tvlauncher.entity.Save_Key;
@@ -16,7 +15,6 @@ import com.jiang.tvlauncher.utils.Tools;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.xgimi.business.api.clients.XgimiDeviceClient;
 import com.xgimi.business.api.hardwares.FanAndTemperatureManager;
-import com.xgimi.business.api.projectors.IXgimiProjector;
 import com.xgimi.business.api.projectors.XgimiProjectorFactory;
 
 /**
@@ -37,7 +35,7 @@ public class MyAppliaction extends Application {
     public static String modelNum = "Z6X";
     public static String ID = "";
     public static String SN = XgimiDeviceClient.getMachineId();
-//    public static String SN = "EKJ9J517DXBJ";
+    //    public static String SN = "EKJ9J517DXBJ";
     public static int Temp = 0;
     public static int WindSpeed = 0;
     public static String turnType = "2";//开机类型 1 通电开机 2 手动开机
@@ -65,11 +63,7 @@ public class MyAppliaction extends Application {
 
         SaveUtils.setBoolean(Save_Key.FristTurnOn, true);
 
-        IXgimiProjector projector = XgimiProjectorFactory.create();
-        modelNum = projector.getProjectorType();
-
-        Toast.makeText(this,modelNum,Toast.LENGTH_SHORT).show();
-
+        modelNum = XgimiProjectorFactory.create().getProjectorType();
 
         //初始化
 //        IXgimiProjector xgimiProjector = XgimiProjectorFactory.create();
