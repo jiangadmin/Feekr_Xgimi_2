@@ -21,7 +21,6 @@ import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
 import com.jiang.tvlauncher.utils.WifiApUtils;
 import com.tencent.bugly.crashreport.CrashReport;
-import com.xgimi.api.XgimiManager;
 import com.xgimi.business.api.clients.XgimiDeviceClient;
 import com.xgimi.business.api.enums.EnumProjectionMode;
 
@@ -185,10 +184,9 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                 if (shadowcnfBean.getZoomFlag() == 1) {
                     //初始化梯形数据
                     Point point = new Gson().fromJson(s, Point.class);
-                    for (int i = 0; i < point.getPoint().size(); i++) {
-//                            MyAppliaction.apiManager.set("setKeyStoneByPoint", point.getPoint().get(i).getIdx(), point.getPoint().get(i).getCurrent_x(), point.getPoint().get(i).getCurrent_y(), null);
 
-                    }
+                    new Set_Point_Asnc().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, point);
+
                 }
             }
 
