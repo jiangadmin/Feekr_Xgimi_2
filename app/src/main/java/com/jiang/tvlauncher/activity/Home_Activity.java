@@ -33,7 +33,6 @@ import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.dialog.NetDialog;
 import com.jiang.tvlauncher.dialog.PwdDialog;
-import com.jiang.tvlauncher.dialog.WIFIAPDialog;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.FindChannelList;
 import com.jiang.tvlauncher.entity.Save_Key;
@@ -109,7 +108,9 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
         setContentView(R.layout.activty_home);
         MyAppliaction.activity = this;
 
@@ -131,7 +132,9 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
     @Override
     protected void onDestroy() {
-        EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this);
+        }
         super.onDestroy();
     }
 
@@ -395,9 +398,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         }
 
         switch (view.getId()) {
-            case R.id.wifiap:
-                new WIFIAPDialog(this).show();
-                break;
             case R.id.back:
                 new PwdDialog(this, R.style.MyDialog).show();
                 break;

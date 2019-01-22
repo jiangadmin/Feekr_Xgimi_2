@@ -32,7 +32,7 @@ public class Timing_Servlet extends AsyncTask<String, Integer, MonitorResEntity>
 
     @Override
     protected MonitorResEntity doInBackground(String... infos) {
-        Map<String,String> map = new HashMap();
+        Map<String, String> map = new HashMap<>();
         map.put("devId", SaveUtils.getString(Save_Key.ID));
         map.put("netSpeed", "1");
         map.put("storage", FileUtils.getRomSize());

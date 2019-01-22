@@ -161,7 +161,6 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
                 //投影方式开关
                 if (shadowcnfBean.getProjectModeFlag() == 1) {
-
                     switch (shadowcnfBean.getProjectMode()) {
                         //正装正投
                         case 0:

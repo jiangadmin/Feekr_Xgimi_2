@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
  */
 
 public class WifiApUtils {
+    private static final String TAG = "WifiApUtils";
 
     private static WifiManager mWifiManager;
     private static WifiApUtils wifiApUtils;
@@ -60,7 +61,7 @@ public class WifiApUtils {
         return false;
     }
 
-    public boolean closeWifiAp() {
+    public static boolean closeWifiAp() {
         Method method = null;
         boolean result;
         try {
@@ -127,7 +128,8 @@ public class WifiApUtils {
      * @param enabled 开启or关闭
      * @return
      */
-    public static boolean setWifiApEnabled(Context context,boolean enabled,String ssid,String pwd) {
+    public static boolean setWifiApEnabled(Context context, boolean enabled, String ssid, String pwd) {
+        LogUtil.e(TAG, "WIFIAP:" + enabled);
         boolean result = false;
         WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         if (enabled) {
@@ -137,23 +139,34 @@ public class WifiApUtils {
             }
         }
         try {
+        LogUtil.e(TAG, "WIFIAP:" + enabled);
             //热点的配置类
             WifiConfiguration apConfig = new WifiConfiguration();
+            LogUtil.e(TAG, "WIFIAP:" + enabled);
             //配置热点的名称
             apConfig.SSID = ssid;
+            LogUtil.e(TAG, "WIFIAP:" + enabled);
             //配置热点的密码，至少八位
             apConfig.preSharedKey = pwd;
+            LogUtil.e(TAG, "WIFIAP:" + enabled);
+            apConfig.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
+            LogUtil.e(TAG, "WIFIAP:" + enabled);
             //配置热点安全性选项
             apConfig.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+            LogUtil.e(TAG, "WIFIAP:" + enabled);
             //通过反射调用设置热点
             Method method = wifiManager.getClass().getMethod("setWifiApEnabled", WifiConfiguration.class, boolean.class);
+            LogUtil.e(TAG, "WIFIAP:" + enabled);
             //返回热点打开状态
             result = (Boolean) method.invoke(wifiManager, apConfig, enabled);
+            LogUtil.e(TAG, "WIFIAP:" + enabled);
             if (!result) {
+                LogUtil.e(TAG, "WIFIAP创建成功" );
                 Toast.makeText(context, "热点创建失败", Toast.LENGTH_SHORT).show();
 
             }
         } catch (Exception e) {
+            LogUtil.e(TAG, "WIFIAP创建失败" +e.getMessage());
             Toast.makeText(context, "热点创建失败", Toast.LENGTH_SHORT).show();
 
         }

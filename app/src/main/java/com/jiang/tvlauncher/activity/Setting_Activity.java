@@ -22,6 +22,8 @@ import com.jiang.tvlauncher.servlet.Update_Servlet;
 import com.jiang.tvlauncher.utils.FileUtils;
 import com.jiang.tvlauncher.utils.Tools;
 import com.lgeek.tv.jimi.LgeekTVSdkMrg;
+import com.tencent.bugly.crashreport.CrashReport;
+import com.xgimi.business.api.clients.XgimiDeviceClient;
 import com.xgimi.business.api.enums.EnumSettingsActivity;
 
 import java.io.File;
@@ -54,9 +56,7 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
         initview();
         initeven();
 
-
     }
-
 
     @Override
     protected void onDestroy() {
@@ -83,21 +83,25 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode==KeyEvent.KEYCODE_MENU){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("存储信息");
-            String message = "";
-            message += "共存储文件：" + FileUtils.getFileList(new File(Const.FilePath));
-            message += "\n总体积：" + FileUtils.formatFileSize(FileUtils.getDirSize(new File(Const.FilePath)));
-            builder.setMessage(message);
-            builder.setPositiveButton("清除", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    FileUtils.deleteFile(new File(Const.FilePath));
-                    Toast.makeText(getApplicationContext(),"清除成功",Toast.LENGTH_SHORT).show();
-                }
-            });
-            builder.show();
+        if (keyCode == KeyEvent.KEYCODE_MENU) {
+            try {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("存储信息");
+                String message = "";
+                message += "共存储文件：" + FileUtils.getFileList(new File(Const.FilePath));
+                message += "\n总体积：" + FileUtils.formatFileSize(FileUtils.getDirSize(new File(Const.FilePath)));
+                builder.setMessage(message);
+                builder.setPositiveButton("清除", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        FileUtils.deleteFile(new File(Const.FilePath));
+                        Toast.makeText(getApplicationContext(), "清除成功", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.show();
+            }catch (Exception e){
+                CrashReport.postCatchedException(e);
+            }
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -113,7 +117,7 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
                     startActivity(new Intent(Settings.ACTION_WIRELESS_SETTINGS));
                 else
                     //启动到无线连接页面
-                    startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                    XgimiDeviceClient.startSettingsActivity(this, EnumSettingsActivity.WIFIActivity);
                 break;
             //蓝牙设置
             case R.id.setting_2:
@@ -122,11 +126,12 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
                 break;
             //梯形校正
             case R.id.setting_3:
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                ComponentName cn = new ComponentName("com.android.newsettings", "com.android.newsettings.framesettings.kstActivity");
-                intent.setComponent(cn);
-                startActivity(new Intent(intent));
+                Toast.makeText(this,"开发中",Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(Intent.ACTION_MAIN);
+//                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+//                ComponentName cn = new ComponentName("com.android.newsettings", "com.android.newsettings.framesettings.kstActivity");
+//                intent.setComponent(cn);
+//                startActivity(new Intent(intent));
                 break;
             //文件管理
             case R.id.setting_4:
@@ -162,6 +167,4 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
             builder.show();
         }
     }
-
-
 }
