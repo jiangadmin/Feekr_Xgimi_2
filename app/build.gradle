@@ -35,9 +35,16 @@ android {
 
     buildTypes {
         release {
+//            buildConfigField "String", "NetUrl", "\"http://api.feekrs.com/\""
+            buildConfigField "String", "NetUrl", "\"http://testapi.feekrs.com/\""
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.jiang
+        }
+        debug{
+            buildConfigField "String", "NetUrl", "\"http://testapi.feekrs.com/\""
+
         }
     }
 
