@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyAPP;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.utils.Tools;
 
@@ -29,8 +29,8 @@ public class NetDialog {
      * 显示警告框
      */
     public static void showW() {
-        if (MyAppliaction.activity != null && netWarningDialog == null) {
-            netWarningDialog = new NetWarningDialog(MyAppliaction.activity);
+        if (MyAPP.activity != null && netWarningDialog == null) {
+            netWarningDialog = new NetWarningDialog(MyAPP.activity);
             try {
                 netWarningDialog.show();
             } catch (RuntimeException e) {
@@ -43,8 +43,8 @@ public class NetDialog {
      * 显示等待框
      */
     public static void showL() {
-        if (MyAppliaction.activity != null && netLoadingDialog == null) {
-            netLoadingDialog = new NetLoadingDialog(MyAppliaction.activity);
+        if (MyAPP.activity != null && netLoadingDialog == null) {
+            netLoadingDialog = new NetLoadingDialog(MyAPP.activity);
             netLoadingDialog.show();
 
             timeCount = new TimeCount(30000, 1000);

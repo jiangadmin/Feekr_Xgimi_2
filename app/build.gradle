@@ -85,5 +85,5 @@ dependencies {
     //逻辑科技
     implementation files('libs/lgeek_jimi_sdk_V1.0.0.jar')
     //腾讯
-    implementation files('libs/thirdagent-2.0.1..jar')
+    implementation files('libs/thirdagent-2.0.0.jar')
 }

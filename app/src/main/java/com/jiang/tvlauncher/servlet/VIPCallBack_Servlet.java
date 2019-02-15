@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyAPP;
 import com.jiang.tvlauncher.entity.BaseEntity;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.utils.HttpUtil;
@@ -29,7 +29,7 @@ public class VIPCallBack_Servlet extends AsyncTask<VIPCallBack_Servlet.TencentVi
         Map map = new HashMap();
         map.put("vuid", Const.ktcp_vuid);
         map.put("vtoken", Const.ktcp_vtoken);
-        map.put("serialNum", MyAppliaction.SN);
+        map.put("serialNum", MyAPP.SN);
         map.put("code", vip.getCode());
         map.put("msg", vip.getMsg());
         map.put("eventId", vip.getEventId());

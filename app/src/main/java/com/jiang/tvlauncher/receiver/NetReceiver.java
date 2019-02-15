@@ -6,12 +6,10 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyAPP;
 import com.jiang.tvlauncher.dialog.NetDialog;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.Tools;
-
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * @author: jiangadmin
@@ -32,13 +30,13 @@ public class NetReceiver extends BroadcastReceiver {
             if (networkInfo != null && networkInfo.isAvailable()) {
                 if (networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET) {
                     LogUtil.e(TAG, "有线网络");
-                    MyAppliaction.IsLineNet = true;
+                    MyAPP.IsLineNet = true;
                     if (Tools.isNetworkConnected())
                         NetDialog.dismiss();
                 }
                 if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
                     LogUtil.e(TAG, "无线网络");
-                    MyAppliaction.IsLineNet = false;
+                    MyAPP.IsLineNet = false;
                     if (Tools.isNetworkConnected())
                         NetDialog.dismiss();
                 }

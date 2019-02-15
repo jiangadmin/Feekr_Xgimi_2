@@ -50,7 +50,7 @@
 
     <application
         android:hardwareAccelerated="false"
-        android:name="MyAppliaction"
+        android:name=".MyAPP"
         android:icon="@drawable/feekr"
         android:label="@string/app_name"
         android:theme="@style/StartTheme"

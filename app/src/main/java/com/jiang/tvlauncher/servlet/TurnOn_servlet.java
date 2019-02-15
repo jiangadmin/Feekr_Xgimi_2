@@ -8,7 +8,7 @@ import android.os.CountDownTimer;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyAPP;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Point;
@@ -53,9 +53,9 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         Map map = new HashMap();
         TurnOnEntity entity;
 
-        if (TextUtils.isEmpty(MyAppliaction.SN)) {
+        if (TextUtils.isEmpty(MyAPP.SN)) {
             if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.SerialNum))) {
-                MyAppliaction.turnType = SaveUtils.getString(Save_Key.turnType);
+                MyAPP.turnType = SaveUtils.getString(Save_Key.turnType);
             } else {
                 new TurnOn_servlet(context).execute();
                 entity = new TurnOnEntity();
@@ -65,9 +65,9 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             }
         }
 
-        map.put("serialNum", MyAppliaction.SN);
-        map.put("turnType", MyAppliaction.turnType);
-        map.put("modelNum", MyAppliaction.modelNum);
+        map.put("serialNum", MyAPP.SN);
+        map.put("turnType", MyAPP.turnType);
+        map.put("modelNum", MyAPP.modelNum);
 
         map.put("systemVersion", Build.VERSION.INCREMENTAL);
         map.put("androidVersion", Build.VERSION.RELEASE);
@@ -96,7 +96,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         LogUtil.e(TAG, "=======================================================================================");
 
         if (entity.getErrorcode() == 1000) {
-            MyAppliaction.TurnOnS = true;
+            MyAPP.TurnOnS = true;
 
             TurnOnEntity.ResultBean.DevInfoBean devInfoBean = entity.getResult().getDevInfo();
             TurnOnEntity.ResultBean.LaunchBean launchBean = entity.getResult().getLaunch();

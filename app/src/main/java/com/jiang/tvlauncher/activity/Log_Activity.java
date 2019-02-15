@@ -1,11 +1,9 @@
 package com.jiang.tvlauncher.activity;
 
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.widget.TextView;
 
-import com.jiang.tvlauncher.MyAppliaction;
 import com.jiang.tvlauncher.R;
 
 /**

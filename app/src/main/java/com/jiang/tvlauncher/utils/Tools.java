@@ -15,8 +15,6 @@ import android.location.LocationListener;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,7 +29,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyAPP;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -341,7 +339,7 @@ public final class Tools {
     public static boolean isAppInstalled(String packagename) {
         PackageInfo packageInfo;
         try {
-            packageInfo = MyAppliaction.context.getPackageManager().getPackageInfo(packagename, 0);
+            packageInfo = MyAPP.context.getPackageManager().getPackageInfo(packagename, 0);
         } catch (Exception e) {
             packageInfo = null;
             e.printStackTrace();
@@ -446,8 +444,8 @@ public final class Tools {
      * @return
      */
     public static boolean isNetworkConnected() {
-        if (MyAppliaction.context != null) {
-            ConnectivityManager mConnectivityManager = (ConnectivityManager) MyAppliaction.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (MyAPP.context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) MyAPP.context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
             if (mNetworkInfo != null) {
                 return mNetworkInfo.isAvailable();
@@ -462,8 +460,8 @@ public final class Tools {
      * @return
      */
     public static boolean isWifiConnected() {
-        if (MyAppliaction.context != null) {
-            ConnectivityManager mConnectivityManager = (ConnectivityManager) MyAppliaction.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (MyAPP.context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) MyAPP.context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo mWiFiNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
             if (mWiFiNetworkInfo != null && mWiFiNetworkInfo.isAvailable())
                 if (mWiFiNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI)
@@ -479,8 +477,8 @@ public final class Tools {
      * @return
      */
     public static boolean isLineConnected() {
-        if (MyAppliaction.context != null) {
-            ConnectivityManager mConnectivityManager = (ConnectivityManager) MyAppliaction.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (MyAPP.context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) MyAPP.context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo mLineNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
             if (mLineNetworkInfo != null && mLineNetworkInfo.isAvailable())
                 if (mLineNetworkInfo.getType() == ConnectivityManager.TYPE_ETHERNET)
@@ -496,7 +494,7 @@ public final class Tools {
     public static int getScreenOffTime() {
         int screenOffTime = 0;
         try {
-            screenOffTime = Settings.System.getInt(MyAppliaction.context.getContentResolver(),
+            screenOffTime = Settings.System.getInt(MyAPP.context.getContentResolver(),
                     Settings.System.SCREEN_OFF_TIMEOUT);
         } catch (Exception localException) {
         }
@@ -508,7 +506,7 @@ public final class Tools {
      */
     public static void setScreenOffTime(int paramInt) {
         try {
-            Settings.System.putInt(MyAppliaction.context.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT,
+            Settings.System.putInt(MyAPP.context.getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT,
                     paramInt);
         } catch (Exception localException) {
             localException.printStackTrace();

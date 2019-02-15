@@ -4,18 +4,14 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyAPP;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.BaseEntity;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.utils.HttpUtil;
-import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
-import com.xgimi.business.api.hardwares.DlpKeystoneManager;
-import com.xgimi.business.api.hardwares.FanAndTemperatureManager;
 
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -65,8 +61,8 @@ public class SyncDevZoom_Servlet extends AsyncTask<String, Integer, BaseEntity> 
         super.onPostExecute(entity);
         Loading.dismiss();
         if (entity.getErrorcode() == 1000)
-            Toast.makeText(MyAppliaction.context, "同步完成", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyAPP.context, "同步完成", Toast.LENGTH_SHORT).show();
         else
-            Toast.makeText(MyAppliaction.context, "同步失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyAPP.context, "同步失败", Toast.LENGTH_SHORT).show();
     }
 }

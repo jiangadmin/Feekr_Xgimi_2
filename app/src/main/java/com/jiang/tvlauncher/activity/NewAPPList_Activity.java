@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyAPP;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.adapter.NewAppAdapter;
 import com.jiang.tvlauncher.dialog.Loading;
@@ -45,7 +45,7 @@ public class NewAPPList_Activity extends Base_Activity implements AdapterView.On
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_applist);
-        MyAppliaction.activity = this;
+        MyAPP.activity = this;
         initview();
         initeven();
 

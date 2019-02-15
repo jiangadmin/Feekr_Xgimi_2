@@ -28,7 +28,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyAPP;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.dialog.NetDialog;
@@ -112,7 +112,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
             EventBus.getDefault().register(this);
         }
         setContentView(R.layout.activty_home);
-        MyAppliaction.activity = this;
+        MyAPP.activity = this;
 
         initview();
         initeven();
@@ -195,7 +195,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
         titleview = findViewById(R.id.titleview);
 
         ver = findViewById(R.id.ver);
-        ver.setText("V " + Tools.getVersionName(MyAppliaction.context));
+        ver.setText("V " + Tools.getVersionName(MyAPP.context));
 
         //获取屏幕宽度
         DisplayMetrics metric = new DisplayMetrics();

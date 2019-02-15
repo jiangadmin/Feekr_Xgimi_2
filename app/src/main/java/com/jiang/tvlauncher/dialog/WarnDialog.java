@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyAPP;
 import com.jiang.tvlauncher.R;
 
 /**
@@ -24,8 +24,8 @@ public class WarnDialog {
      * 显示警告框
      */
     public static void showW() {
-        if (MyAppliaction.activity != null && netWarningDialog == null) {
-            netWarningDialog = new WarningDialog(MyAppliaction.activity);
+        if (MyAPP.activity != null && netWarningDialog == null) {
+            netWarningDialog = new WarningDialog(MyAPP.activity);
             try {
                 netWarningDialog.setCancelable(false);
                 netWarningDialog.setCanceledOnTouchOutside(false);

@@ -3,7 +3,7 @@ package com.jiang.tvlauncher.servlet;
 import android.os.AsyncTask;
 
 import com.google.gson.Gson;
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyAPP;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.MonitorResEntity;
 import com.jiang.tvlauncher.entity.Save_Key;
@@ -38,8 +38,8 @@ public class Timing_Servlet extends AsyncTask<String, Integer, MonitorResEntity>
         map.put("storage", FileUtils.getRomSize());
         map.put("memoryInfo", FileUtils.getAvailMemory());
         map.put("avaSpace", FileUtils.getFreeDiskSpaceS());
-        map.put("cpuTemp", String.valueOf(MyAppliaction.Temp));
-        map.put("fanSpeed", String.valueOf(MyAppliaction.WindSpeed));
+        map.put("cpuTemp", String.valueOf(MyAPP.Temp));
+        map.put("fanSpeed", String.valueOf(MyAPP.WindSpeed));
 
         String res = HttpUtil.doPost(Const.URL + "dev/devRunStateController/monitorRunState.do", map);
         MonitorResEntity entity;

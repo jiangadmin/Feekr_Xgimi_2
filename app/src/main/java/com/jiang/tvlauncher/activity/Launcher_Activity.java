@@ -34,7 +34,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.Gson;
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyAPP;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.dialog.NetDialog;
@@ -131,7 +131,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             EventBus.getDefault().register(this);
         }
         setContentView(R.layout.activty_launcher);
-        MyAppliaction.activity = this;
+        MyAPP.activity = this;
 
         netReceiver = new NetReceiver();
         IntentFilter intentFilter = new IntentFilter();
@@ -259,7 +259,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         titleview = findViewById(R.id.titleview);
 
         ver = findViewById(R.id.ver);
-        ver.setText("V " + Tools.getVersionName(MyAppliaction.context));
+        ver.setText("V " + Tools.getVersionName(MyAPP.context));
 
         homelist.add(home1);
         homelist.add(home2);
@@ -342,7 +342,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      * 南方传媒认证
      */
     public void nanchuan() {
-        if (!nanchuanAuthFlag && Tools.isNetworkConnected() && MyAppliaction.TurnOnS == true) {
+        if (!nanchuanAuthFlag && Tools.isNetworkConnected() && MyAPP.TurnOnS == true) {
             nanchuanAuthFlag = true;
 
             Intent intent = new Intent("com.snm.upgrade.approve.ApproveManagerServer");
@@ -358,10 +358,10 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                             public void returnResult(String Result) {
                                 if (Result.equals("998")) {
                                     NanChuan_Ok = false;
-                                    Toast.makeText(MyAppliaction.context, "南方传媒认证失败", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(MyAPP.context, "南方传媒认证失败", Toast.LENGTH_LONG).show();
                                 } else {
                                     NanChuan_Ok = true;
-                                    Toast.makeText(MyAppliaction.context, "南方传媒认证成功", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(MyAPP.context, "南方传媒认证成功", Toast.LENGTH_LONG).show();
                                 }
                                 return;
                             }
@@ -484,7 +484,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
             //是否初始化逻辑科技
             if (bean.getStartLgeekFlag() == 1) {
-                LgeekTVSdkMrg.getInstance().init(MyAppliaction.context);
+                LgeekTVSdkMrg.getInstance().init(MyAPP.context);
             }
 
             //是否显示栏目名

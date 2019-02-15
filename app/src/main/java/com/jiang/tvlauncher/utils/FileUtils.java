@@ -10,7 +10,7 @@ import android.text.format.Formatter;
 import android.util.Log;
 
 import com.jiang.tvlauncher.BuildConfig;
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyAPP;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -233,7 +233,7 @@ public class FileUtils {
      */
     public static String getAvailMemory() {
         // 获取android当前可用内存大小 
-        ActivityManager am = (ActivityManager) MyAppliaction.context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager am = (ActivityManager) MyAPP.context.getSystemService(Context.ACTIVITY_SERVICE);
         ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
         am.getMemoryInfo(mi);
         //mi.availMem; 当前系统的可用内存
@@ -369,7 +369,7 @@ public class FileUtils {
         StatFs stat = new StatFs(path.getPath());
         long blockCount = stat.getBlockCountLong();
         long blockSize = stat.getBlockSizeLong();
-        String totalSize = Formatter.formatFileSize(MyAppliaction.context, blockCount * blockSize);
+        String totalSize = Formatter.formatFileSize(MyAPP.context, blockCount * blockSize);
 
         return totalSize;
     }

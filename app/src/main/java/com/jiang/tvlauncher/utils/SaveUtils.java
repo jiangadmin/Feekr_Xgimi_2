@@ -3,7 +3,7 @@ package com.jiang.tvlauncher.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyAPP;
 
 /**
  * Created by 垚垚
@@ -25,7 +25,7 @@ public class SaveUtils {
      * @return
      */
     public static boolean setString(String key, String value) {
-        SharedPreferences settings = MyAppliaction.context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences settings = MyAPP.context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(key, value);
         return editor.commit();
@@ -38,7 +38,7 @@ public class SaveUtils {
      * @return
      */
     public static String getString(String key) {
-        SharedPreferences settings = MyAppliaction.context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences settings = MyAPP.context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         return settings.getString(key, null);
     }
 
@@ -50,7 +50,7 @@ public class SaveUtils {
      * @return
      */
     public static boolean setInt(String key, int value) {
-        SharedPreferences settings = MyAppliaction.context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences settings = MyAPP.context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt(key, value);
         return editor.commit();
@@ -63,7 +63,7 @@ public class SaveUtils {
      * @return
      */
     public static int getInt(String key) {
-        SharedPreferences settings = MyAppliaction.context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences settings = MyAPP.context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         return settings.getInt(key, -1);
 
     }
@@ -76,7 +76,7 @@ public class SaveUtils {
      * @return
      */
     public static boolean setLong(String key, long value) {
-        SharedPreferences settings = MyAppliaction.context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences settings = MyAPP.context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putLong(key, value);
         return editor.commit();
@@ -89,7 +89,7 @@ public class SaveUtils {
      * @return
      */
     public static long getLong(String key) {
-        SharedPreferences settings = MyAppliaction.context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences settings = MyAPP.context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         return settings.getLong(key, -1);
     }
 
@@ -101,7 +101,7 @@ public class SaveUtils {
      * @return
      */
     public static boolean setFloat(String key, float value) {
-        SharedPreferences settings = MyAppliaction.context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences settings = MyAPP.context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putFloat(key, value);
         return editor.commit();
@@ -114,7 +114,7 @@ public class SaveUtils {
      * @return
      */
     public static float getFloat(String key) {
-        SharedPreferences settings = MyAppliaction.context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences settings = MyAPP.context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         return settings.getFloat(key, -1);
     }
 
@@ -126,7 +126,7 @@ public class SaveUtils {
      * @return
      */
     public static boolean setBoolean(String key, boolean value) {
-        SharedPreferences settings = MyAppliaction.context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences settings = MyAPP.context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean(key, value);
         return editor.commit();
@@ -139,7 +139,7 @@ public class SaveUtils {
      * @return
      */
     public static boolean getBoolean(String key) {
-        SharedPreferences settings = MyAppliaction.context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences settings = MyAPP.context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         return settings.getBoolean(key, false);
     }
 }

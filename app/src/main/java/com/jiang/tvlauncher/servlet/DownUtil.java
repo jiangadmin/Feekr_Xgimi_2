@@ -10,7 +10,7 @@ import android.view.KeyEvent;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.jiang.tvlauncher.MyAppliaction;
+import com.jiang.tvlauncher.MyAPP;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.xgimi.business.api.clients.ApiProxyServiceClient;
@@ -38,7 +38,7 @@ public class DownUtil {
 
     public void downLoad(final String path, final String fileName, final boolean showpd) {
         // 进度条对话框
-        pd = new ProgressDialog(MyAppliaction.context);
+        pd = new ProgressDialog(MyAPP.context);
         pd.getWindow().setType(WindowManager.LayoutParams.TYPE_TOAST);
         pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         pd.setMessage("下载中，精彩马上呈现，请稍后...");
@@ -58,12 +58,12 @@ public class DownUtil {
         });
         // Sdcard不可用
         if (!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            Toast.makeText(MyAppliaction.context, "SD卡不可用~", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyAPP.context, "SD卡不可用~", Toast.LENGTH_SHORT).show();
             Loading.dismiss();
 
         } else {
             if (showpd)
-                if (MyAppliaction.activity == null || MyAppliaction.activity.isDestroyed() || MyAppliaction.activity.isFinishing()) {
+                if (MyAPP.activity == null || MyAPP.activity.isDestroyed() || MyAPP.activity.isFinishing()) {
                     LogUtil.e(TAG, "当前活动已经被销毁");
                 } else {
                     try {
@@ -90,9 +90,9 @@ public class DownUtil {
                             LogUtil.e(TAG, "安装包");
 
                             //是极米设备
-                            if (MyAppliaction.isxgimi) {
+                            if (MyAPP.isxgimi) {
                                 //调用极米静默安装
-                                ApiProxyServiceClient.INSTANCE.binderAidlService(MyAppliaction.context, new ApiProxyServiceClient.IAidlConnectListener() {
+                                ApiProxyServiceClient.INSTANCE.binderAidlService(MyAPP.context, new ApiProxyServiceClient.IAidlConnectListener() {
                                     @Override
                                     public void onSuccess() {
                                         LogUtil.e(TAG, "连接成功");
@@ -110,14 +110,14 @@ public class DownUtil {
                             } else {
                                 Intent intent = new Intent(Intent.ACTION_VIEW);
                                 intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-                                MyAppliaction.activity.startActivity(intent);
+                                MyAPP.activity.startActivity(intent);
                             }
 
                         }
                         //如果是资源文件
                         if (fileName.contains(".zip")) {
                             LogUtil.e(TAG, "资源文件" + file.getPath());
-                            ApiProxyServiceClient.INSTANCE.binderAidlService(MyAppliaction.context, new ApiProxyServiceClient.IAidlConnectListener() {
+                            ApiProxyServiceClient.INSTANCE.binderAidlService(MyAPP.context, new ApiProxyServiceClient.IAidlConnectListener() {
                                 @Override
                                 public void onSuccess() {
                                     LogUtil.e(TAG, "AIDL 连接成功");
