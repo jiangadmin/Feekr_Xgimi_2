@@ -79,17 +79,17 @@ import java.util.List;
 
 public class Launcher_Activity extends Base_Activity implements View.OnClickListener, View.OnFocusChangeListener {
     private static final String TAG = "Launcher_Activity";
-    RelativeLayout toolbar_view;
-    LinearLayout back;
-    ImageView main_bg, main_bg_0, back_img;
-    TextView back_txt, title_0, title, title_2;
+
+
+    ImageView main_bg, main_bg_0;
+    TextView  title_0, title, title_2;
 
     LinearLayout setting;
     ImageView bg, setting_img, title_icon;
     TextView setting_txt;
 
-    LinearLayout wifiap, title_view;
-    TextView wifiap_txt;
+    LinearLayout  title_view;
+
 
     TitleView titleview;
 
@@ -101,9 +101,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     List<ImageView> homelist = new ArrayList<>();
     List<TextView> namelist = new ArrayList<>();
     List<Integer> hometype = new ArrayList<>();
-
-    boolean toolbar_show = false;
-    boolean ifnet = false;//判断有无网络使用
 
     static FindChannelList channelList;
 
@@ -245,13 +242,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         name3 = findViewById(R.id.home_3_name);
         name4 = findViewById(R.id.home_4_name);
 
-        toolbar_view = findViewById(R.id.toolbar_view);
-        back = findViewById(R.id.back);
-        wifiap = findViewById(R.id.wifiap);
-        wifiap_txt = findViewById(R.id.wifiap_txt);
-        back_img = findViewById(R.id.back_img);
-        back_txt = findViewById(R.id.back_txt);
-
         setting = findViewById(R.id.setting);
         setting_img = findViewById(R.id.setting_img);
         setting_txt = findViewById(R.id.setting_txt);
@@ -312,8 +302,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         home3.setOnClickListener(this);
         home4.setOnClickListener(this);
 
-        back.setOnClickListener(this);
-        wifiap.setOnClickListener(this);
         setting.setOnClickListener(this);
 
         home1.setOnFocusChangeListener(this);
@@ -321,11 +309,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         home3.setOnFocusChangeListener(this);
         home4.setOnFocusChangeListener(this);
 
-        back.setOnFocusChangeListener(this);
-        wifiap.setOnFocusChangeListener(this);
         setting.setOnFocusChangeListener(this);
-
-        back.setVisibility(View.GONE);
 
         //切换焦点给第一个
         home1.setFocusable(true);
@@ -417,19 +401,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
         }
         return true;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (toolbar_show) {
-            AnimUtils.Y(toolbar_view, 0, -42);
-            AnimUtils.Y(titleview, -42, 0);
-            toolbar_view.setVisibility(View.GONE);
-            toolbar_show = false;
-        }
-
     }
 
     /**
@@ -588,9 +559,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         }
 
         switch (view.getId()) {
-            case R.id.back:
-                new PwdDialog(this, R.style.MyDialog).show();
-                break;
             case R.id.setting:
                 LogUtil.e(TAG, "Password:" + SaveUtils.getString(Save_Key.Password));
                 if (TextUtils.isEmpty(SaveUtils.getString(Save_Key.Password))) {
@@ -705,12 +673,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         switch (view.getId()) {
             case R.id.setting:
                 setting_txt.setTextColor(getResources().getColor(b ? R.color.white : R.color.gray));
-                break;
-            case R.id.back:
-                back_txt.setTextColor(getResources().getColor(b ? R.color.white : R.color.gray));
-                break;
-            case R.id.wifiap:
-                wifiap_txt.setTextColor(getResources().getColor(b ? R.color.white : R.color.gray));
                 break;
             default:
                 if (b) {

@@ -76,7 +76,7 @@ public class WifiApUtils {
         }
     }
 
-    public boolean openWifiAp(String apName, String apPassWord) {
+    public static boolean openWifiAp(String apName, String apPassWord) {
         closeWifiAp();
         colseWifi();
         Method method = null;
@@ -101,7 +101,7 @@ public class WifiApUtils {
         }
     }
 
-    private void colseWifi() {
+    private static void colseWifi() {
         if (mWifiManager != null) {
             mWifiManager.setWifiEnabled(false);
         }

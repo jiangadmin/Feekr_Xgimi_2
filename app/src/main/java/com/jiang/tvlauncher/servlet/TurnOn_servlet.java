@@ -19,7 +19,7 @@ import com.jiang.tvlauncher.utils.HttpUtil;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
-import com.jiang.tvlauncher.utils.WifiApUtils;
+import com.jiang.tvlauncher.utils.Wifi_APManager;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.xgimi.business.api.clients.XgimiDeviceClient;
 import com.xgimi.business.api.enums.EnumProjectionMode;
@@ -207,16 +207,16 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
                 LogUtil.e(TAG, "SSID:" + SSID + "  PassWord:" + APPWD);
 
+                //首先关闭热点
+                new Wifi_APManager(context).closeWifiAp();
+
                 if (shadowcnfBean.getHotPoint() == 1
                         && shadowcnfBean.getWifi() != null
                         && shadowcnfBean.getWifiPassword() != null) {
 
                     //开启热点
-                    WifiApUtils.setWifiApEnabled(context, true, SSID, APPWD);
+                    new Wifi_APManager(context).startWifiAp(SSID, APPWD, false);
 
-                } else {
-                    //关闭热点
-                    WifiApUtils.setWifiApEnabled(context, false, SSID, APPWD);
                 }
             }
 
