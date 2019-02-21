@@ -49,7 +49,6 @@ import com.jiang.tvlauncher.servlet.FindChannelList_Servlet;
 import com.jiang.tvlauncher.servlet.GetVIP_Servlet;
 import com.jiang.tvlauncher.servlet.Get_Theme_Servlet;
 import com.jiang.tvlauncher.servlet.Update_Servlet;
-import com.jiang.tvlauncher.utils.AnimUtils;
 import com.jiang.tvlauncher.utils.FileUtils;
 import com.jiang.tvlauncher.utils.ImageUtils;
 import com.jiang.tvlauncher.utils.LogUtil;
@@ -80,15 +79,15 @@ import java.util.List;
 public class Launcher_Activity extends Base_Activity implements View.OnClickListener, View.OnFocusChangeListener {
     private static final String TAG = "Launcher_Activity";
 
-
     ImageView main_bg, main_bg_0;
-    TextView  title_0, title, title_2;
+    TextView title_0, title, title_2;
 
     LinearLayout setting;
     ImageView bg, setting_img, title_icon;
     TextView setting_txt;
 
-    LinearLayout  title_view;
+    LinearLayout title_view;
+    RelativeLayout load;
 
 
     TitleView titleview;
@@ -143,6 +142,9 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         //判断网络
         if (!Tools.isNetworkConnected()) {
             NetDialog.showL();
+        } else {
+            load.setVisibility(View.VISIBLE);
+            new TitleTime2(4, 40);
         }
         onMessage("update");
 
@@ -264,6 +266,8 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         imageView = findViewById(R.id.image);
         videoView = findViewById(R.id.video);
 
+        load = findViewById(R.id.load);
+
         //如果有图片
         if (SaveUtils.getBoolean(Save_Key.NewImage)) {
             LogUtil.e(TAG, "有图片");
@@ -342,9 +346,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                             public void returnResult(String Result) {
                                 if (Result.equals("998")) {
                                     NanChuan_Ok = false;
+                                    findViewById(R.id.dispaly).setVisibility(View.VISIBLE);
                                     Toast.makeText(MyAPP.context, "南方传媒认证失败", Toast.LENGTH_LONG).show();
                                 } else {
                                     NanChuan_Ok = true;
+                                    findViewById(R.id.dispaly).setVisibility(View.GONE);
                                     Toast.makeText(MyAPP.context, "南方传媒认证成功", Toast.LENGTH_LONG).show();
                                 }
                                 return;
@@ -735,6 +741,23 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             }
 
             start();
+        }
+    }
+
+    class TitleTime2 extends CountDownTimer {
+
+        public TitleTime2(long millisInFuture, long countDownInterval) {
+            super(millisInFuture * 1000, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long l) {
+            load.setAlpha((float) (l / 4000.00));
+        }
+
+        @Override
+        public void onFinish() {
+            load.setVisibility(View.GONE);
         }
     }
 
