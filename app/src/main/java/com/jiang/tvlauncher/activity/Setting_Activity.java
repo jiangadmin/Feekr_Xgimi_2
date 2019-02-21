@@ -19,6 +19,7 @@ import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.servlet.SyncDevZoom_Servlet;
 import com.jiang.tvlauncher.servlet.Update_Servlet;
 import com.jiang.tvlauncher.utils.FileUtils;
+import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.Tools;
 import com.lgeek.tv.jimi.LgeekTVSdkMrg;
 import com.tencent.bugly.crashreport.CrashReport;
@@ -28,10 +29,10 @@ import com.xgimi.business.api.enums.EnumSettingsActivity;
 import java.io.File;
 
 /**
- * @author: jiangadmin
- * @date: 2017/7/3.
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangadmin
+ * date: 2017/7/3.
+ * Email: www.fangmu@qq.com
+ * Phone: 186 6120 1018
  * TODO: 控制台
  */
 
@@ -93,12 +94,13 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
                 builder.setPositiveButton("清除", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        LogUtil.e(TAG, "清除成功");
                         FileUtils.deleteFile(new File(Const.FilePath));
                         Toast.makeText(getApplicationContext(), "清除成功", Toast.LENGTH_SHORT).show();
                     }
                 });
                 builder.show();
-            }catch (Exception e){
+            } catch (Exception e) {
                 CrashReport.postCatchedException(e);
             }
         }
@@ -125,7 +127,7 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
                 break;
             //梯形校正
             case R.id.setting_3:
-                Toast.makeText(this,"开发中",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "开发中", Toast.LENGTH_SHORT).show();
 //                Intent intent = new Intent(Intent.ACTION_MAIN);
 //                intent.addCategory(Intent.CATEGORY_LAUNCHER);
 //                ComponentName cn = new ComponentName("com.android.newsettings", "com.android.newsettings.framesettings.kstActivity");

@@ -23,10 +23,10 @@ import com.jiang.tvlauncher.utils.Tools;
 import java.io.File;
 
 /**
- * @author: jiangadmin
- * @date: 2017/8/22.
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangadmin
+ * date: 2017/8/22.
+ * Email: www.fangmu@qq.com
+ * Phone: 186 6120 1018
  * TODO: 图片展示
  */
 

@@ -20,10 +20,10 @@ import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
 
 /**
- * @author: jiangadmin
- * @date: 2017/8/22.
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangadmin
+ * date: 2017/8/22.
+ * Email: www.fangmu@qq.com
+ * Phone: 186 6120 1018
  * TODO: 视频播放
  */
 
@@ -47,7 +47,7 @@ public class Video_Activity extends Base_Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
         MyAPP.activity = this;
-        videoView =  findViewById(R.id.videoView);
+        videoView = findViewById(R.id.videoView);
 
         String videof = Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/" + SaveUtils.getString(Save_Key.NewImageName);
 

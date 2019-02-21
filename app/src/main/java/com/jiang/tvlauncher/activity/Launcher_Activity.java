@@ -10,6 +10,7 @@ import android.content.ServiceConnection;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -67,12 +68,13 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
- * @author: jiangadmin
- * @date: 2018/10/12.
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangadmin
+ * date: 2018/10/12.
+ * Email: www.fangmu@qq.com
+ * Phone: 186 6120 1018
  * TODO: 新主页
  */
 
@@ -83,12 +85,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     TextView title_0, title, title_2;
 
     LinearLayout setting;
-    ImageView bg, setting_img, title_icon;
+    ImageView  setting_img, title_icon;
     TextView setting_txt;
 
     LinearLayout title_view;
     RelativeLayout load;
-
 
     TitleView titleview;
 
@@ -144,7 +145,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             NetDialog.showL();
         } else {
             load.setVisibility(View.VISIBLE);
-            new TitleTime2(4, 40);
+            new TitleTime2().start();
         }
         onMessage("update");
 
@@ -169,20 +170,31 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     /**
      * 设置颜色
      *
-     * @param color
+     * @param color 要改的颜色
      */
     private void title_color(String color) {
 
-        title_0.setBackground(new BitmapDrawable(getResources(), ImageUtils.tintBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.kuang_0), Color.parseColor(color))));
-        title.setBackground(new BitmapDrawable(getResources(), ImageUtils.tintBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.kuang_1), Color.parseColor(color))));
-        title_2.setBackground(new BitmapDrawable(getResources(), ImageUtils.tintBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.kuang_2), Color.parseColor(color))));
-        title_icon.setBackground(new BitmapDrawable(getResources(), ImageUtils.tintBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.round), Color.parseColor(color))));
+        title_0.setBackground(Drawable_Color(R.drawable.kuang_0, color));
+        title.setBackground(Drawable_Color(R.drawable.kuang_1, color));
+        title_2.setBackground(Drawable_Color(R.drawable.kuang_2, color));
+        title_icon.setBackground(Drawable_Color(R.drawable.round, color));
 
         name1.setTextColor(Color.parseColor(color));
         name2.setTextColor(Color.parseColor(color));
         name3.setTextColor(Color.parseColor(color));
         name4.setTextColor(Color.parseColor(color));
 
+    }
+
+    /**
+     * 改变图片颜色
+     *
+     * @param id    图片id
+     * @param color 要改的颜色
+     * @return Drawable
+     */
+    private Drawable Drawable_Color(int id, String color) {
+        return new BitmapDrawable(getResources(), ImageUtils.tintBitmap(BitmapFactory.decodeResource(getResources(), id), Color.parseColor(color)));
     }
 
     @Subscribe
@@ -216,7 +228,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 break;
 
             case "nanchuan":
-                LogUtil.e(TAG, "准备认证");
                 nanchuan();
                 break;
             default:
@@ -251,7 +262,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         titleview = findViewById(R.id.titleview);
 
         ver = findViewById(R.id.ver);
-        ver.setText("V " + Tools.getVersionName(MyAPP.context));
+        ver.setText(String.format("V %s", Tools.getVersionName(MyAPP.context)));
 
         homelist.add(home1);
         homelist.add(home2);
@@ -321,17 +332,20 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         home1.requestFocus();
     }
 
+
     @Override
     public void onBackPressed() {
-        return;
+        //屏蔽返回键
     }
 
     /**
      * 南方传媒认证
      */
     public void nanchuan() {
-        if (!nanchuanAuthFlag && Tools.isNetworkConnected() && MyAPP.TurnOnS == true) {
+
+        if (!nanchuanAuthFlag && Tools.isNetworkConnected()) {
             nanchuanAuthFlag = true;
+            LogUtil.e(TAG, "准备认证");
 
             Intent intent = new Intent("com.snm.upgrade.approve.ApproveManagerServer");
             intent.setPackage("com.snm.upgrade");
@@ -346,19 +360,17 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                             public void returnResult(String Result) {
                                 if (Result.equals("998")) {
                                     NanChuan_Ok = false;
-                                    findViewById(R.id.dispaly).setVisibility(View.VISIBLE);
-                                    Toast.makeText(MyAPP.context, "南方传媒认证失败", Toast.LENGTH_LONG).show();
+
+//                                    Toast.makeText(MyAPP.context, "南方传媒认证失败", Toast.LENGTH_LONG).show();
                                 } else {
                                     NanChuan_Ok = true;
                                     findViewById(R.id.dispaly).setVisibility(View.GONE);
                                     Toast.makeText(MyAPP.context, "南方传媒认证成功", Toast.LENGTH_LONG).show();
                                 }
-                                return;
                             }
                         });
                         //requestApprove()这个是调起我们的认证接口
-                        int flag = approveDeviceManager.requestApprove();
-                        return;
+                        approveDeviceManager.requestApprove();
                     } catch (Exception e) {
                         LogUtil.e(TAG, e.getMessage());
                         CrashReport.postCatchedException(e);
@@ -412,7 +424,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     /**
      * 主题返回 网络正常情况下
      *
-     * @param entity
+     * @param entity 主题实体类
      */
     @SuppressLint("CheckResult")
     @Subscribe
@@ -424,7 +436,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             //图片名
             String imgname = Tools.getFileNameWithSuffix(bean.getBgImg());
             //判断图片文件是否存在
-            if (!FileUtils.checkFileExists(imgname)) {
+            if (imgname != null && !FileUtils.checkFileExists(imgname)) {
                 //下载图片
                 new DownUtil().downLoad(bean.getBgImg(), imgname, false);
             }
@@ -436,7 +448,8 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 builder.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(Const.FilePath + SaveUtils.getString(Save_Key.BackGround)))));
                 Glide.with(this).load(bean.getBgImg()).apply(builder).into(main_bg);
             } catch (Exception e) {
-
+                LogUtil.e(TAG, e.getMessage());
+                CrashReport.postCatchedException(e);
             }
 
             //设置图标背景色 对话框颜色
@@ -492,12 +505,12 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     /**
      * 更新页面
      *
-     * @param channelList
+     * @param channelList 返回实体类
      */
     @SuppressLint("CheckResult")
     @Subscribe
     public void onMessage(FindChannelList channelList) {
-        this.channelList = channelList;
+        Launcher_Activity.channelList = channelList;
 
         //更改开机动画
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.BootAn))) {
@@ -526,7 +539,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 RequestOptions options = new RequestOptions();
                 String s = Const.FilePath + SaveUtils.getString(Save_Key.ItemImage + i);
                 //判断文件是否存在
-                if (FileUtils.checkFileExists(Tools.getFileNameWithSuffix(s))) {
+                if (FileUtils.checkFileExists(Objects.requireNonNull(Tools.getFileNameWithSuffix(s)))) {
                     options.placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(s))));
                     options.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(s))));
                 }
@@ -537,7 +550,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 hometype.add(channelList.getResult().get(i).getContentType());
 
                 //判断文件是否存在
-                if (!FileUtils.checkFileExists(filename)) {
+                if (filename != null && !FileUtils.checkFileExists(filename)) {
                     //下载图片
                     new DownUtil().downLoad(url, filename, false);
 
@@ -590,8 +603,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
     /**
      * 启动栏目
-     *
-     * @param i
      */
     public void open(int i) {
         try {
@@ -671,8 +682,8 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     /**
      * 焦点变化
      *
-     * @param view
-     * @param b
+     * @param view 焦点位置
+     * @param b    变化
      */
     @Override
     public void onFocusChange(View view, boolean b) {
@@ -694,7 +705,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      * 计时器
      */
     class TimeCount extends CountDownTimer {
-        public TimeCount(long millisInFuture, long countDownInterval) {
+        TimeCount(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);//参数依次为总时长,和计时的时间间隔
         }
 
@@ -717,7 +728,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      */
     class TitleTime extends CountDownTimer {
 
-        public TitleTime(long millisInFuture, long countDownInterval) {
+        TitleTime(long millisInFuture, long countDownInterval) {
             super(millisInFuture * 1000, countDownInterval * 1000);
         }
 
@@ -746,18 +757,20 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
     class TitleTime2 extends CountDownTimer {
 
-        public TitleTime2(long millisInFuture, long countDownInterval) {
-            super(millisInFuture * 1000, countDownInterval);
+        TitleTime2() {
+            super(5000, 100);
         }
 
         @Override
         public void onTick(long l) {
-            load.setAlpha((float) (l / 4000.00));
         }
 
         @Override
         public void onFinish() {
             load.setVisibility(View.GONE);
+            if (!NanChuan_Ok) {
+                findViewById(R.id.dispaly).setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -765,7 +778,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      * 警告框
      */
     public static class WarningDialog extends Dialog {
-        public WarningDialog(@NonNull Context context) {
+        WarningDialog(@NonNull Context context) {
             super(context, R.style.MyDialog);
         }
 

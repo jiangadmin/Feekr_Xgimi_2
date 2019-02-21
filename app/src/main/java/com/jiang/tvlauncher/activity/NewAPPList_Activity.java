@@ -19,10 +19,10 @@ import com.jiang.tvlauncher.utils.LogUtil;
 import java.util.List;
 
 /**
- * @author: jiangadmin
- * @date: 2017/6/12.
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangadmin
+ * date: 2017/6/12.
+ * Email: www.fangmu@qq.com
+ * Phone: 186 6120 1018
  * TODO: 新应用列表
  */
 
@@ -30,7 +30,6 @@ public class NewAPPList_Activity extends Base_Activity implements AdapterView.On
     private static final String TAG = "APPList_Activity";
 
     private GridView mGridView;
-    private NewAppAdapter mAdapter;
     static List<FindChannelList.ResultBean.AppListBean> appList;
 
     public static void start(Context context, List<FindChannelList.ResultBean.AppListBean> appListBeen) {
@@ -52,12 +51,12 @@ public class NewAPPList_Activity extends Base_Activity implements AdapterView.On
     }
 
     private void initview() {
-        mGridView =  findViewById(R.id.app_grid);
+        mGridView = findViewById(R.id.app_grid);
     }
 
     private void initeven() {
 
-        mAdapter = new NewAppAdapter(this, appList);
+        NewAppAdapter mAdapter = new NewAppAdapter(this, appList);
         mGridView.setAdapter(mAdapter);
         mGridView.setFocusable(true);
         mGridView.setOnItemClickListener(this);
@@ -71,7 +70,7 @@ public class NewAPPList_Activity extends Base_Activity implements AdapterView.On
         } else {
             Loading.show(this, "正在安装");
             LogUtil.e(TAG, "开始下载" + appList.get(i).getPackageName());
-            new DownUtil().downLoad(appList.get(i).getDownloadUrl(), appList.get(i).getAppName() + ".apk",true);
+            new DownUtil().downLoad(appList.get(i).getDownloadUrl(), appList.get(i).getAppName() + ".apk", true);
         }
     }
 }
