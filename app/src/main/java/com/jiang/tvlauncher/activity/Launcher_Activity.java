@@ -89,7 +89,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     TextView setting_txt;
 
     LinearLayout title_view;
-    RelativeLayout load;
+
 
     TitleView titleview;
 
@@ -143,10 +143,8 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         //判断网络
         if (!Tools.isNetworkConnected()) {
             NetDialog.showL();
-        } else {
-            load.setVisibility(View.VISIBLE);
-            new TitleTime2().start();
         }
+
         onMessage("update");
 
         //首先显示本地资源
@@ -277,8 +275,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         imageView = findViewById(R.id.image);
         videoView = findViewById(R.id.video);
 
-        load = findViewById(R.id.load);
-
         //如果有图片
         if (SaveUtils.getBoolean(Save_Key.NewImage)) {
             LogUtil.e(TAG, "有图片");
@@ -332,7 +328,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         home1.requestFocus();
     }
 
-
     @Override
     public void onBackPressed() {
         //屏蔽返回键
@@ -360,7 +355,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                             public void returnResult(String Result) {
                                 if (Result.equals("998")) {
                                     NanChuan_Ok = false;
-
+                                    findViewById(R.id.dispaly).setVisibility(View.VISIBLE);
 //                                    Toast.makeText(MyAPP.context, "南方传媒认证失败", Toast.LENGTH_LONG).show();
                                 } else {
                                     NanChuan_Ok = true;
@@ -540,7 +535,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 String s = Const.FilePath + SaveUtils.getString(Save_Key.ItemImage + i);
                 //判断文件是否存在
                 if (FileUtils.checkFileExists(Objects.requireNonNull(Tools.getFileNameWithSuffix(s)))) {
-                    options.placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(s))));
+                    options.placeholder(getResources().getDrawable(R.mipmap.item_bg));
                     options.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(s))));
                 }
                 options.skipMemoryCache(false);
@@ -752,25 +747,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             }
 
             start();
-        }
-    }
-
-    class TitleTime2 extends CountDownTimer {
-
-        TitleTime2() {
-            super(5000, 100);
-        }
-
-        @Override
-        public void onTick(long l) {
-        }
-
-        @Override
-        public void onFinish() {
-            load.setVisibility(View.GONE);
-            if (!NanChuan_Ok) {
-                findViewById(R.id.dispaly).setVisibility(View.VISIBLE);
-            }
         }
     }
 
