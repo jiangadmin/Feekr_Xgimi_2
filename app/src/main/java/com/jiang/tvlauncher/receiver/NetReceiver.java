@@ -7,9 +7,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.jiang.tvlauncher.MyAPP;
+import com.jiang.tvlauncher.activity.Launcher_Activity;
 import com.jiang.tvlauncher.dialog.NetDialog;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.Tools;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * @author: jiangadmin
@@ -28,6 +31,10 @@ public class NetReceiver extends BroadcastReceiver {
         if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
             NetworkInfo networkInfo = cm.getActiveNetworkInfo();
             if (networkInfo != null && networkInfo.isAvailable()) {
+
+//                if (!Launcher_Activity.nanchuanAuthFlag){
+//                    EventBus.getDefault().post("nanchuan");
+//                }
                 if (networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET) {
                     LogUtil.e(TAG, "有线网络");
                     MyAPP.IsLineNet = true;

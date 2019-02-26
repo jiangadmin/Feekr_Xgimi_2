@@ -16,7 +16,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
@@ -26,7 +25,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -85,7 +83,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     TextView title_0, title, title_2;
 
     LinearLayout setting;
-    ImageView  setting_img, title_icon;
+    ImageView setting_img, title_icon;
     TextView setting_txt;
 
     LinearLayout title_view;
@@ -118,7 +116,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     private static ApproveDeviceManager approveDeviceManager;
 
     NetReceiver netReceiver;
-    private static boolean nanchuanAuthFlag = false;       //南传认证标识，false=未认证，true=已认证
+    public static boolean nanchuanAuthFlag = false;       //南传认证标识，false=未认证，true=已认证
     private static boolean NanChuan_Ok = true;             //南传认证结果 false = 认证失败,true=认证成功
 
     @Override
@@ -211,18 +209,15 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 break;
 
             case "update":
-                //南传认证
-                new Handler().postDelayed(new Runnable() {
-                    public void run() {
-                        nanchuan();
-                    }
-                }, 1000);
+
                 //检查更新
                 new Update_Servlet(this).execute();
                 //查询栏目
                 new FindChannelList_Servlet().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 //获取主题
                 new Get_Theme_Servlet().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+                nanchuan();
                 break;
 
             case "nanchuan":
@@ -340,6 +335,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
         if (!nanchuanAuthFlag && Tools.isNetworkConnected()) {
             nanchuanAuthFlag = true;
+            Toast.makeText(this, "开始认证", Toast.LENGTH_SHORT).show();
             LogUtil.e(TAG, "准备认证");
 
             Intent intent = new Intent("com.snm.upgrade.approve.ApproveManagerServer");
