@@ -32,9 +32,6 @@ public class NetReceiver extends BroadcastReceiver {
             NetworkInfo networkInfo = cm.getActiveNetworkInfo();
             if (networkInfo != null && networkInfo.isAvailable()) {
 
-//                if (!Launcher_Activity.nanchuanAuthFlag){
-//                    EventBus.getDefault().post("nanchuan");
-//                }
                 if (networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET) {
                     LogUtil.e(TAG, "有线网络");
                     MyAPP.IsLineNet = true;
@@ -47,8 +44,8 @@ public class NetReceiver extends BroadcastReceiver {
                     if (Tools.isNetworkConnected())
                         NetDialog.dismiss();
                 }
-//                LogUtil.e(TAG,"发消息");
-//                EventBus.getDefault().post("nanchuan");
+                LogUtil.e(TAG,"发消息");
+                EventBus.getDefault().post("nanchuan");
             } else {
                 LogUtil.e(TAG, "网络断开");
                 NetDialog.showW();

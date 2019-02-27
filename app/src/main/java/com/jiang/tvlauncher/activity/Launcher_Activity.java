@@ -332,11 +332,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      * 南方传媒认证
      */
     public void nanchuan() {
-
+        LogUtil.e(TAG, "准备认证");
         if (!nanchuanAuthFlag && Tools.isNetworkConnected()) {
             nanchuanAuthFlag = true;
-            Toast.makeText(this, "开始认证", Toast.LENGTH_SHORT).show();
-            LogUtil.e(TAG, "准备认证");
+//            Toast.makeText(this, "开始认证", Toast.LENGTH_SHORT).show();
+            LogUtil.e(TAG, "开始认证");
 
             Intent intent = new Intent("com.snm.upgrade.approve.ApproveManagerServer");
             intent.setPackage("com.snm.upgrade");
@@ -351,10 +351,12 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                             public void returnResult(String Result) {
                                 if (Result.equals("998")) {
                                     NanChuan_Ok = false;
+                                    LogUtil.e(TAG, "认证失败");
                                     findViewById(R.id.dispaly).setVisibility(View.VISIBLE);
 //                                    Toast.makeText(MyAPP.context, "南方传媒认证失败", Toast.LENGTH_LONG).show();
                                 } else {
                                     NanChuan_Ok = true;
+                                    LogUtil.e(TAG, "认证成功");
                                     findViewById(R.id.dispaly).setVisibility(View.GONE);
                                     Toast.makeText(MyAPP.context, "南方传媒认证成功", Toast.LENGTH_LONG).show();
                                 }
