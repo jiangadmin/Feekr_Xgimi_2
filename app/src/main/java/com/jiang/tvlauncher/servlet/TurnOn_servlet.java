@@ -57,7 +57,9 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
             if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.SerialNum))) {
                 MyAPP.turnType = SaveUtils.getString(Save_Key.turnType);
             } else {
-                new TurnOn_servlet(context).execute();
+                if (context != null) {
+                    new TurnOn_servlet(context).execute();
+                }
                 entity = new TurnOnEntity();
                 entity.setErrorcode(-3);
                 entity.setErrormsg("数据缺失 再来一次");
