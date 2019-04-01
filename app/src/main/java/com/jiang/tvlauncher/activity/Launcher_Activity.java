@@ -358,7 +358,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                                     NanChuan_Ok = true;
                                     LogUtil.e(TAG, "认证成功");
                                     findViewById(R.id.dispaly).setVisibility(View.GONE);
-                                    Toast.makeText(MyAPP.context, "南方传媒认证成功", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(MyAPP.context, "认证成功", Toast.LENGTH_LONG).show();
                                 }
                             }
                         });

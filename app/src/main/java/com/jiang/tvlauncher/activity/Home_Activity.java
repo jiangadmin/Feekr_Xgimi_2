@@ -504,13 +504,13 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
 
         switch (view.getId()) {
             case R.id.setting:
-                setting_txt.setTextColor(getResources().getColor(b == true ? R.color.white : R.color.gray));
+                setting_txt.setTextColor(getResources().getColor(b ? R.color.white : R.color.gray));
                 break;
             case R.id.back:
-                back_txt.setTextColor(getResources().getColor(b == true ? R.color.white : R.color.gray));
+                back_txt.setTextColor(getResources().getColor(b  ? R.color.white : R.color.gray));
                 break;
             case R.id.wifiap:
-                wifiap_txt.setTextColor(getResources().getColor(b == true ? R.color.white : R.color.gray));
+                wifiap_txt.setTextColor(getResources().getColor(b  ? R.color.white : R.color.gray));
                 break;
             default:
                 if (b)
