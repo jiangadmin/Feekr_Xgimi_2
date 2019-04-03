@@ -12,10 +12,10 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @author: jiangadmin
- * @date: 2019/1/22
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangadmin
+ * date: 2019/1/22
+ * Email: www.fangmu@qq.com
+ * Phone: 186 6120 1018
  * TODO: 异步读取梯形校正信息
  */
 public class Get_Point_Asnc extends AsyncTask<String, Integer, String> {
@@ -30,7 +30,7 @@ public class Get_Point_Asnc extends AsyncTask<String, Integer, String> {
 
         List<Point.PointBean> beans = new ArrayList<>();
 
-        try{
+        try {
             DlpKeystoneBean bean0 = DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_LEFT_TOP);
             LogUtil.e(TAG, "读取左上角>X:" + bean0.getHorizontalValue() + "Y:" + bean0.getVerticalValue());
             long time0 = new Date().getTime();
@@ -72,10 +72,11 @@ public class Get_Point_Asnc extends AsyncTask<String, Integer, String> {
             beans.add(pointBean3);
 
             point.setPoint(beans);
-        }catch(Exception ex){
+        } catch (Exception ex) {
             LogUtil.e(TAG, ex.getMessage());
         }
 
         return null;
     }
+
 }

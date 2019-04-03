@@ -59,10 +59,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author: jiangadmin
- * @date: 2017/7/3.
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangadmin
+ * date: 2017/7/3.
+ * Email: www.fangmu@qq.com
+ * Phone: 186 6120 1018
  * TODO: 主页
  */
 
@@ -507,10 +507,10 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 setting_txt.setTextColor(getResources().getColor(b ? R.color.white : R.color.gray));
                 break;
             case R.id.back:
-                back_txt.setTextColor(getResources().getColor(b  ? R.color.white : R.color.gray));
+                back_txt.setTextColor(getResources().getColor(b ? R.color.white : R.color.gray));
                 break;
             case R.id.wifiap:
-                wifiap_txt.setTextColor(getResources().getColor(b  ? R.color.white : R.color.gray));
+                wifiap_txt.setTextColor(getResources().getColor(b ? R.color.white : R.color.gray));
                 break;
             default:
                 if (b)

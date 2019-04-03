@@ -525,7 +525,6 @@ public final class Tools {
         }
     }
 
-
     /**
      * 获取当前系统时间
      *
@@ -533,7 +532,7 @@ public final class Tools {
      */
     public static String NowTime() {
         //获取当前时间
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmm");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmm",Locale.CHINA);
         Date curDate = new Date(System.currentTimeMillis());
         return formatter.format(curDate);
     }
@@ -576,41 +575,6 @@ public final class Tools {
     }
 
     /**
-     * 判断 Root 权限
-     *
-     * @return
-     */
-    public static synchronized boolean isRoot() {
-        Process process = null;
-        DataOutputStream os = null;
-        try {
-            process = Runtime.getRuntime().exec("su");
-            os = new DataOutputStream(process.getOutputStream());
-            os.writeBytes("exit\n");
-            os.flush();
-            int exitValue = process.waitFor();
-            if (exitValue == 0) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
-            Log.d("*** DEBUG ***", "Unexpected error - Here is what I know: " + e.getMessage());
-            return false;
-        } finally {
-            try {
-                if (os != null) {
-                    os.close();
-                }
-                process.destroy();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-    /**
      * 根据包名查找Pid
      *
      * @param context
@@ -630,10 +594,7 @@ public final class Tools {
         return 0;
     }
 
-
-
-
-    /**
+ /**
      * 获取Ethernet的MAC地址
      * @return
      */
@@ -656,7 +617,4 @@ public final class Tools {
         reader.close();
         return fileData.toString();
     }
-
-
-
 }

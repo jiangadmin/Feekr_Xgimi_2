@@ -223,6 +223,15 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             case "nanchuan":
                 nanchuan();
                 break;
+
+            case "认证成功":
+                findViewById(R.id.dispaly).setVisibility(View.GONE);
+                Toast.makeText(Launcher_Activity.this, "认证成功", Toast.LENGTH_LONG).show();
+                break;
+            case "认证失败":
+                LogUtil.e(TAG, "认证失败");
+                findViewById(R.id.dispaly).setVisibility(View.VISIBLE);
+                break;
             default:
                 break;
         }
@@ -351,14 +360,10 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                             public void returnResult(String Result) {
                                 if (Result.equals("998")) {
                                     NanChuan_Ok = false;
-                                    LogUtil.e(TAG, "认证失败");
-                                    findViewById(R.id.dispaly).setVisibility(View.VISIBLE);
-                                    //Toast.makeText(MyAPP.context, "认证失败", Toast.LENGTH_LONG).show();
+                                    EventBus.getDefault().post("认证失败");
                                 } else {
                                     NanChuan_Ok = true;
-                                    LogUtil.e(TAG, "认证成功");
-                                    findViewById(R.id.dispaly).setVisibility(View.GONE);
-                                    Toast.makeText(MyAPP.context, "认证成功", Toast.LENGTH_LONG).show();
+                                    EventBus.getDefault().post("认证成功");
                                 }
                             }
                         });
@@ -419,7 +424,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      *
      * @param entity 主题实体类
      */
-    @SuppressLint("CheckResult")
     @Subscribe
     public void onMessage(Theme_Entity entity) {
 
@@ -436,6 +440,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
             //赋值背景 前景显示
             try {
+                LogUtil.e(TAG, Const.FilePath + SaveUtils.getString(Save_Key.BackGround));
                 RequestOptions builder = new RequestOptions();
                 builder.placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(Const.FilePath + SaveUtils.getString(Save_Key.BackGround)))));
                 builder.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(Const.FilePath + SaveUtils.getString(Save_Key.BackGround)))));
@@ -680,18 +685,13 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
      */
     @Override
     public void onFocusChange(View view, boolean b) {
-        switch (view.getId()) {
-            case R.id.setting:
-                setting_txt.setTextColor(getResources().getColor(b ? R.color.white : R.color.gray));
-                break;
-            default:
-                if (b) {
-                    enlargeAnim(view);
-                } else {
-                    reduceAnim(view);
-                }
-                break;
+
+        if (b) {
+            enlargeAnim(view);
+        } else {
+            reduceAnim(view);
         }
+
     }
 
     /**

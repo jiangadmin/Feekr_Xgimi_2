@@ -182,14 +182,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                     }
                 }
 
-                //梯形校正开关
-                if (shadowcnfBean.getZoomFlag() == 1) {
-                    //初始化梯形数据
-                    Point point = new Gson().fromJson(s, Point.class);
 
-                    new Set_Point_Asnc().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, point);
-
-                }
             }
 
             //启动定时服务

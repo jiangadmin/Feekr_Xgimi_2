@@ -96,7 +96,9 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
             //启动应用
             LogUtil.e(TAG, "启动会员版");
             if (IsOpen) {
-                Tools.StartApp(MyAPP.activity, Const.TvViedo);
+                if (Tools.isAppInstalled(Const.TvViedo)) {
+                    Tools.StartApp(MyAPP.activity, Const.TvViedo);
+                }
             }
         } else {
 
