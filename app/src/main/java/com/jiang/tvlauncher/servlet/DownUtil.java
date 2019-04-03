@@ -80,23 +80,46 @@ public class DownUtil {
                     try {
                         // 在子线程中下载APK文件
                         final File file = getFileFromServer(path, fileName, pd);
-                        sleep(1000);
-                        // 安装APK文件
-                        LogUtil.e(TAG, "文件下载完成" + fileName);
-                        if (showpd)
-                            pd.dismiss(); // 结束掉进度条对话框
-                        //如果是安装包
-                        if (fileName.contains(".apk")) {
-                            LogUtil.e(TAG, "安装包");
+                        if(file!=null && file.exists()){
+                            //休眠
+                            sleep(1000);
+                            LogUtil.e(TAG, "文件下载完成:" + fileName);
+                            if (showpd && pd!=null){
+                                pd.dismiss(); // 结束掉进度条对话框
+                            }
 
-                            //是极米设备
-                            if (MyAPP.isxgimi) {
-                                //调用极米静默安装
+                            if(fileName.toLowerCase().contains(".apk")){
+                                //是极米设备
+                                if (MyAPP.isxgimi) {
+                                    //调用极米静默安装
+                                    ApiProxyServiceClient.INSTANCE.binderAidlService(MyAPP.context, new ApiProxyServiceClient.IAidlConnectListener() {
+                                        @Override
+                                        public void onSuccess() {
+                                            LogUtil.e(TAG, "连接成功");
+                                            ApiProxyServiceClient.INSTANCE.silentInstallPackage(file.getPath(), null);
+                                            //释放资源
+                                            ApiProxyServiceClient.INSTANCE.release();
+                                        }
+
+                                        @Override
+                                        public void onFailure(RemoteException e) {
+
+                                        }
+                                    });
+
+                                } else {
+                                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                                    intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+                                    MyAPP.activity.startActivity(intent);
+                                }
+                            }else if(fileName.toLowerCase().contains(".zip")){
                                 ApiProxyServiceClient.INSTANCE.binderAidlService(MyAPP.context, new ApiProxyServiceClient.IAidlConnectListener() {
                                     @Override
                                     public void onSuccess() {
-                                        LogUtil.e(TAG, "连接成功");
-                                        ApiProxyServiceClient.INSTANCE.silentInstallPackage(file.getPath(), null);
+                                        LogUtil.e(TAG, "AIDL 连接成功");
+                                        //附上开机动画
+                                        ApiProxyServiceClient.INSTANCE.changeBootAnimation(file.getPath());
+
                                         //释放资源
                                         ApiProxyServiceClient.INSTANCE.release();
                                     }
@@ -106,42 +129,17 @@ public class DownUtil {
 
                                     }
                                 });
-
-                            } else {
-                                Intent intent = new Intent(Intent.ACTION_VIEW);
-                                intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-                                MyAPP.activity.startActivity(intent);
                             }
-
                         }
-                        //如果是资源文件
-                        if (fileName.contains(".zip")) {
-                            LogUtil.e(TAG, "资源文件" + file.getPath());
-                            ApiProxyServiceClient.INSTANCE.binderAidlService(MyAPP.context, new ApiProxyServiceClient.IAidlConnectListener() {
-                                @Override
-                                public void onSuccess() {
-                                    LogUtil.e(TAG, "AIDL 连接成功");
-                                    //附上开机动画
-                                    ApiProxyServiceClient.INSTANCE.changeBootAnimation(file.getPath());
 
-                                    //释放资源
-                                    ApiProxyServiceClient.INSTANCE.release();
-                                }
-
-                                @Override
-                                public void onFailure(RemoteException e) {
-
-                                }
-                            });
-
-                        }
                     } catch (Exception e) {
+                        e.printStackTrace();
                         LogUtil.e(TAG, "文件下载失败了" + e.getMessage());
 
                         Loading.dismiss();
-                        if (showpd)
+                        if (showpd && pd!=null) {
                             pd.dismiss();
-                        e.printStackTrace();
+                        }
                     }
                 }
 
@@ -154,39 +152,75 @@ public class DownUtil {
      */
     public static File getFileFromServer(String path, String fileName, ProgressDialog pd) throws Exception {
         // 如果相等的话表示当前的sdcard挂载在手机上并且是可用的
-        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-            URL url = new URL(path);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(5000);
-            // 获取到文件的大小
-            if (pd != null)
-                pd.setMax(conn.getContentLength() / 1024);
-            InputStream is = conn.getInputStream();
+        InputStream is = null;
+        FileOutputStream fos = null;
+        BufferedInputStream bis = null;
+        File file = null;
+        try{
+            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED) && (path!=null && path.length()>0)) {
+                URL url = new URL(path);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                //设置缓存
+                conn.setUseCaches(false);
+                // 设置连接主机超时时间
+                conn.setConnectTimeout(5 * 1000);
 
-            File file = new File(Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/", fileName);
-            //判断文件夹是否被创建
-            if (!file.getParentFile().exists()) {
-                file.getParentFile().mkdirs();
+                // 开始连接
+                conn.connect();
+                if (conn.getResponseCode() == 200) {
+                    //更新进度条
+                    if (pd!=null){
+                        pd.setMax(conn.getContentLength() / 1024);
+                    }
+
+                    //创建文件
+                    file = new File(Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/", fileName);
+                    //判断文件夹是否被创建
+                    if (!file.getParentFile().exists()) {
+                        file.getParentFile().mkdirs();
+                    }
+
+                    //获取网络文件流
+                    is = conn.getInputStream();
+                    fos = new FileOutputStream(file);
+                    bis = new BufferedInputStream(is);
+
+                    byte[] buffer = new byte[1024];
+                    int len;
+                    int total = 0;
+                    while ((len = bis.read(buffer)) != -1) {
+                        fos.write(buffer, 0, len);
+                        total += len;
+                        // 获取当前下载量
+                        if (pd != null) {
+                            pd.setProgress(total / 1024);
+                        }
+                    }
+
+                    conn.disconnect();
+
+
+                } else {
+                    LogUtil.e(TAG, "文件下载失败"+path);
+                }
+                // 关闭连接
+                conn.disconnect();
+            }else{
+                Loading.dismiss();
             }
-            FileOutputStream fos = new FileOutputStream(file);
-            BufferedInputStream bis = new BufferedInputStream(is);
-            byte[] buffer = new byte[1024];
-            int len;
-            int total = 0;
-            while ((len = bis.read(buffer)) != -1) {
-                fos.write(buffer, 0, len);
-                total += len;
-                // 获取当前下载量
-                if (pd != null)
-                    pd.setProgress(total / 1024);
+        }catch(Exception e){
+            LogUtil.e(TAG, e.getMessage());
+        }finally {
+            if (fos != null) {
+                fos.close();
             }
-            fos.close();
-            bis.close();
-            is.close();
-            return file;
-        } else {
-            Loading.dismiss();
-            return null;
+            if (bis != null) {
+                bis.close();
+            }
+            if (is != null) {
+                is.close();
+            }
         }
+        return file;
     }
 }
