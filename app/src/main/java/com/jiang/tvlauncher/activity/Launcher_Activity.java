@@ -88,7 +88,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
     LinearLayout title_view;
 
-
     TitleView titleview;
 
     ImageView home1, home2, home3, home4;
@@ -122,9 +121,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+
         setContentView(R.layout.activty_launcher);
         MyAPP.activity = this;
 
@@ -149,6 +150,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.Channe))) {
             onMessage(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
         }
+
         //首先显示本地资源
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.Theme))) {
             onMessage(new Gson().fromJson(SaveUtils.getString(Save_Key.Theme), Theme_Entity.class));
@@ -225,8 +227,9 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 break;
 
             case "认证成功":
+                LogUtil.e(TAG, "认证成功");
                 findViewById(R.id.dispaly).setVisibility(View.GONE);
-                Toast.makeText(Launcher_Activity.this, "认证成功", Toast.LENGTH_LONG).show();
+
                 break;
             case "认证失败":
                 LogUtil.e(TAG, "认证失败");
