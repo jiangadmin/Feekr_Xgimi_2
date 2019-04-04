@@ -223,15 +223,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             case "nanchuan":
                 nanchuan();
                 break;
-
-            case "认证成功":
-                findViewById(R.id.dispaly).setVisibility(View.GONE);
-                Toast.makeText(Launcher_Activity.this, "认证成功", Toast.LENGTH_LONG).show();
-                break;
-            case "认证失败":
-                LogUtil.e(TAG, "认证失败");
-                findViewById(R.id.dispaly).setVisibility(View.VISIBLE);
-                break;
             default:
                 break;
         }
@@ -360,10 +351,12 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                             public void returnResult(String Result) {
                                 if (Result.equals("998")) {
                                     NanChuan_Ok = false;
-                                    EventBus.getDefault().post("认证失败");
+                                    LogUtil.e(TAG, "南新认证失败");
+                                    findViewById(R.id.dispaly).setVisibility(View.VISIBLE);
                                 } else {
                                     NanChuan_Ok = true;
-                                    EventBus.getDefault().post("认证成功");
+                                    LogUtil.e(TAG, "南新认证成功");
+                                    findViewById(R.id.dispaly).setVisibility(View.GONE);
                                 }
                             }
                         });
