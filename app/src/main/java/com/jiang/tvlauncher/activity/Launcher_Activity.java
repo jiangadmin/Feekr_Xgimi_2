@@ -202,7 +202,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 if (warningDialog == null) {
                     warningDialog = new WarningDialog(this);
                 }
-                warningDialog.show();
+//                warningDialog.show();
                 break;
             case "1":
                 if (warningDialog != null) {

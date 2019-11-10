@@ -38,7 +38,7 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
 
     @Override
     protected VIP_Entity doInBackground(String... strings) {
-        Map map = new HashMap();
+        Map<String,String> map = new HashMap<>();
         VIP_Entity entity;
         if (!TextUtils.isEmpty(MyAPP.SN)) {
             map.put("serialNum", MyAPP.SN);
@@ -101,33 +101,51 @@ public class GetVIP_Servlet extends AsyncTask<String, Integer, VIP_Entity> {
                 }
             }
         } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(MyAPP.activity);
+            builder.setTitle("抱歉");
+            builder.setMessage("启动云视听会员版失败！");
+            builder.setPositiveButton("游客登录", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    if (Tools.isAppInstalled(Const.TencentViedo)) {
 
-            if (Tools.isAppInstalled(Const.TencentViedo)) {
+                        //启动应用
+                        LogUtil.e(TAG, "启动云视听");
+                        Tools.StartApp(MyAPP.activity, Const.TencentViedo);
 
-                //启动应用
-                LogUtil.e(TAG, "启动云视听");
-                Tools.StartApp(MyAPP.activity, Const.TencentViedo);
+                    } else {
 
-            } else {
+                        if (TextUtils.isEmpty(Const.云视听Url)) {
 
-                if (TextUtils.isEmpty(Const.云视听Url)) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(MyAPP.activity);
+                            builder.setTitle("抱歉");
+                            builder.setMessage("应用 云视听 资源缺失，请联系服务人员");
+                            builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            builder.show();
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MyAPP.activity);
-                    builder.setTitle("抱歉");
-                    builder.setMessage("应用 云视听 资源缺失，请联系服务人员");
-                    builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
+                        } else {
+                            Loading.show(MyAPP.activity, "请稍后");
+                            new DownUtil().downLoad(Const.云视听Url, "云视听.apk", true);
                         }
-                    });
-                    builder.show();
-
-                } else {
-                    Loading.show(MyAPP.activity, "请稍后");
-                    new DownUtil().downLoad(Const.云视听Url, "云视听.apk", true);
+                    }
                 }
-            }
+            });
+            builder.setNegativeButton("再试一次", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Loading.show(MyAPP.activity, "请稍后");
+                    //获取VIP账号
+                    new GetVIP_Servlet(true).execute();
+                }
+            });
+            builder.show();
+
+
         }
     }
 }

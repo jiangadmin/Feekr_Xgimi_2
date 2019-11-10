@@ -50,7 +50,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
     @Override
     protected TurnOnEntity doInBackground(String... strings) {
-        Map map = new HashMap();
+        Map<String,String> map = new HashMap<>();
         TurnOnEntity entity;
 
         if (TextUtils.isEmpty(MyAPP.SN)) {
