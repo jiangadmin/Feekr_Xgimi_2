@@ -16,7 +16,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -64,6 +66,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -87,6 +90,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     TextView setting_txt;
 
     LinearLayout title_view;
+
 
     TitleView titleview;
 
@@ -117,15 +121,14 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     NetReceiver netReceiver;
     public static boolean nanchuanAuthFlag = false;       //南传认证标识，false=未认证，true=已认证
     private static boolean NanChuan_Ok = true;             //南传认证结果 false = 认证失败,true=认证成功
+    private LauncherHandler handler = new LauncherHandler(this);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
-
         setContentView(R.layout.activty_launcher);
         MyAPP.activity = this;
 
@@ -150,7 +153,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.Channe))) {
             onMessage(new Gson().fromJson(SaveUtils.getString(Save_Key.Channe), FindChannelList.class));
         }
-
         //首先显示本地资源
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.Theme))) {
             onMessage(new Gson().fromJson(SaveUtils.getString(Save_Key.Theme), Theme_Entity.class));
@@ -202,7 +204,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                 if (warningDialog == null) {
                     warningDialog = new WarningDialog(this);
                 }
-//                warningDialog.show();
+                warningDialog.show();
                 break;
             case "1":
                 if (warningDialog != null) {
@@ -224,16 +226,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
 
             case "nanchuan":
                 nanchuan();
-                break;
-
-            case "认证成功":
-                LogUtil.e(TAG, "认证成功");
-                findViewById(R.id.dispaly).setVisibility(View.GONE);
-
-                break;
-            case "认证失败":
-                LogUtil.e(TAG, "认证失败");
-                findViewById(R.id.dispaly).setVisibility(View.VISIBLE);
                 break;
             default:
                 break;
@@ -363,10 +355,22 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                             public void returnResult(String Result) {
                                 if (Result.equals("998")) {
                                     NanChuan_Ok = false;
-                                    EventBus.getDefault().post("认证失败");
+                                    LogUtil.e(TAG, "南新认证失败");
+                                    Message msg = Message.obtain();
+                                    msg.what = 1;           // 消息标识
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("code","FAIL");
+                                    msg.setData(bundle);
+                                    handler.sendMessage(msg);
                                 } else {
                                     NanChuan_Ok = true;
-                                    EventBus.getDefault().post("认证成功");
+                                    LogUtil.e(TAG, "南新认证成功");
+                                    Message msg = Message.obtain();
+                                    msg.what = 1;           // 消息标识
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("code","SUCC");
+                                    msg.setData(bundle);
+                                    handler.sendMessage(msg);
                                 }
                             }
                         });
@@ -765,6 +769,32 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             setContentView(R.layout.dialog_warning);
             setCanceledOnTouchOutside(false);
             setCancelable(false);
+        }
+    }
+
+    public static class LauncherHandler extends Handler {
+        private WeakReference<Launcher_Activity> reference;
+
+        public LauncherHandler(Launcher_Activity activity) {
+            reference = new WeakReference<Launcher_Activity>(activity);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    String code = msg.getData().getString("code");
+                    if(code != null && code.length() > 0 && reference!=null){
+                        if(code.toUpperCase().equals("FAIL")){
+                            reference.get().findViewById(R.id.dispaly).setVisibility(View.VISIBLE);
+                        }else if(code.toUpperCase().equals("SUCC")){
+                            reference.get().findViewById(R.id.dispaly).setVisibility(View.GONE);
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
