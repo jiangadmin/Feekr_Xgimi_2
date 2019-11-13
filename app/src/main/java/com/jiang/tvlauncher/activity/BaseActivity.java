@@ -9,18 +9,16 @@ import com.jiang.tvlauncher.MyAPP;
 import com.jiang.tvlauncher.utils.AnimUtils;
 
 /**
- * @author jiangadmin
- * date: 2017/7/3.
- * Email: www.fangmu@qq.com
- * Phone: 186 6120 1018
- * TODO: 公共
+ * @author jiangyao
+ * Date: 2017-7-3
+ * Email: jiangmr@vip.qq.com
+ * TODO: 公共Activity
  */
-
-public class Base_Activity extends Activity {
+public class BaseActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MyAPP.activity = this;
+//        MyAPP.activity = this;
     }
 
     public void enlargeAnim(View v) {
@@ -34,5 +32,6 @@ public class Base_Activity extends Activity {
         AnimUtils.S(v, 1.1F, 1);
         AnimUtils.Z(v, 5, 0);
     }
+
 
 }

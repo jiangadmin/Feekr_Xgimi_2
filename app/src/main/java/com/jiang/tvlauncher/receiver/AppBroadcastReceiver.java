@@ -11,7 +11,7 @@ import com.jiang.tvlauncher.MyAPP;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.servlet.DownUtil;
-import com.jiang.tvlauncher.servlet.GetVIP_Servlet;
+import com.jiang.tvlauncher.servlet.GetVIP;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.ShellUtils;
@@ -36,18 +36,18 @@ public class AppBroadcastReceiver extends BroadcastReceiver {
             //判断是否已经运行
             if (!TextUtils.isEmpty(ShellUtils.execCommand("ps |grep com.ktcp.tvvideo:webview", false).successMsg)) {
                 LogUtil.e(TAG, "直接启动");
-                MyAPP.activity.startActivity(new Intent(MyAPP.activity.getPackageManager().getLaunchIntentForPackage(packname)));
+                MyAPP.currentActivity().startActivity(new Intent(MyAPP.currentActivity().getPackageManager().getLaunchIntentForPackage(packname)));
             } else {
                 LogUtil.e(TAG, "获取账号");
-                Loading.show(MyAPP.activity, "请稍后");
+                Loading.show(MyAPP.currentActivity(), "请稍后");
                 //获取VIP账号
-                new GetVIP_Servlet(true).execute();
+                new GetVIP(true).execute();
             }
 
         } else {
             LogUtil.e(TAG, "下载应用");
             if (TextUtils.isEmpty(SaveUtils.getString(Const.TvViedoDow))) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MyAPP.activity);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MyAPP.currentActivity());
                 builder.setTitle("抱歉");
                 builder.setMessage("资源缺失<云视听>，请联系服务人员!");
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -58,7 +58,7 @@ public class AppBroadcastReceiver extends BroadcastReceiver {
                 });
                 builder.show();
             } else {
-                Loading.show(MyAPP.activity, "请稍后");
+                Loading.show(MyAPP.currentActivity(), "请稍后");
                 new DownUtil().downLoad(SaveUtils.getString(Const.TvViedoDow), packname + ".apk", true);
             }
         }

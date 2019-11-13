@@ -3,12 +3,10 @@ package com.jiang.tvlauncher.entity;
 import java.util.List;
 
 /**
- * Created by wwwfa
- * on 2017/8/21.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:TODO 梯形数据
- * update：
+ * @author jiangyao
+ * Date: 2017-8-21
+ * Email: jiangmr@vip.qq.com
+ * TODO: 梯形数据
  */
 public class Point {
 

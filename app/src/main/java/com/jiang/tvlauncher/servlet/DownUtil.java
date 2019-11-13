@@ -63,7 +63,7 @@ public class DownUtil {
 
         } else {
             if (showpd)
-                if (MyAPP.activity == null || MyAPP.activity.isDestroyed() || MyAPP.activity.isFinishing()) {
+                if (MyAPP.currentActivity() == null || MyAPP.currentActivity().isDestroyed() || MyAPP.currentActivity().isFinishing()) {
                     LogUtil.e(TAG, "当前活动已经被销毁");
                 } else {
                     try {
@@ -110,7 +110,7 @@ public class DownUtil {
                                 } else {
                                     Intent intent = new Intent(Intent.ACTION_VIEW);
                                     intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
-                                    MyAPP.activity.startActivity(intent);
+                                    MyAPP.currentActivity().startActivity(intent);
                                 }
                             }else if(fileName.toLowerCase().contains(".zip")){
                                 ApiProxyServiceClient.INSTANCE.binderAidlService(MyAPP.context, new ApiProxyServiceClient.IAidlConnectListener() {

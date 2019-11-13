@@ -7,7 +7,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.jiang.tvlauncher.MyAPP;
-import com.jiang.tvlauncher.activity.Launcher_Activity;
 import com.jiang.tvlauncher.dialog.NetDialog;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.Tools;

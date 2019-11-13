@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.jiang.tvlauncher.MyAPP;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.adapter.NewAppAdapter;
 import com.jiang.tvlauncher.dialog.Loading;
@@ -19,14 +18,13 @@ import com.jiang.tvlauncher.utils.LogUtil;
 import java.util.List;
 
 /**
- * @author jiangadmin
- * date: 2017/6/12.
- * Email: www.fangmu@qq.com
- * Phone: 186 6120 1018
+ * @author jiangyao
+ * Date: 2017-6-12
+ * Email: jiangmr@vip.qq.com
  * TODO: 新应用列表
  */
 
-public class NewAPPList_Activity extends Base_Activity implements AdapterView.OnItemClickListener {
+public class NewAPPListActivity extends BaseActivity implements AdapterView.OnItemClickListener {
     private static final String TAG = "APPList_Activity";
 
     private GridView mGridView;
@@ -35,7 +33,7 @@ public class NewAPPList_Activity extends Base_Activity implements AdapterView.On
     public static void start(Context context, List<FindChannelList.ResultBean.AppListBean> appListBeen) {
         appList = appListBeen;
         Intent intent = new Intent();
-        intent.setClass(context, NewAPPList_Activity.class);
+        intent.setClass(context, NewAPPListActivity.class);
         context.startActivity(intent);
 
     }
@@ -44,7 +42,6 @@ public class NewAPPList_Activity extends Base_Activity implements AdapterView.On
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_applist);
-        MyAPP.activity = this;
         initview();
         initeven();
 

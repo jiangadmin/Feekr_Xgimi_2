@@ -1,12 +1,10 @@
 package com.jiang.tvlauncher.entity;
 
 /**
- * Created by  jiang
- * on 2017/7/4.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:TODO
- * update：
+ * @author jiangyao
+ * Date: 2017-7-4
+ * Email: jiangmr@vip.qq.com
+ * TODO:
  */
 public class BaseEntity {
 

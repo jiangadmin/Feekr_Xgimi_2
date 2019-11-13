@@ -12,14 +12,13 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @author jiangadmin
- * date: 2019/1/22
- * Email: www.fangmu@qq.com
- * Phone: 186 6120 1018
+ * @author jiangyao
+ * Date: 2019-1-22
+ * Email: jiangmr@vip.qq.com
  * TODO: 异步读取梯形校正信息
  */
-public class Get_Point_Asnc extends AsyncTask<String, Integer, String> {
-    private static final String TAG = "Get_Point_Asnc";
+public class GetPoint extends AsyncTask<String, Integer, String> {
+    private static final String TAG = "GetPoint";
 
     @Override
     protected String doInBackground(String... strings) {
@@ -72,11 +71,10 @@ public class Get_Point_Asnc extends AsyncTask<String, Integer, String> {
             beans.add(pointBean3);
 
             point.setPoint(beans);
-        } catch (Exception ex) {
-            LogUtil.e(TAG, ex.getMessage());
+        }catch (Exception e){
+            LogUtil.e(TAG,"极米专属："+e.getMessage());
         }
 
         return null;
     }
-
 }

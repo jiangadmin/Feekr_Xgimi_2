@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.jiang.tvlauncher.MyAPP;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
@@ -29,14 +28,12 @@ import com.xgimi.business.api.enums.EnumSettingsActivity;
 import java.io.File;
 
 /**
- * @author jiangadmin
- * date: 2017/7/3.
- * Email: www.fangmu@qq.com
- * Phone: 186 6120 1018
+ * @author jiangyao
+ * Date: 2017-7-3
+ * Email: jiangmr@vip.qq.com
  * TODO: 控制台
  */
-
-public class Setting_Activity extends Base_Activity implements View.OnClickListener {
+public class Setting_Activity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "Setting_Activity";
 
     //网络，蓝牙，设置，文件，更新，关于
@@ -52,7 +49,6 @@ public class Setting_Activity extends Base_Activity implements View.OnClickListe
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-        MyAPP.activity = this;
         initview();
         initeven();
 

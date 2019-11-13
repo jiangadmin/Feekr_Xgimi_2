@@ -11,20 +11,19 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.jiang.tvlauncher.R;
-import com.jiang.tvlauncher.activity.Base_Activity;
+import com.jiang.tvlauncher.activity.BaseActivity;
 import com.jiang.tvlauncher.server.MyDownService;
 
 import java.io.File;
 
 /**
- * @author: jiangadmin
- * @date: 2015/12/16.
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangyao
+ * Date: 2015-12-16
+ * Email: jiangmr@vip.qq.com
  * TODO: 下载更新
  */
 
-public class UpdateWindow extends Base_Activity {
+public class UpdateWindow extends BaseActivity {
 
     ProgressBar jindutiao;
     TextView jindu;

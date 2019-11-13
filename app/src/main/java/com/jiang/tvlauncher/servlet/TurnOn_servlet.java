@@ -158,14 +158,24 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
 
                 LogUtil.e(TAG, "上电开机：" + directboot);
                 //上电开机开关
-                XgimiDeviceClient.setDirectBoot(directboot);
+                try {
+                    XgimiDeviceClient.setDirectBoot(directboot);
+                } catch (Exception e) {
+                    LogUtil.e(TAG, "极米特有功能" + e.getMessage());
+                }
+
 
                 //投影方式开关
                 if (shadowcnfBean.getProjectModeFlag() == 1) {
+
                     switch (shadowcnfBean.getProjectMode()) {
                         //正装正投
                         case 0:
-                            XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Normal);
+                            try {
+                                XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Front_Normal);
+                            } catch (UnsatisfiedLinkError e) {
+                                LogUtil.e(TAG, "极米特有功能" + e.getMessage());
+                            }
                             break;
                         //吊装正投
                         case 1:
@@ -180,6 +190,7 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
                             XgimiDeviceClient.setProjectionMode(EnumProjectionMode.Reverse_Mirror);
                             break;
                     }
+
                 }
 
 

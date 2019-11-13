@@ -5,12 +5,10 @@ import android.os.Environment;
 import com.jiang.tvlauncher.BuildConfig;
 
 /**
- * Created by  jiang
- * on 2017/6/19.
- * Email: www.fangmu@qq.com
- * Phone：186 6120 1018
- * Purpose:TODO 常量
- * update：
+ * @author jiangyao
+ * Date: 2017-6-19
+ * Email: jiangmr@vip.qq.com
+ * TODO: 常量
  */
 public class Const {
 

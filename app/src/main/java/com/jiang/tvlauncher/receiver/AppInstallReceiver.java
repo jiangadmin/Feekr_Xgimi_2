@@ -4,11 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.jiang.tvlauncher.dialog.Loading;
 import com.jiang.tvlauncher.entity.Const;
-import com.jiang.tvlauncher.servlet.GetVIP_Servlet;
+import com.jiang.tvlauncher.servlet.GetVIP;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 
@@ -45,7 +44,7 @@ public class AppInstallReceiver extends BroadcastReceiver {
 
 
                 //获取VIP账号,备用
-                new GetVIP_Servlet(true).execute();
+                new GetVIP(true).execute();
 
                 return;
             }
