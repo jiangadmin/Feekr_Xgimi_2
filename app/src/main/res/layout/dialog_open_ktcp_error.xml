@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="启动会员版云视听出现了点问题！"
+            android:text="很抱歉，腾讯视频会员账号登录失败，请尝试重新登录!"
             android:textColor="@color/white"
             android:textSize="18sp" />
 
@@ -41,7 +41,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="再试一次" />
+                android:text="重新登录会员" />
 
             <Button
                 android:id="@+id/btn_2"
