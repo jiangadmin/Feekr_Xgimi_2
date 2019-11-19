@@ -3,7 +3,10 @@ package com.jiang.tvlauncher;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.hardware.Camera;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.TvTicketTool.TvTicketTool;
@@ -21,6 +24,7 @@ import com.ktcp.video.thirdagent.KtcpContants;
 import com.ktcp.video.thirdagent.KtcpPaySDKCallback;
 import com.ktcp.video.thirdagent.KtcpPaySdkProxy;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.xgimi.business.api.beans.SignalBean;
 import com.xgimi.business.api.clients.XgimiDeviceClient;
 import com.xgimi.business.api.hardwares.FanAndTemperatureManager;
 import com.xgimi.business.api.projectors.XgimiProjectorFactory;
@@ -29,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Stack;
 
 /**
  * Created by  jiang
@@ -48,25 +53,40 @@ public class MyAPP extends Application implements KtcpPaySDKCallback {
     public static String modelNum = "Z6X";
     public static String ID = "";
     public static String SN = XgimiDeviceClient.getMachineId();
-    //    public static String SN = "EKJ9J517DXBJ";
+//        public static String SN = "EKJ9J517DXBJ";
     public static int Temp = 0;
     public static int WindSpeed = 0;
     public static String turnType = "2";//开机类型 1 通电开机 2 手动开机
     Point point;
     public static boolean TurnOnS = false;
 
-    public static Activity activity;
-
     /**
      * 判定是否是极米设备
      */
     public static boolean isxgimi = false;
 
+
+    /**
+     * activity 总数
+     */
+    public int count = 0;
+
+    /**
+     * 收录的Activity
+     */
+    public static Stack<Activity> store;
+
+    /**
+     * 是否在前台
+     */
+    public static boolean isShow = true;
+
     @Override
     public void onCreate() {
         super.onCreate();
         context = this;
-
+        store = new Stack<>();
+        registerActivityLifecycleCallbacks(new SwitchBackgroundCallbacks());
         //崩溃检测
         CrashReport.initCrashReport(getApplicationContext(), "15b18d3a4c", false);
 
@@ -226,5 +246,129 @@ public class MyAPP extends Application implements KtcpPaySDKCallback {
         }
 
     }
+
+
+    private class SwitchBackgroundCallbacks implements ActivityLifecycleCallbacks {
+
+        @Override
+        public void onActivityCreated(Activity activity, Bundle bundle) {
+//            if(activity instanceof ActivityDetail) {
+//                if(store.size() >= MAX_ACTIVITY_DETAIL_NUM){
+//                    store.peek().finish(); //移除栈底的详情页并finish,保证商品详情页个数最大为10
+//                }
+            store.add(activity);
+//            }
+        }
+
+        @Override
+        public void onActivityStarted(Activity activity) {
+            if (count == 0) { //后台切换到前台
+                isShow = true;
+                LogUtil.v(TAG, ">>>>>>>>>>>>>>>>>>>App切到前台");
+
+                CrashReport.putUserData(context, "Application", "App切到前台");
+
+            }
+            count++;
+        }
+
+        @Override
+        public void onActivityResumed(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityPaused(Activity activity) {
+
+        }
+
+        @Override
+        public void onActivityStopped(Activity activity) {
+            count--;
+            if (count == 0) { //前台切换到后台
+                isShow = false;
+                LogUtil.v(TAG, ">>>>>>>>>>>>>>>>>>>App切到后台");
+
+            }
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
+
+        }
+
+        @Override
+        public void onActivityDestroyed(Activity activity) {
+            store.remove(activity);
+        }
+    }
+
+
+
+    /**
+     * get current Activity 获取当前Activity（栈中最后一个压入的）
+     */
+    public static Activity currentActivity() {
+        if (store != null && store.size() > 0) {
+            return store.lastElement();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 结束当前Activity（栈中最后一个压入的）
+     */
+    public static void finishActivity() {
+        if (store != null && store.size() > 0) {
+            store.lastElement().finish();
+        }
+    }
+
+    /**
+     * 结束指定的Activity
+     *
+     * @param activity
+     */
+
+    public static void finishActivity(Activity activity) {
+        if (activity != null && store != null) {
+            for (Activity activity1 : store) {
+                if (activity1 == activity) {
+                    activity1.finish();
+                }
+            }
+        }
+    }
+
+
+    /**
+     * 结束指定类名的Activity
+     */
+    public static void finishActivity(Class<?> cls) {
+        if (cls != null) {
+            for (Activity activity : store) {
+                if (activity.getClass().equals(cls)) {
+                    finishActivity(activity);
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * 结束所有Activity
+     */
+    public static void finishAllActivity() {
+        for (int i = 0, size = store.size(); i < size; i++) {
+            if (null != store.get(i)) {
+                store.get(i).finish();
+            }
+        }
+        store.clear();
+        System.exit(0);
+    }
+
+
 
 }

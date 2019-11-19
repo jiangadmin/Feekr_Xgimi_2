@@ -49,8 +49,8 @@
     <uses-permission android:name="android.permission.SYSTEM_ALTER_WINDOW" />
 
     <application
-        android:hardwareAccelerated="false"
         android:name=".MyAPP"
+        android:hardwareAccelerated="false"
         android:icon="@drawable/feekr"
         android:label="@string/app_name"
         android:theme="@style/StartTheme"
@@ -63,15 +63,21 @@
         </service>
 
         <activity
-            android:name=".activity.Home_Activity"
+            android:name=".activity.HomeActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="landscape">
 
         </activity>
 
-        <activity android:name=".activity.Launcher_Activity"
-            android:screenOrientation="landscape"
-            android:launchMode="singleInstance">
+        <activity
+            android:name=".activity.LauncherActivity"
+            android:launchMode="singleInstance"
+            android:screenOrientation="landscape">
+
+
+        </activity>
+
+        <activity android:name=".activity.DemoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -82,17 +88,12 @@
 
         </activity>
 
-        <activity android:name=".activity.Log_Activity"
-            android:screenOrientation="landscape">
-
-        </activity>
-
         <activity
             android:name=".activity.APPList_Activity"
             android:screenOrientation="landscape" />
 
         <activity
-            android:name=".activity.NewAPPList_Activity"
+            android:name=".activity.NewAPPListActivity"
             android:screenOrientation="landscape" />
 
         <activity
@@ -104,12 +105,13 @@
             android:screenOrientation="landscape" />
 
         <activity
-            android:name=".activity.Image_Activity"
+            android:name=".activity.ImageActivity"
             android:screenOrientation="landscape" />
 
         <activity
             android:name=".dialog.UpdateWindow"
             android:theme="@style/MyDialogStyleBottom" />
+
 
         <service android:name=".server.TimingService" />
 
@@ -122,9 +124,9 @@
 
         <!--&lt;!&ndash;网络广播接收&ndash;&gt;-->
         <!--<receiver android:name=".receiver.NetReceiver">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
-            <!--</intent-filter>-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.net.conn.CONNECTIVITY_CHANGE" />-->
+        <!--</intent-filter>-->
         <!--</receiver>-->
 
         <receiver
@@ -166,7 +168,7 @@
             android:name=".server.FeekrService"
             android:enabled="true"
             android:exported="true"
-            android:process=":aidl"/>
+            android:process=":aidl" />
 
     </application>
 

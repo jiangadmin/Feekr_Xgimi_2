@@ -54,14 +54,14 @@ public class Loading {
 
     public static class LoadingDialog extends Dialog {
 
-        public LoadingDialog(@NonNull Context context) {
+        LoadingDialog(@NonNull Context context) {
             super(context,  R.style.LoadingDialog);
         }
 
         /**
          * Create the custom dialog
          */
-        public static LoadingDialog create(Context context, String message) {
+        static LoadingDialog create(Context context, String message) {
             if (TextUtils.isEmpty(message))
                 message = "加载中...";
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

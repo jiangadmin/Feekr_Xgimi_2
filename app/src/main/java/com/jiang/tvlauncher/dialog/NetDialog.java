@@ -11,10 +11,9 @@ import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.utils.Tools;
 
 /**
- * @author: jiangadmin
- * @date: 2017/8/29.
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangyao
+ * Date: 2017-8-29
+ * Email: jiangmr@vip.qq.com
  * TODO: 网络状态提示
  */
 
@@ -29,8 +28,8 @@ public class NetDialog {
      * 显示警告框
      */
     public static void showW() {
-        if (MyAPP.activity != null && netWarningDialog == null) {
-            netWarningDialog = new NetWarningDialog(MyAPP.activity);
+        if (MyAPP.currentActivity() != null && netWarningDialog == null) {
+            netWarningDialog = new NetWarningDialog(MyAPP.currentActivity());
             try {
                 netWarningDialog.show();
             } catch (RuntimeException e) {
@@ -43,8 +42,8 @@ public class NetDialog {
      * 显示等待框
      */
     public static void showL() {
-        if (MyAPP.activity != null && netLoadingDialog == null) {
-            netLoadingDialog = new NetLoadingDialog(MyAPP.activity);
+        if (MyAPP.currentActivity() != null && netLoadingDialog == null) {
+            netLoadingDialog = new NetLoadingDialog(MyAPP.currentActivity());
             netLoadingDialog.show();
 
             timeCount = new TimeCount(30000, 1000);

@@ -28,7 +28,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
             SaveUtils.setString(Save_Key.TurnOnTime, Tools.NowTime());
 
             //example:启动程序
-//            Intent start = new Intent(context, Home_Activity.class);
+//            Intent start = new Intent(context, HomeActivity.class);
 //            start.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//
 //            context.startActivity(start);
             //注册广播

@@ -11,7 +11,6 @@ import android.text.TextUtils;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.jiang.tvlauncher.MyAPP;
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.servlet.DownUtil;
@@ -20,20 +19,18 @@ import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
 
 /**
- * @author jiangadmin
- * date: 2017/8/22.
- * Email: www.fangmu@qq.com
- * Phone: 186 6120 1018
+ * @author jiangyao
+ * Date: 2017-8-22
+ * Email: jiangmr@vip.qq.com
  * TODO: 视频播放
  */
-
-public class Video_Activity extends Base_Activity {
+public class Video_Activity extends BaseActivity {
     private static final String TAG = "Video_Activity";
     private static final String URL = "url";
 
     VideoView videoView;
 
-    String videourl, videoname;
+    String videoUrl, videoName;
 
     public static void start(Context context, String url) {
         Intent intent = new Intent();
@@ -46,22 +43,21 @@ public class Video_Activity extends Base_Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video);
-        MyAPP.activity = this;
         videoView = findViewById(R.id.videoView);
 
         String videof = Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/" + SaveUtils.getString(Save_Key.NewImageName);
 
         LogUtil.e(TAG, "视频播放");
-        videourl = getIntent().getStringExtra(URL);
+        videoUrl = getIntent().getStringExtra(URL);
 
         videoView.setZOrderOnTop(true);
         //如果有网络
         if (Tools.isNetworkConnected()) {
-            videoView.setVideoURI(Uri.parse(videourl));
-            videoname = Tools.getFileNameWithSuffix(getIntent().getStringExtra(URL));
-            SaveUtils.setString(Save_Key.NewVideoName, videoname);
+            videoView.setVideoURI(Uri.parse(videoUrl));
+            videoName = Tools.getFileNameWithSuffix(getIntent().getStringExtra(URL));
+            SaveUtils.setString(Save_Key.NewVideoName, videoName);
             //下载视频
-            new DownUtil().downLoad(videourl, videoname, false);
+            new DownUtil().downLoad(videoUrl, videoName, false);
         } else {
             //判断是否有记录
             if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.NewVideoName))) {

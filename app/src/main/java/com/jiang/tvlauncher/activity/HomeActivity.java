@@ -38,7 +38,7 @@ import com.jiang.tvlauncher.entity.FindChannelList;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.servlet.DownUtil;
 import com.jiang.tvlauncher.servlet.FindChannelList_Servlet;
-import com.jiang.tvlauncher.servlet.GetVIP_Servlet;
+import com.jiang.tvlauncher.servlet.GetVIP;
 import com.jiang.tvlauncher.servlet.Update_Servlet;
 import com.jiang.tvlauncher.utils.AnimUtils;
 import com.jiang.tvlauncher.utils.FileUtils;
@@ -66,8 +66,8 @@ import java.util.List;
  * TODO: 主页
  */
 
-public class Home_Activity extends Base_Activity implements View.OnClickListener, View.OnFocusChangeListener {
-    private static final String TAG = "Home_Activity";
+public class HomeActivity extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
+    private static final String TAG = "HomeActivity";
     RelativeLayout toolbar_view;
     LinearLayout back;
     ImageView back_img;
@@ -112,7 +112,6 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
             EventBus.getDefault().register(this);
         }
         setContentView(R.layout.activty_home);
-        MyAPP.activity = this;
 
         initview();
         initeven();
@@ -464,7 +463,7 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                             } else {
                                 Loading.show(this, "请稍后");
                                 //获取VIP账号
-                                new GetVIP_Servlet(true).execute();
+                                new GetVIP(true).execute();
                             }
                         } else {
                             startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(packname)));
@@ -479,11 +478,11 @@ public class Home_Activity extends Base_Activity implements View.OnClickListener
                 break;
             //启动APP列表
             case 2:
-                NewAPPList_Activity.start(this, channelList.getResult().get(i).getAppList());
+                NewAPPListActivity.start(this, channelList.getResult().get(i).getAppList());
                 break;
             //启动展示图片
             case 3:
-                Image_Activity.start(this, channelList.getResult().get(i).getContentUrl());
+                ImageActivity.start(this, channelList.getResult().get(i).getContentUrl());
                 break;
             //启动展示视频
             case 4:

@@ -47,7 +47,7 @@ import com.jiang.tvlauncher.entity.Theme_Entity;
 import com.jiang.tvlauncher.receiver.NetReceiver;
 import com.jiang.tvlauncher.servlet.DownUtil;
 import com.jiang.tvlauncher.servlet.FindChannelList_Servlet;
-import com.jiang.tvlauncher.servlet.GetVIP_Servlet;
+import com.jiang.tvlauncher.servlet.GetVIP;
 import com.jiang.tvlauncher.servlet.Get_Theme_Servlet;
 import com.jiang.tvlauncher.servlet.Update_Servlet;
 import com.jiang.tvlauncher.utils.FileUtils;
@@ -79,8 +79,8 @@ import java.util.Objects;
  * TODO: 新主页
  */
 
-public class Launcher_Activity extends Base_Activity implements View.OnClickListener, View.OnFocusChangeListener {
-    private static final String TAG = "Launcher_Activity";
+public class LauncherActivity extends BaseActivity implements View.OnClickListener, View.OnFocusChangeListener {
+    private static final String TAG = "LauncherActivity";
 
     ImageView main_bg, main_bg_0;
     TextView title_0, title, title_2;
@@ -130,7 +130,6 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
             EventBus.getDefault().register(this);
         }
         setContentView(R.layout.activty_launcher);
-        MyAPP.activity = this;
 
         netReceiver = new NetReceiver();
         IntentFilter intentFilter = new IntentFilter();
@@ -515,7 +514,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     @SuppressLint("CheckResult")
     @Subscribe
     public void onMessage(FindChannelList channelList) {
-        Launcher_Activity.channelList = channelList;
+        LauncherActivity.channelList = channelList;
 
         //更改开机动画
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.BootAn))) {
@@ -646,7 +645,7 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                                 } else {
                                     Loading.show(this, "请稍后");
                                     //获取VIP账号
-                                    new GetVIP_Servlet(true).execute();
+                                    new GetVIP(true).execute();
                                 }
                             } else {
                                 startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(packname)));
@@ -661,11 +660,11 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
                     break;
                 //启动APP列表
                 case 2:
-                    NewAPPList_Activity.start(this, channelList.getResult().get(i).getAppList());
+                    NewAPPListActivity.start(this, channelList.getResult().get(i).getAppList());
                     break;
                 //启动展示图片
                 case 3:
-                    Image_Activity.start(this, channelList.getResult().get(i).getContentUrl());
+                    ImageActivity.start(this, channelList.getResult().get(i).getContentUrl());
                     break;
                 //启动展示视频
                 case 4:
@@ -773,10 +772,10 @@ public class Launcher_Activity extends Base_Activity implements View.OnClickList
     }
 
     public static class LauncherHandler extends Handler {
-        private WeakReference<Launcher_Activity> reference;
+        private WeakReference<LauncherActivity> reference;
 
-        public LauncherHandler(Launcher_Activity activity) {
-            reference = new WeakReference<Launcher_Activity>(activity);
+        public LauncherHandler(LauncherActivity activity) {
+            reference = new WeakReference<LauncherActivity>(activity);
         }
 
         @Override

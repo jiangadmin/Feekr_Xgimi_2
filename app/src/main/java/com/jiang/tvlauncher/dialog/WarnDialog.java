@@ -9,13 +9,11 @@ import com.jiang.tvlauncher.MyAPP;
 import com.jiang.tvlauncher.R;
 
 /**
- * @author: jiangadmin
- * @date: 2017/8/29.
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangyao
+ * Date: 2017-8-29
+ * Email: jiangmr@vip.qq.com
  * TODO: 警告弹框
  */
-
 public class WarnDialog {
 
     private static WarningDialog netWarningDialog;
@@ -24,8 +22,8 @@ public class WarnDialog {
      * 显示警告框
      */
     public static void showW() {
-        if (MyAPP.activity != null && netWarningDialog == null) {
-            netWarningDialog = new WarningDialog(MyAPP.activity);
+        if (MyAPP.currentActivity() != null && netWarningDialog == null) {
+            netWarningDialog = new WarningDialog(MyAPP.currentActivity());
             try {
                 netWarningDialog.setCancelable(false);
                 netWarningDialog.setCanceledOnTouchOutside(false);

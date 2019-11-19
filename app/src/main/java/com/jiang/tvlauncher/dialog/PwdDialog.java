@@ -6,24 +6,19 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.jiang.tvlauncher.R;
-import com.jiang.tvlauncher.activity.Home_Activity;
-import com.jiang.tvlauncher.activity.Launcher_Activity;
-import com.jiang.tvlauncher.entity.Const;
+import com.jiang.tvlauncher.activity.HomeActivity;
+import com.jiang.tvlauncher.activity.LauncherActivity;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.utils.SaveUtils;
-import com.jiang.tvlauncher.utils.Tools;
 
 /**
- * @author: jiangadmin
- * @date: 2017/7/3.
- * @Email: www.fangmu@qq.com
- * @Phone: 186 6120 1018
+ * @author jiangyao
+ * Date: 2017-7-3
+ * Email: jiangmr@vip.qq.com
  * TODO: 密码输入框
  */
-
 
 public class PwdDialog extends Dialog {
     private static final String TAG = "PwdDialog";
@@ -109,12 +104,12 @@ public class PwdDialog extends Dialog {
 //                }
 
                 if (password.equals(SaveUtils.getString(Save_Key.Password))) {
-                    if (activity instanceof Home_Activity) {
-                        ((Home_Activity) activity).PwdRe();
+                    if (activity instanceof HomeActivity) {
+                        ((HomeActivity) activity).PwdRe();
                     }
 
-                    if (activity instanceof Launcher_Activity){
-                        ((Launcher_Activity)activity).PwdRe();
+                    if (activity instanceof LauncherActivity){
+                        ((LauncherActivity)activity).PwdRe();
                     }
                 }
                 break;
