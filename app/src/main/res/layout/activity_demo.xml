@@ -4,9 +4,39 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:text="demo"
-        android:layout_width="wrap_content"
+    <Button
+        android:tag="setting"
+        android:text="设置"
+        android:onClick="onClick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:tag="hdmi"
+        android:text="hdmi1"
+        android:onClick="onClick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:tag="hdmi2"
+        android:text="hdmi2"
+        android:onClick="onClick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:tag="hdmi3"
+        android:text="hdmi3"
+        android:onClick="onClick"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:tag="vga"
+        android:text="vga"
+        android:onClick="onClick"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
 </LinearLayout>

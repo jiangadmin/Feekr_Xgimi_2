@@ -3,8 +3,10 @@ package com.jiang.tvlauncher;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.TvTicketTool.TvTicketTool;
@@ -22,6 +24,7 @@ import com.ktcp.video.thirdagent.KtcpContants;
 import com.ktcp.video.thirdagent.KtcpPaySDKCallback;
 import com.ktcp.video.thirdagent.KtcpPaySdkProxy;
 import com.tencent.bugly.crashreport.CrashReport;
+import com.xgimi.business.api.beans.SignalBean;
 import com.xgimi.business.api.clients.XgimiDeviceClient;
 import com.xgimi.business.api.hardwares.FanAndTemperatureManager;
 import com.xgimi.business.api.projectors.XgimiProjectorFactory;

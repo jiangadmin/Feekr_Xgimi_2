@@ -154,12 +154,9 @@ public class Setting_Activity extends BaseActivity implements View.OnClickListen
             builder.setTitle("梯形校正");
             builder.setMessage("是否同步数据到服务器？");
             builder.setNegativeButton("取消", null);
-            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Loading.show(Setting_Activity.this, "同步中···");
-                    new SyncDevZoom_Servlet().execute();
-                }
+            builder.setPositiveButton("确定", (dialogInterface, i) -> {
+                Loading.show(Setting_Activity.this, "同步中···");
+                new SyncDevZoom_Servlet().execute();
             });
             builder.show();
         }
