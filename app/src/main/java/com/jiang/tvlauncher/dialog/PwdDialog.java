@@ -3,9 +3,10 @@ package com.jiang.tvlauncher.dialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
 
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.activity.HomeActivity;
@@ -108,8 +109,8 @@ public class PwdDialog extends Dialog {
                         ((HomeActivity) activity).PwdRe();
                     }
 
-                    if (activity instanceof LauncherActivity){
-                        ((LauncherActivity)activity).PwdRe();
+                    if (activity instanceof LauncherActivity) {
+                        ((LauncherActivity) activity).PwdRe();
                     }
                 }
                 break;

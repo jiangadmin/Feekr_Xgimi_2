@@ -4,11 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.jiang.tvlauncher.R;
@@ -88,7 +89,8 @@ public class InputSourceActivity extends BaseActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_ENTER) {
+//        Toast.makeText(this, "按键：" + keyCode, Toast.LENGTH_LONG).show();
+        if (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
             SignalBean bean = null;
             switch (getIntent().getIntExtra(TYPE, 5)) {
                 case 5:

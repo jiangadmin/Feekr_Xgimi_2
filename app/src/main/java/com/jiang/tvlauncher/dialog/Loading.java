@@ -3,13 +3,13 @@ package com.jiang.tvlauncher.dialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.StyleRes;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.jiang.tvlauncher.R;
 
@@ -55,7 +55,7 @@ public class Loading {
     public static class LoadingDialog extends Dialog {
 
         LoadingDialog(@NonNull Context context) {
-            super(context,  R.style.LoadingDialog);
+            super(context, R.style.LoadingDialog);
         }
 
         /**
@@ -66,7 +66,7 @@ public class Loading {
                 message = "加载中...";
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View layout = inflater.inflate(R.layout.dialog_loading, null);
-            TextView txtInfo =  layout.findViewById(R.id.txt_info);
+            TextView txtInfo = layout.findViewById(R.id.txt_info);
             txtInfo.setText(message);
 
             LoadingDialog dialog = new LoadingDialog(context);

@@ -4,9 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.jiang.tvlauncher.MyAPP;
 import com.jiang.tvlauncher.R;
@@ -15,7 +16,6 @@ import com.xgimi.business.api.beans.SignalBean;
 import com.xgimi.business.api.clients.ApiProxyServiceClient;
 import com.xgimi.business.api.components.InputSourceStatusChangedReceiver;
 import com.xgimi.business.api.enums.EnumInputSource;
-import com.xgimi.business.api.projectors.BaseProjector;
 import com.xgimi.business.api.projectors.XgimiProjectorFactory;
 
 import java.util.ArrayList;

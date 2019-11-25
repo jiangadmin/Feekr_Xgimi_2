@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StatFs;
 import android.provider.Settings;
-import android.support.annotation.RequiresApi;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -29,13 +28,14 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
 import com.jiang.tvlauncher.MyAPP;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -532,7 +532,7 @@ public final class Tools {
      */
     public static String NowTime() {
         //获取当前时间
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmm",Locale.CHINA);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmm", Locale.CHINA);
         Date curDate = new Date(System.currentTimeMillis());
         return formatter.format(curDate);
     }
@@ -594,8 +594,9 @@ public final class Tools {
         return 0;
     }
 
- /**
+    /**
      * 获取Ethernet的MAC地址
+     *
      * @return
      */
     public static String getMacAddress() {
@@ -606,11 +607,12 @@ public final class Tools {
         }
     }
 
-    private static String loadFileAsString(String filePath) throws java.io.IOException{
+    private static String loadFileAsString(String filePath) throws java.io.IOException {
         StringBuffer fileData = new StringBuffer(1000);
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
-        char[] buf = new char[1024]; int numRead=0;
-        while((numRead=reader.read(buf)) != -1){
+        char[] buf = new char[1024];
+        int numRead = 0;
+        while ((numRead = reader.read(buf)) != -1) {
             String readData = String.valueOf(buf, 0, numRead);
             fileData.append(readData);
         }

@@ -88,7 +88,7 @@ dependencies {
     //EVENTbus
     implementation 'org.greenrobot:eventbus:3.1.1'
     //Gilde图片加载库
-    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
     //极米
     implementation(name: 'com.xgimi.business.api_v2.0.8_19', ext: 'aar')
     //逻辑科技

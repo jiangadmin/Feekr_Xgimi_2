@@ -4,7 +4,8 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import com.jiang.tvlauncher.FeekrApiManager;
 import com.jiang.tvlauncher.utils.LogUtil;
@@ -28,11 +29,11 @@ public class FeekrService extends Service {
         return new MyIBinder();
     }
 
-    class MyIBinder extends FeekrApiManager.Stub{
+    class MyIBinder extends FeekrApiManager.Stub {
 
         @Override
         public void StartTencentVideo() throws RemoteException {
-            LogUtil.e(TAG,"发送广播");
+            LogUtil.e(TAG, "发送广播");
             sendBroadcast(new Intent("FEEKR"));
         }
     }

@@ -11,8 +11,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
@@ -23,6 +21,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -430,16 +431,16 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
      */
     public void open(int i) {
         //数据缺失的情况
-        if (hometype.size() <= i) {
-            Toast.makeText(this, "栏目未开通！", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if (hometype.size() <= i) {
+//            Toast.makeText(this, "栏目未开通！", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         //数据正常的情况
         switch (hometype.get(i)) {
             //无操作
-            case 0:
-                Toast.makeText(this, "栏目未开通", Toast.LENGTH_SHORT).show();
-                break;
+//            case 0:
+//                Toast.makeText(this, "栏目未开通", Toast.LENGTH_SHORT).show();
+//                break;
             //启动指定APP
             case 1:
 
@@ -487,6 +488,10 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
             //启动展示视频
             case 4:
                 Video_Activity.start(this, channelList.getResult().get(i).getContentUrl());
+                break;
+
+            default:
+                Toast.makeText(this, "栏目未开通", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

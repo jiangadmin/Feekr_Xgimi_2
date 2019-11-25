@@ -2,10 +2,10 @@ package com.jiang.tvlauncher.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.jiang.tvlauncher.MyAPP;
+import androidx.annotation.Nullable;
+
 import com.jiang.tvlauncher.utils.AnimUtils;
 
 /**
