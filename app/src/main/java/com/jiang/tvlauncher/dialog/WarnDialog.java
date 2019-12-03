@@ -22,6 +22,7 @@ public class WarnDialog {
     /**
      * 显示警告框
      */
+
     public static void showW() {
         if (MyAPP.currentActivity() != null && netWarningDialog == null) {
             netWarningDialog = new WarningDialog(MyAPP.currentActivity());
@@ -30,7 +31,6 @@ public class WarnDialog {
                 netWarningDialog.setCanceledOnTouchOutside(false);
                 netWarningDialog.show();
             } catch (RuntimeException e) {
-
             }
         }
     }

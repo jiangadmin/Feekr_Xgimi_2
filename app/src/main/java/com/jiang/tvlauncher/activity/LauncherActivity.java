@@ -11,7 +11,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -139,7 +138,7 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
         intentFilter.addAction("android.net.wifi.STATE_CHANGE");
         registerReceiver(netReceiver, intentFilter);
 
-        initview();
+        initView();
         initeven();
 
         //判断网络
@@ -198,8 +197,8 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
     }
 
     @Subscribe
-    public void onMessage(String showwarn) {
-        switch (showwarn) {
+    public void onMessage(String showWarn) {
+        switch (showWarn) {
             case "0":
                 if (warningDialog == null) {
                     warningDialog = new WarningDialog(this);
@@ -232,7 +231,7 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    private void initview() {
+    private void initView() {
 
         main_bg = findViewById(R.id.main_bg);
         main_bg_0 = findViewById(R.id.main_bg_0);
@@ -289,18 +288,10 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
             videoView.setVisibility(View.VISIBLE);
             videoView.setZOrderOnTop(true);
             videoView.setVideoURI(Uri.parse(SaveUtils.getString(Save_Key.NewVideoUrl)));
-            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mediaPlayer) {
-                    videoView.setVisibility(View.GONE);
-                }
-            });
-            videoView.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                @Override
-                public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
-                    videoView.setVisibility(View.GONE);
-                    return false;
-                }
+            videoView.setOnCompletionListener(mediaPlayer -> videoView.setVisibility(View.GONE));
+            videoView.setOnErrorListener((mediaPlayer, i, i1) -> {
+                videoView.setVisibility(View.GONE);
+                return false;
             });
             videoView.start();
         }
@@ -568,6 +559,12 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
+
+        //判断网络
+        if (!Tools.isNetworkConnected() && view.getId() != R.id.setting) {
+            NetDialog.showW(this);
+            return;
+        }
         //账户（信号源）判断
         if (Const.BussFlag == 0) {
             if (warningDialog == null) {
@@ -610,10 +607,10 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
      * 启动栏目
      */
     public void open(int i) {
-        try {
 
+        try {
             //数据缺失的情况
-            if (hometype.size() <= i) {
+            if (hometype == null || hometype.size() < 1) {
                 Toast.makeText(this, "栏目未开通！", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -628,28 +625,28 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
                 case 1:
 
                     if (channelList.getResult().get(i).getAppList() != null && channelList.getResult().get(i).getAppList().size() > 0) {
-                        String packname = channelList.getResult().get(i).getAppList().get(0).getPackageName();
+                        String packName = channelList.getResult().get(i).getAppList().get(0).getPackageName();
 
                         //如果要启动定制版腾讯视频
-                        if (packname.equals(Const.TvViedo)) {
+                        if (packName.equals(Const.TvViedo)) {
                             SaveUtils.setString(Const.TvViedoDow, channelList.getResult().get(i).getAppList().get(0).getDownloadUrl());
                             Const.云视听Url = channelList.getResult().get(i).getAppList().get(0).getDownloadUrlBak();
                         }
                         //验证是否有此应用
-                        if (Tools.isAppInstalled(packname)) {
+                        if (Tools.isAppInstalled(packName)) {
                             //如果要启动定制版腾讯视频
-                            if (packname.equals(Const.TvViedo)) {
+                            if (packName.equals(Const.TvViedo)) {
 
                                 //判断时候已经运行
                                 if (!TextUtils.isEmpty(ShellUtils.execCommand("ps |grep com.ktcp.tvvideo:webview", false).successMsg)) {
-                                    startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(packname)));
+                                    startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(packName)));
                                 } else {
                                     Loading.show(this, "请稍后");
                                     //获取VIP账号
                                     new GetVIP(true).execute();
                                 }
                             } else {
-                                startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(packname)));
+                                startActivity(new Intent(getPackageManager().getLaunchIntentForPackage(packName)));
                             }
                         } else {
 
@@ -673,9 +670,9 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
                     break;
                 //切换信号源至 HDMI1
                 case 5:
-                //切换信号源至 HDMI2
+                    //切换信号源至 HDMI2
                 case 6:
-                    InputSourceActivity.start(this,hometype.get(i), channelList.getResult().get(i).getContentUrl());
+                    InputSourceActivity.start(this, hometype.get(i), channelList.getResult().get(i).getContentUrl());
                     break;
             }
         } catch (Exception ex) {

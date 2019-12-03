@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="很抱歉，腾讯视频会员账号登录失败，请尝试重新登录!"
+            android:text="腾讯视频会员账号登录失败，请尝试重新登录!"
             android:textColor="@color/white"
             android:textSize="18sp" />
 

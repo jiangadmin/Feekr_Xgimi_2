@@ -22,13 +22,13 @@ import com.jiang.tvlauncher.utils.SaveUtils;
  */
 
 public class PwdDialog extends Dialog {
-    private static final String TAG = "PwdDialog";
+    private final String TAG = this.getClass().getSimpleName();
 
-    ImageView pwd1, pwd2, pwd3, pwd4, pwd5, pwd6;
+    private ImageView pwd1, pwd2, pwd3, pwd4, pwd5, pwd6;
 
-    Activity activity;
+    private Activity activity;
 
-    String password = "";
+    private String password = "";
 
     public PwdDialog(Activity activity, int theme) {
         super(activity, theme);
@@ -39,10 +39,10 @@ public class PwdDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_password);
-        initview();
+        initView();
     }
 
-    private void initview() {
+    private void initView() {
         pwd1 = findViewById(R.id.pwd1);
         pwd2 = findViewById(R.id.pwd2);
         pwd3 = findViewById(R.id.pwd3);
@@ -55,16 +55,16 @@ public class PwdDialog extends Dialog {
     public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_UP:
-                updatepwdshow(R.drawable.ic_up, 8);
+                updatePwdShow(R.drawable.ic_up, 8);
                 return true;
             case KeyEvent.KEYCODE_DPAD_DOWN:
-                updatepwdshow(R.drawable.ic_down, 2);
+                updatePwdShow(R.drawable.ic_down, 2);
                 return true;
             case KeyEvent.KEYCODE_DPAD_LEFT:
-                updatepwdshow(R.drawable.ic_left, 4);
+                updatePwdShow(R.drawable.ic_left, 4);
                 return true;
             case KeyEvent.KEYCODE_DPAD_RIGHT:
-                updatepwdshow(R.drawable.ic_right, 6);
+                updatePwdShow(R.drawable.ic_right, 6);
                 return true;
             case KeyEvent.KEYCODE_BACK:
                 dismiss();
@@ -77,8 +77,8 @@ public class PwdDialog extends Dialog {
         }
     }
 
-    public void updatepwdshow(int resid, int npwd) {
-        password = password + String.valueOf(npwd);
+    private void updatePwdShow(int resid, int npwd) {
+        password = password + npwd;
         switch (password.length()) {
             case 1:
                 pwd1.setImageResource(resid);

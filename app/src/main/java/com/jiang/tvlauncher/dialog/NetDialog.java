@@ -1,5 +1,6 @@
 package com.jiang.tvlauncher.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.jiang.tvlauncher.MyAPP;
 import com.jiang.tvlauncher.R;
+import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.Tools;
 
 /**
@@ -19,6 +21,7 @@ import com.jiang.tvlauncher.utils.Tools;
  */
 
 public class NetDialog {
+    private static final String TAG = "NetDialog";
 
     private static NetWarningDialog netWarningDialog;
     private static NetLoadingDialog netLoadingDialog;
@@ -35,6 +38,23 @@ public class NetDialog {
                 netWarningDialog.show();
             } catch (RuntimeException e) {
 
+            }
+        }
+    }
+
+    /**
+     * 显示警告框
+     */
+    public static void showW(Activity activity) {
+        if (netWarningDialog == null) {
+            new NetWarningDialog(activity).show();
+        } else {
+            try {
+                netWarningDialog.dismiss();
+                netWarningDialog = null;
+                new NetWarningDialog(activity).show();
+            } catch (Exception e) {
+                LogUtil.e(TAG, e.getMessage());
             }
         }
     }

@@ -35,8 +35,8 @@ public class AllDialog {
     public void openKtcpError() {
         Dialog dialog = new Dialog(context, R.style.MyDialog);
         dialog.setContentView(R.layout.dialog_open_ktcp_error);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setCancelable(false);
+//        dialog.setCanceledOnTouchOutside(false);
+//        dialog.setCancelable(false);
         Button tryAgain = dialog.findViewById(R.id.btn_1);
         Button openKtcp = dialog.findViewById(R.id.btn_2);
         tryAgain.setOnClickListener(view -> {

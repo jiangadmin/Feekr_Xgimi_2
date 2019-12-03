@@ -20,8 +20,8 @@ android {
         applicationId "com.jiang.tvlauncher"
         minSdkVersion 19
         targetSdkVersion 22
-        versionCode 210
-        versionName "2.1.0"
+        versionCode 212
+        versionName "2.1.2"
         signingConfig signingConfigs.jiang
 
         ndk {

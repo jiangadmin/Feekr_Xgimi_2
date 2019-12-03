@@ -112,14 +112,11 @@ public class MyAPP extends Application implements KtcpPaySDKCallback {
     }
 
     public void TempWindSpeed() {
-        FanAndTemperatureManager.INSTANCE.registerTemperatureRefreshListener(new FanAndTemperatureManager.ITemperatureRefreshListener() {
-            @Override
-            public void onRefresh(int serial, int temp) {
-                Temp = temp;
+        FanAndTemperatureManager.INSTANCE.registerTemperatureRefreshListener((serial, temp) -> {
+            Temp = temp;
 
-                //风扇转速等级
-                WindSpeed = FanAndTemperatureManager.INSTANCE.getWindSpeedLevel();
-            }
+            //风扇转速等级
+            WindSpeed = FanAndTemperatureManager.INSTANCE.getWindSpeedLevel();
         });
     }
 
