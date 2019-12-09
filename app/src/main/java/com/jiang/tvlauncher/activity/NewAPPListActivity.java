@@ -3,10 +3,11 @@ package com.jiang.tvlauncher.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+
+import androidx.annotation.Nullable;
 
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.adapter.NewAppAdapter;

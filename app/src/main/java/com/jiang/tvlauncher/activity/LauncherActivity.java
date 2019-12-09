@@ -20,8 +20,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -30,6 +28,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -358,7 +359,7 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
                                     Message msg = Message.obtain();
                                     msg.what = 1;           // 消息标识
                                     Bundle bundle = new Bundle();
-                                    bundle.putString("code","FAIL");
+                                    bundle.putString("code", "FAIL");
                                     msg.setData(bundle);
                                     handler.sendMessage(msg);
                                 } else {
@@ -367,7 +368,7 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
                                     Message msg = Message.obtain();
                                     msg.what = 1;           // 消息标识
                                     Bundle bundle = new Bundle();
-                                    bundle.putString("code","SUCC");
+                                    bundle.putString("code", "SUCC");
                                     msg.setData(bundle);
                                     handler.sendMessage(msg);
                                 }
@@ -670,6 +671,12 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
                 case 4:
                     Video_Activity.start(this, channelList.getResult().get(i).getContentUrl());
                     break;
+                //切换信号源至 HDMI1
+                case 5:
+                //切换信号源至 HDMI2
+                case 6:
+                    InputSourceActivity.start(this,hometype.get(i), channelList.getResult().get(i).getContentUrl());
+                    break;
             }
         } catch (Exception ex) {
             LogUtil.e(TAG, "打开栏目报错" + ex.getMessage());
@@ -783,10 +790,10 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
             switch (msg.what) {
                 case 1:
                     String code = msg.getData().getString("code");
-                    if(code != null && code.length() > 0 && reference!=null){
-                        if(code.toUpperCase().equals("FAIL")){
+                    if (code != null && code.length() > 0 && reference != null) {
+                        if (code.toUpperCase().equals("FAIL")) {
                             reference.get().findViewById(R.id.dispaly).setVisibility(View.VISIBLE);
-                        }else if(code.toUpperCase().equals("SUCC")){
+                        } else if (code.toUpperCase().equals("SUCC")) {
                             reference.get().findViewById(R.id.dispaly).setVisibility(View.GONE);
                         }
                     }

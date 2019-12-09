@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -19,29 +20,34 @@ import com.jiang.tvlauncher.utils.ImageUtils;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.jiang.tvlauncher.utils.SaveUtils;
 import com.jiang.tvlauncher.utils.Tools;
+import com.xgimi.business.api.beans.SignalBean;
+import com.xgimi.business.api.enums.EnumInputSource;
+import com.xgimi.business.api.projectors.XgimiProjectorFactory;
 
 import java.io.File;
 
 /**
  * @author jiangyao
- * Date: 2017-8-22
+ * Date: 2019-11-22
  * Email: jiangmr@vip.qq.com
- * TODO: 图片展示
+ * TODO: 信号源切换确认
  */
-public class ImageActivity extends BaseActivity {
-    private static final String TAG = "ImageActivity";
+public class InputSourceActivity extends BaseActivity {
+    private static final String TAG = "InputSourceActivity";
     private static final String URL = "url";
+    private static final String TYPE = "type";
+
+    public static void start(Context context, int type, String url) {
+        Intent intent = new Intent();
+        intent.setClass(context, InputSourceActivity.class);
+        intent.putExtra(URL, url);
+        intent.putExtra(TYPE, type);
+        context.startActivity(intent);
+    }
 
     ImageView imageView;
 
     String imageUrl, imageName;
-
-    public static void start(Context context, String url) {
-        Intent intent = new Intent();
-        intent.setClass(context, ImageActivity.class);
-        intent.putExtra(URL, url);
-        context.startActivity(intent);
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,4 +85,36 @@ public class ImageActivity extends BaseActivity {
             }
         }
     }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        Toast.makeText(this, "按键：" + keyCode, Toast.LENGTH_LONG).show();
+        if (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
+            SignalBean bean = null;
+            switch (getIntent().getIntExtra(TYPE, 5)) {
+                case 5:
+                    bean = new SignalBean();
+                    bean.setName("HDMI");
+                    bean.setSource(EnumInputSource.E_INPUT_SOURCE_HDMI.name());
+                    bean.setSw("hdmi1");
+                    break;
+                case 6:
+                    bean = new SignalBean();
+                    bean.setName("HDMI");
+                    bean.setSource(EnumInputSource.E_INPUT_SOURCE_HDMI2.name());
+                    bean.setSw("hdmi2");
+                    break;
+            }
+
+            if (bean != null) {
+                XgimiProjectorFactory.create().switchInputSource(bean);
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
 }

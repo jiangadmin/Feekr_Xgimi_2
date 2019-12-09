@@ -5,38 +5,38 @@
     android:orientation="vertical">
 
     <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
         android:tag="setting"
-        android:text="设置"
-        android:onClick="onClick"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:text="设置" />
 
     <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:tag="getsignal"
+        android:text="获取当前信号源" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
         android:tag="hdmi"
-        android:text="hdmi1"
-        android:onClick="onClick"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:text="hdmi1" />
 
     <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
         android:tag="hdmi2"
-        android:text="hdmi2"
-        android:onClick="onClick"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:text="hdmi2" />
 
     <Button
-        android:tag="hdmi3"
-        android:text="hdmi3"
-        android:onClick="onClick"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <Button
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
         android:tag="vga"
-        android:text="vga"
-        android:onClick="onClick"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:text="vga" />
 
 </LinearLayout>

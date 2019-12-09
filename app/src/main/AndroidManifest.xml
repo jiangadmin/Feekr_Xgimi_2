@@ -74,10 +74,6 @@
             android:launchMode="singleInstance"
             android:screenOrientation="landscape">
 
-
-        </activity>
-
-        <activity android:name=".activity.DemoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -85,6 +81,10 @@
                 <category android:name="android.intent.category.HOME" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
+        </activity>
+
+        <activity android:name=".activity.DemoActivity">
 
         </activity>
 
@@ -111,6 +111,7 @@
         <activity
             android:name=".dialog.UpdateWindow"
             android:theme="@style/MyDialogStyleBottom" />
+        <activity android:name=".activity.InputSourceActivity" />
 
 
         <service android:name=".server.TimingService" />
@@ -163,6 +164,12 @@
                 <action android:name="FEEKR" />
             </intent-filter>
         </receiver>
+
+        <service android:name="com.xgimi.business.api.components.InputSourceStatusChangedReceiver">
+            <intent-filter>
+                <action android:name="com.mstar.tv.service.COMMON_EVENT_SIGNAL_AUTO_SWITCH"/>
+            </intent-filter>
+        </service>
 
         <service
             android:name=".server.FeekrService"

@@ -6,10 +6,11 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.Toast;
 import android.widget.VideoView;
+
+import androidx.annotation.Nullable;
 
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.entity.Save_Key;
