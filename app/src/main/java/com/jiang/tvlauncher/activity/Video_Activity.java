@@ -13,6 +13,7 @@ import android.widget.VideoView;
 import androidx.annotation.Nullable;
 
 import com.jiang.tvlauncher.R;
+import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.servlet.DownUtil;
 import com.jiang.tvlauncher.utils.LogUtil;
@@ -46,7 +47,7 @@ public class Video_Activity extends BaseActivity {
         setContentView(R.layout.activity_video);
         videoView = findViewById(R.id.videoView);
 
-        String videof = Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/" + SaveUtils.getString(Save_Key.NewImageName);
+        String videof = Const.FilePath + SaveUtils.getString(Save_Key.NewImageName);
 
         LogUtil.e(TAG, "视频播放");
         videoUrl = getIntent().getStringExtra(URL);

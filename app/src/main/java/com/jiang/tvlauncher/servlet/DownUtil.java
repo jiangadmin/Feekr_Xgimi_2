@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.jiang.tvlauncher.MyAPP;
 import com.jiang.tvlauncher.dialog.Loading;
+import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.utils.LogUtil;
 import com.xgimi.business.api.clients.ApiProxyServiceClient;
 
@@ -171,7 +172,7 @@ public class DownUtil {
                     }
 
                     //创建文件
-                    file = new File(Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/", fileName);
+                    file = new File(Const.FilePath, fileName);
                     //判断文件夹是否被创建
                     if (!file.getParentFile().exists()) {
                         file.getParentFile().mkdirs();

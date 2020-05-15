@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.jiang.tvlauncher.R;
+import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.entity.Save_Key;
 import com.jiang.tvlauncher.servlet.DownUtil;
 import com.jiang.tvlauncher.utils.FileUtils;
@@ -50,7 +51,7 @@ public class ImageActivity extends BaseActivity {
         imageView = findViewById(R.id.imageView);
         LogUtil.e(TAG, "图片展示");
 
-        String imgf = Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/" + SaveUtils.getString(Save_Key.NewImageName);
+        String imgf = Const.FilePath + SaveUtils.getString(Save_Key.NewImageName);
 
         //如果有网络
         if (Tools.isNetworkConnected()) {

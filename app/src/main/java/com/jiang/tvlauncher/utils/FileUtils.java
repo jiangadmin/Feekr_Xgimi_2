@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.jiang.tvlauncher.BuildConfig;
 import com.jiang.tvlauncher.MyAPP;
+import com.jiang.tvlauncher.entity.Const;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -325,9 +326,9 @@ public class FileUtils {
      */
     public static boolean checkFileExists(String name) {
         boolean status;
-        if (!name.equals("")) {
+        if (!"".equals(name)) {
             File path = Environment.getExternalStorageDirectory() ;
-            File newPath = new File(path.toString() + "/feekr/Download/"+ name);
+            File newPath = new File(Const.FilePath + name);
             status = newPath.exists();
         } else {
             status = false;

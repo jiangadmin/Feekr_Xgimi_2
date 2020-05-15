@@ -49,6 +49,6 @@ public class Const {
     /**
      * 存储位置
      */
-    public static String FilePath = Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/";
+    public static String FilePath = Environment.getExternalStorageDirectory().getPath() + "/feekr/";
 
 }

@@ -32,17 +32,6 @@ public class ShutdownReceiver extends BroadcastReceiver {
             //记录一次最近关机时间
             SaveUtils.setString(Save_Key.TurnOffTime, Tools.NowTime());
 
-            //example:写入文件
-            FileOutputStream fos;
-            try {
-                fos = new FileOutputStream(
-                        android.os.Environment.getExternalStorageDirectory()
-                                + File.separator + "SysLog.txt", true);
-                fos.write("系统退出".getBytes("utf-8"));
-                fos.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 }
