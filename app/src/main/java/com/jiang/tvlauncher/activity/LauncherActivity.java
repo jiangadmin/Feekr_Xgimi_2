@@ -431,6 +431,7 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
             //图片名
             String imgname = Tools.getFileNameWithSuffix(bean.getBgImg());
             //判断图片文件是否存在
+            LogUtil.e(TAG, FileUtils.checkFileExists(imgname) + "");
             if (imgname != null && !FileUtils.checkFileExists(imgname)) {
                 //下载图片
                 new DownUtil().downLoad(bean.getBgImg(), imgname, false);
@@ -440,8 +441,11 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
             try {
                 LogUtil.e(TAG, Const.FilePath + SaveUtils.getString(Save_Key.BackGround));
                 RequestOptions builder = new RequestOptions();
-                builder.placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(Const.FilePath + SaveUtils.getString(Save_Key.BackGround)))));
-                builder.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(Const.FilePath + SaveUtils.getString(Save_Key.BackGround)))));
+                if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.BackGround)) && !FileUtils.checkFileExists(Const.FilePath + SaveUtils.getString(Save_Key.BackGround))) {
+                    builder.placeholder(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(Const.FilePath + SaveUtils.getString(Save_Key.BackGround)))));
+                    builder.error(new BitmapDrawable(getResources(), ImageUtils.getBitmap(new File(Const.FilePath + SaveUtils.getString(Save_Key.BackGround)))));
+                }
+
                 Glide.with(this).load(bean.getBgImg()).apply(builder).into(main_bg);
             } catch (Exception e) {
                 LogUtil.e(TAG, e.getMessage());

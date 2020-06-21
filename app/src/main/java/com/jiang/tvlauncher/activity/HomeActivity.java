@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
@@ -298,10 +297,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if (WifiApUtils.getInstance(this).checkWifiApStatus())
+        if (WifiApUtils.getInstance(this).checkWifiApStatus()) {
             wifiap.setVisibility(View.VISIBLE);
-        else
+        } else {
             wifiap.setVisibility(View.GONE);
+        }
 
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
@@ -335,8 +335,8 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
      */
     @SuppressLint("CheckResult")
     public void updateshow(FindChannelList channelList) {
-        this.channelList = channelList;
-        String file = Environment.getExternalStorageDirectory().getPath() + "/feekr/Download/";
+        HomeActivity.channelList = channelList;
+        String file = Const.FilePath;
 
         //更改开机动画
         if (!TextUtils.isEmpty(SaveUtils.getString(Save_Key.BootAn))) {
@@ -353,8 +353,9 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
             for (int i = 0; i < channelList.getResult().size(); i++) {
 
                 //限制最大个数
-                if (i > 3)
+                if (i > 3) {
                     return;
+                }
                 //图片网络地址
                 String url = channelList.getResult().get(i).getBgUrl();
                 //图片文件名
@@ -474,8 +475,9 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
                         Loading.show(this, "请稍后");
                         new DownUtil().downLoad(channelList.getResult().get(i).getAppList().get(0).getDownloadUrl(), channelList.getResult().get(i).getAppList().get(0).getAppName() + ".apk", true);
                     }
-                } else
+                } else {
                     Toast.makeText(this, "栏目未开通", Toast.LENGTH_SHORT).show();
+                }
                 break;
             //启动APP列表
             case 2:
@@ -517,10 +519,11 @@ public class HomeActivity extends BaseActivity implements View.OnClickListener, 
                 wifiap_txt.setTextColor(getResources().getColor(b ? R.color.white : R.color.gray));
                 break;
             default:
-                if (b)
+                if (b) {
                     enlargeAnim(view);
-                else
+                } else {
                     reduceAnim(view);
+                }
                 break;
         }
     }
