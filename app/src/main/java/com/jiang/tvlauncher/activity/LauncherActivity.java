@@ -389,7 +389,8 @@ public class LauncherActivity extends BaseActivity implements View.OnClickListen
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case KeyEvent.KEYCODE_MENU:
-                System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);// 数组向左移位操作
+                // 数组向左移位操作
+                System.arraycopy(mHits, 1, mHits, 0, mHits.length - 1);
                 mHits[mHits.length - 1] = SystemClock.uptimeMillis();
                 if (mHits[0] >= (SystemClock.uptimeMillis() - 5000)) {
                     LogUtil.e(TAG, "Password:" + SaveUtils.getString(Save_Key.Password));

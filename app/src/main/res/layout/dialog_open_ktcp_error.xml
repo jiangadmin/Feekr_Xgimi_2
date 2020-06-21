@@ -19,15 +19,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="抱歉"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="腾讯视频会员账号登录失败，请尝试重新登录!"
+            android:gravity="center"
+            android:text="网络连接较慢，请尝试点击\n“重新登录会员”或检查您的网络设置！"
             android:textColor="@color/white"
             android:textSize="18sp" />
 
@@ -52,6 +46,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
 </LinearLayout>

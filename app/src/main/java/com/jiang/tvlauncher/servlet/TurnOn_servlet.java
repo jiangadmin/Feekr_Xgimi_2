@@ -92,8 +92,9 @@ public class TurnOn_servlet extends AsyncTask<String, Integer, TurnOnEntity> {
         }
 
         LogUtil.e(TAG, "=======================================================================================");
-        if (entity != null && entity.getErrormsg() != null)
+        if (entity != null && entity.getErrormsg() != null) {
             LogUtil.e(TAG, entity.getErrormsg());
+        }
 //        Toast.makeText(context, "开机请求返回："+entity.getErrormsg(), Toast.LENGTH_SHORT).show();
         LogUtil.e(TAG, "=======================================================================================");
 

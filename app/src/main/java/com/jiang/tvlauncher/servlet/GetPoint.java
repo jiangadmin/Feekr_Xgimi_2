@@ -22,7 +22,7 @@ public class GetPoint extends AsyncTask<String, Integer, String> {
 
     @Override
     protected String doInBackground(String... strings) {
-        long time = new Date().getTime();
+        long time = System.currentTimeMillis();
 
         Point point = new Point();
         LogUtil.e(TAG, "开始读取");
@@ -32,7 +32,7 @@ public class GetPoint extends AsyncTask<String, Integer, String> {
         try {
             DlpKeystoneBean bean0 = DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_LEFT_TOP);
             LogUtil.e(TAG, "读取左上角>X:" + bean0.getHorizontalValue() + "Y:" + bean0.getVerticalValue());
-            long time0 = new Date().getTime();
+            long time0 = System.currentTimeMillis();
             LogUtil.e(TAG, "结束：" + (time0 - time));
             Point.PointBean pointBean0 = new Point.PointBean();
             pointBean0.setIdx(0);
@@ -42,7 +42,7 @@ public class GetPoint extends AsyncTask<String, Integer, String> {
 
             DlpKeystoneBean bean1 = DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_RIGHT_TOP);
             LogUtil.e(TAG, "读取右上角>X:" + bean1.getHorizontalValue() + "Y:" + bean1.getVerticalValue());
-            long time1 = new Date().getTime();
+            long time1 = System.currentTimeMillis();
             LogUtil.e(TAG, "结束：" + (time1 - time));
             Point.PointBean pointBean1 = new Point.PointBean();
             pointBean1.setIdx(1);
@@ -52,7 +52,7 @@ public class GetPoint extends AsyncTask<String, Integer, String> {
 
             DlpKeystoneBean bean2 = DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_LEFT_BOTTOM);
             LogUtil.e(TAG, "读取左下角>X:" + bean2.getHorizontalValue() + "Y:" + bean2.getVerticalValue());
-            long time2 = new Date().getTime();
+            long time2 =System.currentTimeMillis();
             LogUtil.e(TAG, "结束：" + (time2 - time));
             Point.PointBean pointBean2 = new Point.PointBean();
             pointBean2.setIdx(2);
@@ -62,7 +62,7 @@ public class GetPoint extends AsyncTask<String, Integer, String> {
 
             DlpKeystoneBean bean3 = DlpKeystoneManager.INSTANCE.getKeystoneValue(DlpKeystoneManager.POINT_RIGHT_BOTTOM);
             LogUtil.e(TAG, "读取右下角>X:" + bean3.getHorizontalValue() + "Y:" + bean3.getVerticalValue());
-            long time3 = new Date().getTime();
+            long time3 = System.currentTimeMillis();
             LogUtil.e(TAG, "结束：" + (time3 - time));
             Point.PointBean pointBean3 = new Point.PointBean();
             pointBean3.setIdx(3);

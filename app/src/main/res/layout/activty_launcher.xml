@@ -223,7 +223,6 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/dispaly"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -233,13 +232,14 @@
         android:text="认证失败"
         android:textColor="@color/white"
         android:textSize="40sp"
-        android:translationZ="10dp" />
+        android:translationZ="10dp"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/ver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"

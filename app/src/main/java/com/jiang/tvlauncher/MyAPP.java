@@ -42,18 +42,20 @@ import java.util.Stack;
  */
 
 public class MyAPP extends Application implements KtcpPaySDKCallback {
-    private static final String TAG = "MyAppliaction";
+    private static final String TAG = "MyAPP";
+
     public static boolean LogShow = true;
     public static Context context;
-
-    public static boolean IsLineNet = true;//是否是有线网络
+    //是否是有线网络
+    public static boolean IsLineNet = true;
     public static String modelNum = "Z6X";
     public static String ID = "";
     public static String SN = XgimiDeviceClient.getMachineId();
     //        public static String SN = "EKJ9J517DXBJ";
     public static int Temp = 0;
     public static int WindSpeed = 0;
-    public static String turnType = "2";//开机类型 1 通电开机 2 手动开机
+    //开机类型 1 通电开机 2 手动开机
+    public static String turnType = "2";
     Point point;
     public static boolean TurnOnS = false;
 
@@ -120,8 +122,10 @@ public class MyAPP extends Application implements KtcpPaySDKCallback {
         });
     }
 
-    private int status = -1;//接口状态码
-    private String msg;//接口提示信息
+    //接口状态码
+    private int status = -1;
+    //接口提示信息
+    private String msg;
 
     /**
      * @param channel 三方厂商对应的渠道号

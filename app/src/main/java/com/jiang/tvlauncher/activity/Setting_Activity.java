@@ -2,7 +2,6 @@ package com.jiang.tvlauncher.activity;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -15,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.jiang.tvlauncher.R;
 import com.jiang.tvlauncher.dialog.Loading;
+import com.jiang.tvlauncher.dialog.MaxVoiceDialog;
 import com.jiang.tvlauncher.entity.Const;
 import com.jiang.tvlauncher.servlet.SyncDevZoom_Servlet;
 import com.jiang.tvlauncher.servlet.Update_Servlet;
@@ -37,8 +37,8 @@ import java.io.File;
 public class Setting_Activity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "Setting_Activity";
 
-    //网络，蓝牙，设置，文件，更新，关于
-    LinearLayout setting1, setting2, setting3, setting4, setting5, setting6;
+    //网络，蓝牙，设置，文件，更新，关于 最大音量
+    LinearLayout setting1, setting2, setting3, setting4, setting5, setting6, setting7;
 
     public static void start(Context context) {
         Intent intent = new Intent();
@@ -67,6 +67,7 @@ public class Setting_Activity extends BaseActivity implements View.OnClickListen
         setting4 = findViewById(R.id.setting_4);
         setting5 = findViewById(R.id.setting_5);
         setting6 = findViewById(R.id.setting_6);
+        setting7 = findViewById(R.id.setting_7);
     }
 
     private void initeven() {
@@ -76,6 +77,7 @@ public class Setting_Activity extends BaseActivity implements View.OnClickListen
         setting4.setOnClickListener(this);
         setting5.setOnClickListener(this);
         setting6.setOnClickListener(this);
+        setting7.setOnClickListener(this);
     }
 
     @Override
@@ -88,13 +90,10 @@ public class Setting_Activity extends BaseActivity implements View.OnClickListen
                 message += "共存储文件：" + FileUtils.getFileList(new File(Const.FilePath));
                 message += "\n总体积：" + FileUtils.formatFileSize(FileUtils.getDirSize(new File(Const.FilePath)));
                 builder.setMessage(message);
-                builder.setPositiveButton("清除", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        LogUtil.e(TAG, "清除成功");
-                        FileUtils.deleteFile(new File(Const.FilePath));
-                        Toast.makeText(getApplicationContext(), "清除成功", Toast.LENGTH_SHORT).show();
-                    }
+                builder.setPositiveButton("清除", (dialogInterface, i) -> {
+                    LogUtil.e(TAG, "清除成功");
+                    FileUtils.deleteFile(new File(Const.FilePath));
+                    Toast.makeText(getApplicationContext(), "清除成功", Toast.LENGTH_SHORT).show();
                 });
                 builder.show();
             } catch (Exception e) {
@@ -143,6 +142,10 @@ public class Setting_Activity extends BaseActivity implements View.OnClickListen
             //关于本机
             case R.id.setting_6:
                 startActivity(new Intent().setAction(EnumSettingsActivity.Main.getActionName()));
+                break;
+            //允许最大音量
+            case R.id.setting_7:
+                new MaxVoiceDialog(this, R.style.MyDialog).show();
                 break;
         }
     }

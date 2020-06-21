@@ -113,7 +113,6 @@
             android:theme="@style/MyDialogStyleBottom" />
         <activity android:name=".activity.InputSourceActivity" />
 
-
         <service android:name=".server.TimingService" />
 
         <!--关机广播接收-->
@@ -167,7 +166,7 @@
 
         <service android:name="com.xgimi.business.api.components.InputSourceStatusChangedReceiver">
             <intent-filter>
-                <action android:name="com.mstar.tv.service.COMMON_EVENT_SIGNAL_AUTO_SWITCH"/>
+                <action android:name="com.mstar.tv.service.COMMON_EVENT_SIGNAL_AUTO_SWITCH" />
             </intent-filter>
         </service>
 

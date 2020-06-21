@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 
 static def ver(){
-    return 213
+    return 220
 }
 
 static def verName() {

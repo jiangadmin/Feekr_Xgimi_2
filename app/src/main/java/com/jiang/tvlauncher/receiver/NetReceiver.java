@@ -34,14 +34,16 @@ public class NetReceiver extends BroadcastReceiver {
                 if (networkInfo.getType() == ConnectivityManager.TYPE_ETHERNET) {
                     LogUtil.e(TAG, "有线网络");
                     MyAPP.IsLineNet = true;
-                    if (Tools.isNetworkConnected())
+                    if (Tools.isNetworkConnected()) {
                         NetDialog.dismiss();
+                    }
                 }
                 if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
                     LogUtil.e(TAG, "无线网络");
                     MyAPP.IsLineNet = false;
-                    if (Tools.isNetworkConnected())
+                    if (Tools.isNetworkConnected()) {
                         NetDialog.dismiss();
+                    }
                 }
                 LogUtil.e(TAG,"发消息");
                 EventBus.getDefault().post("nanchuan");
